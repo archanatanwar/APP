@@ -1,7 +1,5 @@
 package Game;
-
 import java.util.Hashtable;
-
 /**
  * 
  */
@@ -14,18 +12,17 @@ public class RegionStatus {
 	String rName;
 	int rNumber;
 	int buildingCost;
-	int minionNum;
+	int rMinionNum;
 	int troubleMarker;
 	int demon;
 	int troll;
-		
 	Hashtable<String,PlayerStatus> H_Player;
 	PlayerStatus SP;
 	public RegionStatus(String Name, int Number, int bCost) {
 		rName = Name;
 		rNumber = Number;
 		buildingCost = bCost;
-		minionNum = 0;
+		rMinionNum = 0;
 		troubleMarker = 0;
 		demon = 0;
 		troll = 0;
@@ -34,21 +31,23 @@ public class RegionStatus {
 	
 	public void placeDefaultMinion(String color)
 	{
-		minionNum = minionNum + 1;
-		if (minionNum > 1)
+		rMinionNum = rMinionNum + 1;
+		if (rMinionNum > 1)
 		{
 			troubleMarker = 1;
 		}
 		if (H_Player.containsKey(color)) {
-			H_Player.get(color).pMinionRegionwise = minionNum;
+			H_Player.get(color).pMinionRegionwise = rMinionNum;
 		}
 		else
 		{
 			SP = new PlayerStatus();
 			SP.color = color;
-			SP.pMinionRegionwise = minionNum;
+			SP.pMinionRegionwise = rMinionNum;
 			SP.pbuildingRegionwise = 0;			
 			H_Player.put(color, SP);
 		}
 	}
+
+
 }
