@@ -1,3 +1,5 @@
+package Game;
+
 import java.util.*;
 public class PersonalityCards {
 	
@@ -17,8 +19,8 @@ public class PersonalityCards {
 		return valueToReturn.toString();
 	}
 	
-	public static void main(String[] args)
-	{
-		System.out.println(shufflePersonalityCards());
-	}
+//	public static void main(String[] args)
+//	{
+//		System.out.println(shufflePersonalityCards());
+//	}
 }
