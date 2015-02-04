@@ -1,4 +1,5 @@
 /** 
+<<<<<<< HEAD
  * <h1>Info about player</h1>
  * <p>
  * Player class is used to store the color, number of minions <br>
@@ -6,16 +7,24 @@
  * It also allows the players to place their minions<br>
  * and trouble markers in the pre-specified regions.
  * </p>
+=======
+ * Player class is used to store the color, number of minions 
+ * and presence of building in the region for the particular Player.
+>>>>>>> 66f9cae7621215b40472ad8d9a2e8c07ef8bf09e
  */
 
 package Game;
 
 import java.util.*;
+<<<<<<< HEAD
 public class Player 
 {
 	int pNumber;
 	static int count = 1;
 	int pTurn;
+=======
+public class Player {
+>>>>>>> 66f9cae7621215b40472ad8d9a2e8c07ef8bf09e
 	String color;
 	String personality;
 	int minionHold;
@@ -39,6 +48,7 @@ public class Player
 	{
 		color = colorTemp;
 		personality = personalityTemp;
+<<<<<<< HEAD
 		pNumber = count++;
 	}
 	
@@ -48,6 +58,12 @@ public class Player
 	public void initialisePlayer()
 	{
 		pTurn = 0;
+=======
+	}
+	
+	public void initialisePlayer()
+	{
+>>>>>>> 66f9cae7621215b40472ad8d9a2e8c07ef8bf09e
 		minionHold = 12;
 		buildingHold = 6;
 		cashHold = 10;
