@@ -1,0 +1,20 @@
+In this project we have 4 classes and we use GUI to implement a graphical user interface.
+The main class named Build1 that include the main method. In this class there are 4 other methods,
+first method named “Load_GameActionPerformed” to load a saved game if it exist.
+Second method named “Start_GameActionPerformed” that call another class named “NewGame” to start a new game.
+Third method is “initComponents” that use GUI and implement first window of starting game.
+Forth method is ”run” to create Object of class. And the last method of this class is “main” method.
+
+Next class is “NewGame” that have 5 methods. 
+In methods named “Two_PlayersActionPerformed”, “Three_PlayersActionPerformed” and “Four_PlayersActionPerformed”,
+based on number of players, variables of color, personality and cards number is defined and for each new game they randomly
+get values. Next method named “Save_GameActionPerformed” save a XML file of the information of each player include player color,
+player personality, player card numbers, number of minions, number of buildings, and the amount of money each player have.
+Next method is “initComponents” that use GUI and implement a panel include component initialization and buttons like Two Players,
+Three Players, Four Players, Update Region, Save Game, Exit and also Players Info and Region Info table.
+
+Next class is “Players” which has 3 methods, 
+first is “Write_XML” that write players information in a XML file and next is “Save_Game” that make an object of NewGame class
+and save a XML file for all players. And last method is “Read_XML” that read the XML file.
+
+Last class is “SavedGame” which have one method named “initComponents” and load players and region info.
