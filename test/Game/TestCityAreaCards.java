@@ -6,15 +6,16 @@ import java.util.List;
 
 import org.junit.Test;
 
+import Game.CityAreaCards.getCityAreaCard;
 import Game.PersonalityCards.getPersonalityCard;
 
-public class TestPersonalityCards {
+public class TestCityAreaCards {
+
+	CityAreaCards cityArea = new CityAreaCards();
 	
-	PersonalityCards personality = new PersonalityCards();
-	
-	List<getPersonalityCard> shuffleListBeforeShuffle = personality.shuffleList;
-	String personalityRemovedAfterShuffle = personality.shufflePersonalityCards();
-	List<getPersonalityCard> shuffleListAfterShuffle = personality.shuffleList;
+	List<getCityAreaCard> shuffleListBeforeShuffle = cityArea.shuffleList; 
+	String cityRemoved = cityArea.shuffleCityAreaCards();
+	List<getCityAreaCard> shuffleListAfterShuffle = cityArea.shuffleList; 
 	
 	@Test
 	public void testPersonalityCardShuffling() {
