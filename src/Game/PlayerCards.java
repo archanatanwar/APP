@@ -1,9 +1,25 @@
 package Game;
 
 import java.util.*;
-
-public class PlayerCards {
+/**
+ * <h1>Representation of Player Cards</h1>
+ * <p>Contains Player Cards in HashMap data structure , method that<br>
+ * creates the deck of cards and a method that <br>
+ * returns a Player Card whenever it is called i.e. for
+ * the purpose of distributing cards </p>
+ * @author nav_k
+ *
+ */
+public class PlayerCards
+{
+	
+	// Contains Player card color as key and list of card numbers as value
 	public static HashMap<String, List<Integer>> playerCards;
+	
+	/**
+	 * method creates deck of brown and green cards as HashMap
+	 * and two lists that shuffle and then gets added to HashMap
+	 */
 	public static void createPlayerCardsDeck()
 	{
 		playerCards = new HashMap<String, List<Integer>>();
@@ -11,17 +27,19 @@ public class PlayerCards {
 		List<Integer> listForBrown = new ArrayList<>();
 		String Green = "Green";
 		String Brown = "Brown";
-	
+		
+		// add initial 48 cards for Green color list
 		for(int i=1; i<=48; i++)
 		{
 			listForGreen.add(i);
 		}
 		
+		// 53 cards for Brown color list
 		for(int i=1; i<=53; i++)
 		{
 			listForBrown.add(i);
 		}
-		// shuffle values of list
+		// shuffle values of lists
 		Collections.shuffle(listForBrown);
 		Collections.shuffle(listForGreen);
 		
@@ -31,7 +49,13 @@ public class PlayerCards {
 		
 	}
 	
-	public static Pair returnPlayerCard()
+	/**
+	 * method that returns the playerCard values i.e. color and number
+	 * @return Pair returns an object to a utility class Pair which in turn has </br>
+	 *              data members card number and color
+	 * 
+	 */
+	public static Pair getPlayerCard()
 	{
 		if(playerCards.isEmpty())
 		{
@@ -87,7 +111,16 @@ public class PlayerCards {
 //	}
 }
 
-final class Pair{
+
+/**
+ * <h1>Utility class to help function getPlayerCard() to return two values</h1>
+ * <p>utility class the helps getPlayerCard function to return two values </br>
+ * i.e. color and number of player card</p>
+ * @author nav_k
+ *
+ */
+final class Pair
+{
 	private final int playerCardNo;
 	private final String colorPlayerCard; 
 	public Pair(int cardNo, String color)
@@ -95,10 +128,14 @@ final class Pair{
 		playerCardNo = cardNo;
 		colorPlayerCard = color;
 	}
+	
+	// accessor for Card number
 	public int getCard()
 	{
 		return playerCardNo;
 	}
+	
+	// accessor for Card color
 	public String getCardColor()
 	{
 		return colorPlayerCard;

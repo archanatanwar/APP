@@ -1,8 +1,11 @@
+/** 
+ * Player class is used to store the color, number of minions 
+ * and presence of building in the region for the particular Player.
+ */
+
 package Game;
 
-//import java.awt.List;
 import java.util.*;
-
 public class Player {
 	String color;
 	String personality;
@@ -20,14 +23,19 @@ public class Player {
 	public Player(String colorTemp, String personalityTemp) {
 		color = colorTemp;
 		personality = personalityTemp;
+	}
+	
+	public void initialisePlayer()
+	{
 		minionHold = 12;
 		buildingHold = 6;
 		cashHold = 10;
+		GameEngine.BankHold = GameEngine.BankHold - cashHold;
 		H_Region = new Hashtable<String, RegionStatus>();
 		pCards = new HashMap<String, List<Integer>>();
 
 		for (int i = 1; i <= 5; i++) {
-			Pair pair = PlayerCards.returnPlayerCard();
+			Pair pair = PlayerCards.getPlayerCard();
 			String color_temp = pair.getCardColor();
 			int cardNo_temp = pair.getCard();
 			if (pCards.containsKey(color_temp)) {
