@@ -51,7 +51,7 @@ public class PlayerCards
 	
 	/**
 	 * method that returns the playerCard values i.e. color and number
-	 * @return Pair returns an object to a utility class Pair which in turn has </br>
+	 * @return Pair returns an object to a utility class Pair which in turn has <br>
 	 *              data members card number and color
 	 * 
 	 */
@@ -90,56 +90,8 @@ public class PlayerCards
 		
 		return new Pair(result,"Green");
 	}
-	
-//	public static void main(String[] args) 
-//	{
-//		
-//		System.out.println("Before calling");
-//		PlayerCards.createPlayerCardsDeck();
-//		Pair pair = returnPlayerCard();
-//		System.out.println("1st element: "+ pair.getCard() + "color:  " + pair.getCardColor());
-//		Pair pair2 = returnPlayerCard();
-//		System.out.println("2nd element: "+ pair2.getCard() + "color:  " + pair2.getCardColor());
-//		Pair pair3= returnPlayerCard();
-//		System.out.println("3rd element: "+ pair3.getCard() + "color:  " + pair3.getCardColor());
-//		Pair pair4 = returnPlayerCard();
-//		System.out.println("4th element: "+ pair4.getCard() + "color:  " + pair4.getCardColor());
-//		Pair pair5 = returnPlayerCard();
-//		System.out.println("5th element: "+ pair5.getCard() + "color:  " + pair5.getCardColor());
-//		Pair pair6 = returnPlayerCard();
-//		System.out.println("6th element: "+ pair6.getCard() + "color:  " + pair6.getCardColor());
-//	}
 }
 
 
-/**
- * <h1>Utility class to help function getPlayerCard() to return two values</h1>
- * <p>utility class the helps getPlayerCard function to return two values </br>
- * i.e. color and number of player card</p>
- * @author nav_k
- *
- */
-final class Pair
-{
-	private final int playerCardNo;
-	private final String colorPlayerCard; 
-	public Pair(int cardNo, String color)
-	{
-		playerCardNo = cardNo;
-		colorPlayerCard = color;
-	}
-	
-	// accessor for Card number
-	public int getCard()
-	{
-		return playerCardNo;
-	}
-	
-	// accessor for Card color
-	public String getCardColor()
-	{
-		return colorPlayerCard;
-	}
-}
 
 

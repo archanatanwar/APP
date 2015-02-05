@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<XML xmlns="CreateXMLDOM">
+<Region>
+<Name>Dolly Sisters</Name>
+<RegionNumber>1</RegionNumber>
+<rBuildingCost>6</rBuildingCost>
+<NumberOfMinions>4</NumberOfMinions>
+<NumberOfrTroubleMarkers>1</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>Unreal Estate</Name>
+<RegionNumber>2</RegionNumber>
+<rBuildingCost>18</rBuildingCost>
+<NumberOfMinions>0</NumberOfMinions>
+<NumberOfrTroubleMarkers>0</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>Dragon's Landing</Name>
+<RegionNumber>3</RegionNumber>
+<rBuildingCost>12</rBuildingCost>
+<NumberOfMinions>0</NumberOfMinions>
+<NumberOfrTroubleMarkers>0</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>Small Gods</Name>
+<RegionNumber>4</RegionNumber>
+<rBuildingCost>18</rBuildingCost>
+<NumberOfMinions>0</NumberOfMinions>
+<NumberOfrTroubleMarkers>0</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>The Scours</Name>
+<RegionNumber>5</RegionNumber>
+<rBuildingCost>6</rBuildingCost>
+<NumberOfMinions>4</NumberOfMinions>
+<NumberOfrTroubleMarkers>1</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>The Hippo</Name>
+<RegionNumber>6</RegionNumber>
+<rBuildingCost>12</rBuildingCost>
+<NumberOfMinions>0</NumberOfMinions>
+<NumberOfrTroubleMarkers>0</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>The Shades</Name>
+<RegionNumber>7</RegionNumber>
+<rBuildingCost>6</rBuildingCost>
+<NumberOfMinions>4</NumberOfMinions>
+<NumberOfrTroubleMarkers>1</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>Dimwell</Name>
+<RegionNumber>8</RegionNumber>
+<rBuildingCost>6</rBuildingCost>
+<NumberOfMinions>0</NumberOfMinions>
+<NumberOfrTroubleMarkers>0</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>Longwall</Name>
+<RegionNumber>9</RegionNumber>
+<rBuildingCost>12</rBuildingCost>
+<NumberOfMinions>0</NumberOfMinions>
+<NumberOfrTroubleMarkers>0</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>Isle of Gods</Name>
+<RegionNumber>10</RegionNumber>
+<rBuildingCost>12</rBuildingCost>
+<NumberOfMinions>0</NumberOfMinions>
+<NumberOfrTroubleMarkers>0</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>Seven Sleepers</Name>
+<RegionNumber>11</RegionNumber>
+<rBuildingCost>18</rBuildingCost>
+<NumberOfMinions>0</NumberOfMinions>
+<NumberOfrTroubleMarkers>0</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Region>
+<Name>Nap Hill</Name>
+<RegionNumber>12</RegionNumber>
+<rBuildingCost>12</rBuildingCost>
+<NumberOfMinions>0</NumberOfMinions>
+<NumberOfrTroubleMarkers>0</NumberOfrTroubleMarkers>
+<NumberOfrDemons>0</NumberOfrDemons>
+<NumberOfrTrolls>0</NumberOfrTrolls>
+</Region>
+<Player>
+<Player_Number>3</Player_Number>
+<Color>green</Color>
+<Player_Turn>1</Player_Turn>
+<Building_Hold>6</Building_Hold>
+<Cash_Hold>10</Cash_Hold>
+<Minion_Hold>9</Minion_Hold>
+<Personality>LORD_RUST</Personality>
+<Player_Cards>{Green=[2, 14, 33, 44, 11]}</Player_Cards>
+</Player>
+<Player>
+<Player_Number>4</Player_Number>
+<Color>blue</Color>
+<Player_Turn>0</Player_Turn>
+<Building_Hold>6</Building_Hold>
+<Cash_Hold>10</Cash_Hold>
+<Minion_Hold>9</Minion_Hold>
+<Personality>CHRYSOPRASE</Personality>
+<Player_Cards>{Green=[1, 41, 23, 31, 37]}</Player_Cards>
+</Player>
+<Player>
+<Player_Number>1</Player_Number>
+<Color>red</Color>
+<Player_Turn>0</Player_Turn>
+<Building_Hold>6</Building_Hold>
+<Cash_Hold>10</Cash_Hold>
+<Minion_Hold>9</Minion_Hold>
+<Personality>LORD_SELACHII</Personality>
+<Player_Cards>{Green=[26, 7, 10, 38, 18]}</Player_Cards>
+</Player>
+<Player>
+<Player_Number>2</Player_Number>
+<Color>yellow</Color>
+<Player_Turn>0</Player_Turn>
+<Building_Hold>6</Building_Hold>
+<Cash_Hold>10</Cash_Hold>
+<Minion_Hold>9</Minion_Hold>
+<Personality>COMMANDER_VIMES</Personality>
+<Player_Cards>{Green=[12, 39, 17, 22, 21]}</Player_Cards>
+</Player>
+</XML>

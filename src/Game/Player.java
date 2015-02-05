@@ -1,5 +1,9 @@
+
+
+package Game;
+
+import java.util.*;
 /** 
-<<<<<<< HEAD
  * <h1>Info about player</h1>
  * <p>
  * Player class is used to store the color, number of minions <br>
@@ -7,35 +11,23 @@
  * It also allows the players to place their minions<br>
  * and trouble markers in the pre-specified regions.
  * </p>
-=======
- * Player class is used to store the color, number of minions 
- * and presence of building in the region for the particular Player.
->>>>>>> 66f9cae7621215b40472ad8d9a2e8c07ef8bf09e
  */
-
-package Game;
-
-import java.util.*;
-<<<<<<< HEAD
 public class Player 
 {
-	int pNumber;
-	static int count = 1;
-	int pTurn;
-=======
-public class Player {
->>>>>>> 66f9cae7621215b40472ad8d9a2e8c07ef8bf09e
-	String color;
-	String personality;
-	int minionHold;
-	int buildingHold;
-	int cashHold;
-	private String[] defaultRegions = { "Dolly Sisters", "The Scours",
-			"The Shades" };
+	int pNumber;                                 // player number
+	static int count = 1;                        
+	int pTurn;                                   // variable that is 0 if not players turn and 1 otherwise
+	String color;                                // color of minions and buildings with player
+	String personality;                          // name of personality card
+	int minionHold;                              // number of minions
+	int buildingHold;                            // number of buildings
+	int cashHold;                                // cash with player
+	
+	private String[] defaultRegions = { "Dolly Sisters", "The Scours", "The Shades" };
 
-	Hashtable<String, RegionStatus> H_Region;
+	Hashtable<String, RegionStatus> H_Region;       
 	RegionStatus SP;
-	HashMap<String, List<Integer>> pCards;
+	HashMap<String, List<Integer>> pCards;         // collection of player cards with color
 	List<Integer> list = new ArrayList<>();
 	
 	
@@ -48,29 +40,24 @@ public class Player {
 	{
 		color = colorTemp;
 		personality = personalityTemp;
-<<<<<<< HEAD
 		pNumber = count++;
 	}
 	
 	/**
-	 * Function initializes minion, building, cash with player
+	 * Function initializes minion, building, cash and cards with player
 	 */
 	public void initialisePlayer()
 	{
 		pTurn = 0;
-=======
-	}
-	
-	public void initialisePlayer()
-	{
->>>>>>> 66f9cae7621215b40472ad8d9a2e8c07ef8bf09e
 		minionHold = 12;
 		buildingHold = 6;
 		cashHold = 10;
+		// update cash with bank
 		GameEngine.BankHold = GameEngine.BankHold - cashHold;
 		H_Region = new Hashtable<String, RegionStatus>();
 		pCards = new HashMap<String, List<Integer>>();
-
+		// distribute cards
+		// five to each player initially
 		for (int i = 1; i <= 5; i++) {
 			Pair pair = PlayerCards.getPlayerCard();
 			String color_temp = pair.getCardColor();
@@ -85,7 +72,9 @@ public class Player {
 		}
 	}
 	
-	
+	/**
+	 * Every player places three minions in different regions
+	 */
 	public void initialPlayerStatus() {
 		minionHold = minionHold - 3;
 		for (int i = 0; i < defaultRegions.length; i++) {
@@ -100,4 +89,22 @@ public class Player {
 			}
 		}
 	}
+	
+	public String getColor()
+	{
+		return color;
+	}
+	
+	public int getPlayerNo()
+	{
+		return pNumber;
+	}
+	
+	public int getMinion()
+	{
+		return minionHold;
+	}
 }
+
+
+
