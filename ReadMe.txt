@@ -4,7 +4,7 @@ BUILD 1
 Team Information
 -------------------------------------------------------------------
 Student Name : Kaur, Navleen       Student Id : 7256264 
-Student Name : Hasaneen, Ayman     Student Id : 
+Student Name : Hasaneen, Ayman     Student Id : 6355897
 Student Name : Tanwar, Archana     Student Id : 7248571
 Student Name : Kashyap, Jatin      Student Id : 6997791
 Student Name : Eftekhari, Maryam   Student Id : 7734069
@@ -69,6 +69,10 @@ This class is used from the players class to store playerwise data for each regi
 SavedGame.java
 This class is used for creating GUI for showing Players, Regions and other Information by reading XML file.
 -- Populate objects of the other class by the data read from XML.
+
+HTML FILES
+-------------------------------------------------------------------
+..\src\doc
 
 
 DEPLOYMENT VIEW
