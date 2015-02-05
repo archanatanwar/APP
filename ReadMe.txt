@@ -32,7 +32,9 @@ This class is responsible for :
 -- Populate objects of the Player Class.
 
 Pair.java
-
+This class is a utility class.
+This class is responsible for :
+-- Returning two values from single function i.e. color and list of player class.
 
 PersonalityCards.java
 This class is used to assign personalities to the Players.
