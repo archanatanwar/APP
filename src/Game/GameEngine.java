@@ -58,11 +58,17 @@ public class GameEngine extends JFrame implements Runnable {
 	public static Player objPGreen;
 	public static Player objPBlue;
 	static int BankHold = 120;
+	static int TrollsHold = 3;
+	static int DemonsHold = 4;
+	static int TMarkerHold = 12;
 	static int numPlayers; // number of players
 	
 	static List<Player> playerObjList = new ArrayList<Player>(); // list of player objects
 	static List<Region> regionObjList = new ArrayList<Region>(); // list of region objects
 	static List<String> randomCards = new ArrayList<>();
+	static Hashtable<Integer, DemonTroll> H_Demons;
+	static DemonTroll objDemonTroll;
+	static List<String> discardCards = new ArrayList<>();
 
 	private JPanel panel1;
 	private static JButton Load_Game;
@@ -87,7 +93,7 @@ public class GameEngine extends JFrame implements Runnable {
 
 			NewGame Game = new NewGame(); // create Object from the Player Class
 											// the will display the form
-			Game.setVisible(true); // make it visible
+			//Game.setVisible(true); // make it visible
 			// Form.setVisible(true);
 			// JOptionPane.showMessageDialog(null, "You've got it !");
 
@@ -219,31 +225,72 @@ public class GameEngine extends JFrame implements Runnable {
 	 * @param args can be null
 	 */
 	public static void main(String[] args) {
+		H_Demons = new Hashtable<Integer, DemonTroll>();
+		objDemonTroll = new DemonTroll();
+		objDemonTroll.numDemonExist = 0;
+		objDemonTroll.numTrollExist = 0;
+		objDemonTroll.isTroubleMarkerExist = 0;
+		
 		objDSisters = new Region("Dolly Sisters", 1, 6);
 		regionObjList.add(objDSisters);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(2,3,12));
+		H_Demons.put(1,objDemonTroll);
+		
 		objUEstate = new Region("Unreal Estate", 2, 18);
 		regionObjList.add(objUEstate);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(1,4,10,11,12));
+		H_Demons.put(2,objDemonTroll);
+		
 		objDLanding = new Region("Dragon's Landing", 3, 12);
 		regionObjList.add(objDLanding);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(1,4));
+		H_Demons.put(3,objDemonTroll);
+		
 		objSGods = new Region("Small Gods", 4, 18);
 		regionObjList.add(objSGods);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(2,3,5,6,10));
+		H_Demons.put(4,objDemonTroll);
+		
 		objTScours = new Region("The Scours", 5, 6);
 		regionObjList.add(objTScours);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(4,6,7,10));
+		H_Demons.put(5,objDemonTroll);
+		
 		objTHippo = new Region("The Hippo", 6, 12);
 		regionObjList.add(objTHippo);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(4,5,7));
+		H_Demons.put(6,objDemonTroll);
+		
 		objTShades = new Region("The Shades", 7, 6);
 		regionObjList.add(objTShades);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(5,6,8));
+		H_Demons.put(7,objDemonTroll);
+		
 		objDimwell = new Region("Dimwell", 8, 6);
 		regionObjList.add(objDimwell);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(5,7,9));
+		H_Demons.put(8,objDemonTroll);
+		
 		objLongwall = new Region("Longwall", 9, 12);
 		regionObjList.add(objLongwall);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(8,10,11));
+		H_Demons.put(9,objDemonTroll);
+		
 		objIGods = new Region("Isle of Gods", 10, 12);
 		regionObjList.add(objIGods);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(2,4,5,9,11));
+		H_Demons.put(10,objDemonTroll);
+		
 		objSSleepers = new Region("Seven Sleepers", 11, 18);
 		regionObjList.add(objSSleepers);
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(2,9,10,12));
+		H_Demons.put(11,objDemonTroll);
+		
 		objNHill = new Region("Nap Hill", 12, 12);
 		regionObjList.add(objNHill);
-
+		objDemonTroll.listForNeighbours.addAll(Arrays.asList(1,2,11));
+		H_Demons.put(12,objDemonTroll);
+		
 		// call function to create deck of cards when game is loaded
 		PlayerCards.createPlayerCardsDeck();
 		String personality_temp;
@@ -266,6 +313,7 @@ public class GameEngine extends JFrame implements Runnable {
 		playerObjList.add(objPBlue);
 		(new Thread(new GameEngine())).start();
 	}
+	
 
 	/**
 	 * Function createXML() creates an XML file and saves the current state of
@@ -393,7 +441,7 @@ public class GameEngine extends JFrame implements Runnable {
 	 * @return Node of player that should be added to root element
 	 */
 	public static Node getPlayer(Document doc, String color, int buildingHold, int cashHold, int minionHold, String personality, 
-			HashMap<String, List<Integer>> pCards, int pNumber, int pTurn)
+			HashMap<String, List<String>> pCards, int pNumber, int pTurn)
 	{
 		// Player gets added to root element and all parameters as Player's children
 		Element player = doc.createElement("Player");
@@ -621,7 +669,7 @@ public class GameEngine extends JFrame implements Runnable {
 							Element PCardElement = (Element) PCardList.item(0);
 							NodeList CardList = PCardElement.getChildNodes();
 							String value = CardList.item(0).getNodeValue();
-							HashMap<String, List<Integer>> player_Cards = new HashMap<String, List<Integer>>();
+							HashMap<String, List<String>> player_Cards = new HashMap<String, List<String>>();
 							value = value.substring(1, value.length() - 1); // remove
 																			// curly
 																			// brackets
@@ -644,7 +692,7 @@ public class GameEngine extends JFrame implements Runnable {
 								convertToInt.add(temp);
 							}
 
-							player_Cards.put(keyValuePair[0], convertToInt);
+							player_Cards.put(keyValuePair[0], tempList);
 							playerObjList.get(s).pCards = player_Cards;
 						}// end if
 					}// end for
@@ -710,4 +758,5 @@ public class GameEngine extends JFrame implements Runnable {
 						"No Saved File Exist To Load !");
 		}
 	}
+	
 }

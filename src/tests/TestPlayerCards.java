@@ -50,7 +50,7 @@ public class TestPlayerCards {
 	 * test getPlayerCard method
 	 * should not throw exceptions
 	 */
-	@Test
+	/*@Test
 	public void testGetPlayerCard() {
 		try{
 			Game.Pair pair = obj.getPlayerCard();
@@ -60,6 +60,6 @@ public class TestPlayerCards {
 		catch(Exception e){
 			fail("Should not throw exception. Message: " + e.getMessage());
 		}
-	}
+	}*/
 	
 }

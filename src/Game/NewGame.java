@@ -24,6 +24,17 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.CropImageFilter;
+import java.awt.image.FilteredImageSource;
+import java.io.IOException;
+
+
+
+
+
+import javax.imageio.ImageIO;
+
 /**
  * <h1>New Game</h1>
  * <p>
@@ -36,6 +47,7 @@ import org.jdom2.output.XMLOutputter;
  */
 public class NewGame extends JFrame {
 	// data members that are part of GUI
+	private JFrame frame;
 	private JPanel panel1;
 	private JButton Two_Players;
 	private JButton Three_Players;
@@ -44,7 +56,7 @@ public class NewGame extends JFrame {
 	JTable Players_Info;
 	private JScrollPane scrollPane2;
 	public JTable Region_Info;
-	private JButton Update_Region;
+	private JButton Play_Game;
 	private JButton Save_Game;
 	private JButton Exit;
 	public JTable Card_Info;
@@ -52,21 +64,228 @@ public class NewGame extends JFrame {
 	public JTable Bank_Info;
 	public JScrollPane scrollPane4;
 	public JTextField xmlName;
-
-	static List<Integer> greenList = new ArrayList<>();    // list for green cards
-	static List<Integer> brownList = new ArrayList<>();    // list for brown cards
-
+	public static JLabel[] labels;
+	public static int index;
+	public static JPanel panel;
+	static List<String> greenList = new ArrayList<>();    // list for green cards
+	static List<String> brownList = new ArrayList<>();    // list for brown cards
+	static ImageIcon playerCardImage;
+	static ImageIcon personalityCardImage;
+	
 	// Constructor calls method to initialize the elements of GUI
 	public NewGame() {
 		initComponents();
 	}
 	
+	/**
+	 * Function takes personality card name as parameter
+	 * and returns image corresponding to the personality card
+	 * @param String personality card name
+	 * @return image object
+	 */
+	public static ImageIcon getPersonalityCardImage(String cardName)
+	{
+		switch(cardName){
+		case "LORD_VETINARI":
+			personalityCardImage = new ImageIcon("PersonalityCardImages/LordVetinari.png");
+			break;
+		case "LORD_SELACHII":
+			personalityCardImage = new ImageIcon("PersonalityCardImages/LordSelachii.png");
+			break;
+		case "LORD_RUST":
+			personalityCardImage = new ImageIcon("PersonalityCardImages/LordRust.png");
+			break;
+		case "LORD_DE_WORDE":
+			personalityCardImage = new ImageIcon("PersonalityCardImages/LorddeWorde.png");
+			break;
+		case "DRAGON_KING_OF_ARMS":
+			personalityCardImage = new ImageIcon("PersonalityCardImages/DragonKingOfArms.png");
+			break;
+		case "CHRYSOPRASE":
+			personalityCardImage = new ImageIcon("PersonalityCardImages/Chrysoprase.png");
+			break;
+		case "COMMANDER_VIMES":
+			personalityCardImage = new ImageIcon("PersonalityCardImages/CommanderVimes.png");
+			break;
+		 default:
+             throw new IllegalArgumentException("Invalid personality card name: " + cardName);
+		}
+		return personalityCardImage;
+	}
+	
+	/**
+	 * Function takes player card name as parameter
+	 * and returns images corresponding to the player card
+	 * @param cardName String PlayerCard Name 
+	 * @return ImageIcon image object
+	 */
+	public static ImageIcon getPlayerCardImage(String cardName)
+	{
+		switch(cardName){
+		case "MR_BOGGIS":
+			playerCardImage = new ImageIcon("PlayerCardImages/MrBoggis.png");
+			break;
+		case "MR_BENT":
+			playerCardImage = new ImageIcon("PlayerCardImages/MrBent.png");
+			break;
+		case "THE_BEGGARS_GUILD":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheBeggarsGuild.png");
+			break;
+		case "THE_BANK_OF_ANKH_MORPORK":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheBankOfAnkhMorpork.png");
+			break;
+
+		case "THE_ANKH_MORPORK_SUNSHINE_DRAGON_SANCTUARY":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheAnkhMorporkSunshineDragonSanctuary.png");
+			break;
+
+		case "SERGEANT_ANGUA":
+			playerCardImage = new ImageIcon("PlayerCardImages/SergeantAngua.png");
+			break;
+
+		case "THE_AGONY_AUNTS":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheAgonyAunts.png");
+			break;
+
+		case "THE_DYSK":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheDysk.png");
+			break;
+
+		case "THE_DUCKMAN":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheDuckman.png");
+			break;
+
+		case "DRUMKNOTT":
+			playerCardImage = new ImageIcon("PlayerCardImages/Drumknott.png");
+			break;
+		case "CMOT_DIBBLER":
+			playerCardImage = new ImageIcon("PlayerCardImages/CMOTDibbler.png");
+			break;
+		case "DR_CRUCES":
+			playerCardImage = new ImageIcon("PlayerCardImages/DrCruces.png");
+			break;
+		case "CAPTAIN_CARROT":
+			playerCardImage = new ImageIcon("PlayerCardImages/CaptainCarrot.png");
+			break;
+		case "MRS_CAKE":
+			playerCardImage = new ImageIcon("PlayerCardImages/MrsCake.png");
+			break;
+		case "GROAT":
+			playerCardImage = new ImageIcon("PlayerCardImages/Groat.png");
+			break;
+		case "GIMLETS_DWARF_DELICATESSEN":
+			playerCardImage = new ImageIcon("PlayerCardImages/GimletsDwarfDelicatessen.png");
+			break;
+		case "GASPODE":
+			playerCardImage = new ImageIcon("PlayerCardImages/Gaspode.png");
+			break;
+		case "FRESH_START_CLUB":
+			playerCardImage = new ImageIcon("PlayerCardImages/FreshStartClub.png");
+			break;
+		case "FOUL_OLE_RON":
+			playerCardImage = new ImageIcon("PlayerCardImages/FoulOleRon.png");
+			break;
+		case "THE_FOOLS_GUILD":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheFoolsGuild.png");
+			break;
+		case "THE_FIRE_BRIGADE":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheFireBrigade.png");
+			break;
+		case "INIGO_SKIMMER":
+			playerCardImage = new ImageIcon("PlayerCardImages/InigoSkimmer.png");
+			break;
+		case "HISTORY_MONKS":
+			playerCardImage = new ImageIcon("PlayerCardImages/HistoryMonks.png");
+			break;
+		case "HEX":
+			playerCardImage = new ImageIcon("PlayerCardImages/Hex.png");
+			break;
+		case "HERE_N_NOW":
+			playerCardImage = new ImageIcon("PlayerCardImages/HereNNow.png");
+			break;
+		case "HARRY_KING":
+			playerCardImage = new ImageIcon("PlayerCardImages/HarryKing.png");
+			break;
+		case "HARGAS_HOUSE_OF_RIBS":
+			playerCardImage = new ImageIcon("PlayerCardImages/HargasHouseOfRibs.png");
+			break;
+		case "MR_GRYLE":
+			playerCardImage = new ImageIcon("PlayerCardImages/MrGryle.png");
+			break;
+		case "THE_PEELED_NUTS":
+			playerCardImage = new ImageIcon("PlayerCardImages/ThePeeledNuts.png");
+			break;
+		case "THE_OPERA_HOUSE":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheOperaHouse.png");
+			break;
+		case "NOBBY_NOBS":
+			playerCardImage = new ImageIcon("PlayerCardImages/NobbyNobs.png");
+			break;
+		case "MODO":
+			playerCardImage = new ImageIcon("PlayerCardImages/Modo.png");
+			break;
+		case "THE_MENDED_DRUM":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheMendedDrum.png");
+			break;
+		case "LIBRARIAN":
+			playerCardImage = new ImageIcon("PlayerCardImages/Librarian.png");
+			break;
+		case "LEONARD_OF_QUIRM":
+			playerCardImage = new ImageIcon("PlayerCardImages/LeonardOfQuirm.png");
+			break;
+		case "SHONKY_SHOP":
+			playerCardImage = new ImageIcon("PlayerCardImages/ShonkyShop.png");
+			break;
+		case "SACHARISSA_CRIPSLOCK":
+			playerCardImage = new ImageIcon("PlayerCardImages/SacharissaCripslock.png");
+			break;
+		case "ROSIE_PALM":
+			playerCardImage = new ImageIcon("PlayerCardImages/RosiePalm.png");
+			break;
+		case "RINCEWIND":
+			playerCardImage = new ImageIcon("PlayerCardImages/RinceWind.png");
+			break;
+		case "THE_ROYAL_MINT":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheRoyalMint.png");
+			break;
+		case "QUEEN_MOLLY":
+			playerCardImage = new ImageIcon("PlayerCardImages/QueenMolly.png");
+			break;
+		case "PINK_PUSSYCAT_CLUB":
+			playerCardImage = new ImageIcon("PlayerCardImages/PinkPussyCatClub.png");
+			break;
+		case "ZORGO_THE_RETRO_PHRENOLOGIST":
+			playerCardImage = new ImageIcon("PlayerCardImages/ZorgoTheRetroPhrenologist.png");
+			break;
+		case "DR_WHITEFACE":
+			playerCardImage = new ImageIcon("PlayerCardImages/DrWhiteface.png");
+			break;
+		case "WALLACE_SONKY":
+			playerCardImage = new ImageIcon("PlayerCardImages/WallaceSonky.png");
+			break;
+		case "THE_SEAMSTRESSES_GUILD":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheSeamstressesGuild.png");
+			break;
+		case "MR_PIN_MR_TULIP":
+			playerCardImage = new ImageIcon("PlayerCardImages/MrPinMrTulip.png");
+			break;
+		case "THE_THIEVES_GUILD":
+			playerCardImage = new ImageIcon("PlayerCardImages/TheThievesGuild.png");
+			break;
+		default:
+             throw new IllegalArgumentException("Invalid player card name: " + cardName);
+		
+		}
+		return playerCardImage;
+	}
 	// places minions in default areas to initiate game
 	public void setDefaultRegionStatus(String color) {
 		GameEngine.objTScours.placeDefaultMinion(color);
 		GameEngine.objTShades.placeDefaultMinion(color);
 		GameEngine.objDSisters.placeDefaultMinion(color);
 	}
+	
+	
 	
 	/** utility method used to place values in the table for region
 	 * using objects of regions
@@ -356,10 +575,99 @@ public class NewGame extends JFrame {
 		}
 	}
 	
+	public static void displayUnusedPersonalityCards()
+	{
+		JFrame frame = new JFrame("Unused Personality Cards");
+		 panel = new JPanel();
+		 List<PersonalityCards.getPersonalityCard>list = PersonalityCards.PersonalityList;
+		 labels = new JLabel[list.size()]; 
+		 for(PersonalityCards.getPersonalityCard a: list)
+		 {
+			 ImageIcon playerPath1 = getPersonalityCardImage(a.toString());
+			 final JLabel label = new JLabel ( "",playerPath1, JLabel.CENTER );
+	         label.setBorder ( BorderFactory.createLineBorder ( Color.LIGHT_GRAY ) );
+	         panel.add(label);
+		 }
+		 frame.setContentPane(panel);
+         frame.pack();
+         frame.setVisible(true);
+	}
+	
+	public static void createPlayerFrame()
+	{
+		 JFrame frame = new JFrame("Player Info");
+		 panel = new JPanel();
+	
+		 JLabel playerTurn = new JLabel(" ");
+		
+		 
+		 String personalityCard = " ";
+		 ImageIcon personalityPath;
+		 for(Player playerObj: GameEngine.playerObjList)
+		 {
+			 if(playerObj.pTurn == 1)
+			 {
+				 playerTurn = new JLabel(playerObj.color,JLabel.CENTER);
+				 greenList = playerObj.pCards.get("Green");
+			 }
+			
+		 }
+		 
+		 for(Player playerObj: GameEngine.playerObjList)
+		 {
+			 if(playerObj.pTurn == 1){
+				 personalityCard = playerObj.personality;
+			 }
+		}
+		 panel.add(playerTurn);
+		 int labelSize = greenList.size();   // size of label
+		 labels = new JLabel[labelSize];       // array of label that contains images of player cards
+		 index = 0;
+		 for(final String a: greenList)
+		 {
+			 ImageIcon playerPath1 = getPlayerCardImage(a);
+			 final JLabel label = new JLabel ( "",playerPath1, JLabel.CENTER );
+	            label.setBorder ( BorderFactory.createLineBorder ( Color.LIGHT_GRAY ) );
+	            label.addMouseListener ( new MouseAdapter ()
+	            {
+	                public void mousePressed ( MouseEvent e )
+	                {
+	                	// call the function to be invoked to perform function according to actions on specific player card
+	                	PlayerCards.performLeftToRight(a);
+	                	frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+	                }
+	            } );
+	            panel.add(label);
+
+		 }
+		 personalityPath = getPersonalityCardImage(personalityCard);
+		 JLabel playerPersonality = new JLabel("", personalityPath , JLabel.RIGHT);
+		
+		
+		/* for(int j =0 ;j <labels.length; j++)
+		 {
+			 panel.add(labels[j]);
+		 }*/
+		 panel.add(playerPersonality);
+		 frame.setContentPane(panel);
+         frame.pack();
+        
+         frame.setVisible(true);
+	}
+	
+	public static String displayBox(String input)
+	{
+		String response = JOptionPane.showInputDialog(null,
+               input,
+               "Enter input",
+               JOptionPane.QUESTION_MESSAGE);
+   	 	return response;
+	}
+	
 	// initialize GUI elements
 	private void initComponents() {
 		// Component initialization -
-
+		frame = new JFrame("New Game");
 		panel1 = new JPanel();
 		Two_Players = new JButton();
 		Three_Players = new JButton();
@@ -369,17 +677,20 @@ public class NewGame extends JFrame {
 		scrollPane2 = new JScrollPane();
 		Region_Info = new JTable();
 		Card_Info = new JTable();
-		Update_Region = new JButton();
+		Play_Game = new JButton();
 		Save_Game = new JButton();
 		Exit = new JButton();
 		scrollPane3 = new JScrollPane();
 		Bank_Info = new JTable();
 		scrollPane4 = new JScrollPane();
 		xmlName = new JTextField();
+		
+		//Container contentPane = frame.getContentPane();
+		
 		// ======== this ========
-		setTitle("New Game");
-		Container contentPane = getContentPane();
-
+		//setTitle("New Game");
+		//Container contentPane = getContentPane();
+		//contentPane.add(panel1);
 		// ======== panel1 ========
 		{
 
@@ -508,10 +819,18 @@ public class NewGame extends JFrame {
 
 			xmlName.setText("Enter XML Name To Be Created !");
 
-			// ---- Update_Region ----
-			Update_Region.setText("Update Region Information");
-			Update_Region.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			// ---- Play_Game ----
+			Play_Game.setText("Play Game");
+			Play_Game.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			Play_Game.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				 //contentPane.setVisible(false);
+				frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+				createPlayerFrame();
 
+				}
+			});
 			// ---- Save_Game ----
 			Save_Game.setText("Save Current Game");
 			Save_Game.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -569,7 +888,7 @@ public class NewGame extends JFrame {
 																					47,
 																					Short.MAX_VALUE)
 																			.addComponent(
-																					Update_Region,
+																					Play_Game,
 																					GroupLayout.PREFERRED_SIZE,
 																					200,
 																					GroupLayout.PREFERRED_SIZE))
@@ -655,7 +974,7 @@ public class NewGame extends JFrame {
 															.createParallelGroup(
 																	GroupLayout.Alignment.BASELINE)
 															.addComponent(
-																	Update_Region,
+																	Play_Game,
 																	GroupLayout.PREFERRED_SIZE,
 																	38,
 																	GroupLayout.PREFERRED_SIZE)
@@ -677,8 +996,9 @@ public class NewGame extends JFrame {
 											.addContainerGap(18,
 													Short.MAX_VALUE)));
 		}
-
-		GroupLayout contentPaneLayout = new GroupLayout(contentPane);
+		//contentPane.add(panel1);
+		frame.setContentPane(panel1);
+		/*GroupLayout contentPaneLayout = new GroupLayout(contentPane);
 		contentPane.setLayout(contentPaneLayout);
 		contentPaneLayout.setHorizontalGroup(contentPaneLayout
 				.createParallelGroup().addComponent(panel1,
@@ -687,9 +1007,15 @@ public class NewGame extends JFrame {
 		contentPaneLayout.setVerticalGroup(contentPaneLayout
 				.createParallelGroup().addComponent(panel1,
 						GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-						Short.MAX_VALUE));
-		pack();
-		setLocationRelativeTo(getOwner());
+						Short.MAX_VALUE));*/
+		 //frame.add(contentPane);
+	    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	     frame.pack();
+	   
+	     frame.setVisible(true);
+	     
+		//pack();
+		//setLocationRelativeTo(getOwner());
 		// - End of component initialization
 	}
 }

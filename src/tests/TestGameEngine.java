@@ -119,8 +119,8 @@ public class TestGameEngine {
 	 * 
 	 * 
 	 */
-	@Test
-	public void testgetPlayer() {
+	//@Test
+	/*public void testgetPlayer() {
 		try{
 			HashMap<String, List<Integer>> pCards = new HashMap<String, List<Integer>>();
 			List<Integer>pList = new ArrayList<Integer>();
@@ -134,5 +134,5 @@ public class TestGameEngine {
 		catch(Exception e){
 			fail("Should not throw exception. Message: " + e.getMessage());
 		}
-	}
+	}*/
 }

@@ -12,9 +12,1025 @@ import java.util.*;
  */
 public class PlayerCards
 {
+	public enum PlayerCardDeck{
+		MR_BOGGIS, MR_BENT, THE_BEGGARS_GUILD, THE_BANK_OF_ANKH_MORPORK, THE_ANKH_MORPORK_SUNSHINE_DRAGON_SANCTUARY, SERGEANT_ANGUA, THE_AGONY_AUNTS, 
+		THE_DYSK, THE_DUCKMAN, DRUMKNOTT, CMOT_DIBBLER, DR_CRUCES, CAPTAIN_CARROT, MRS_CAKE, GROAT, GIMLETS_DWARF_DELICATESSEN, GASPODE, FRESH_START_CLUB,
+		FOUL_OLE_RON, THE_FOOLS_GUILD, THE_FIRE_BRIGADE, INIGO_SKIMMER, HISTORY_MONKS, HEX, HERE_N_NOW, HARRY_KING, HARGAS_HOUSE_OF_RIBS, MR_GRYLE, THE_PEELED_NUTS,
+		THE_OPERA_HOUSE, NOBBY_NOBS, MODO, THE_MENDED_DRUM, LIBRARIAN, LEONARD_OF_QUIRM, SHONKY_SHOP, SACHARISSA_CRIPSLOCK, ROSIE_PALM, RINCEWIND, 
+		THE_ROYAL_MINT, QUEEN_MOLLY, PINK_PUSSYCAT_CLUB, ZORGO_THE_RETRO_PHRENOLOGIST, DR_WHITEFACE, WALLACE_SONKY, THE_SEAMSTRESSES_GUILD, MR_PIN_MR_TULIP,
+		THE_THIEVES_GUILD
+		}
+		
+	enum playerCardSymbols{
+		PLACE_MINON, PLACE_BUILDING, ASSASSINATION, REMOVE_ONE_TROUBLE_MARKER, TAKE_MONEY, SCROLL, RANDOM_EVENT, PLAY_ANOTHER_CARD, INTERRUPT
+	}
 	
+	public static List<Integer> regionList = Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12);
+	public static List<PlayerCardDeck> greenPlayerCardsList = Arrays.asList(PlayerCardDeck.values());
 	// Contains Player card color as key and list of card numbers as value
 	public static HashMap<String, List<Integer>> playerCards;
+	
+	
+	// roll die to get a specific number
+	public static int rollDie()
+	{
+		int result = 0;
+		Collections.shuffle(regionList);
+		result = regionList.get(0);
+		return result;
+	}
+	
+	
+	// pay specified money to bank
+		public static void payToBank(int cash)
+		{
+			for(Player playerObj: GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold - cash;
+					GameEngine.BankHold = GameEngine.BankHold + cash;
+				}
+			}
+		}
+		
+		
+	// take loan from bank
+		public static void takeLoanFromBank(int cash)
+		{
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				// current player
+				if(playerObj.pTurn == 1)
+				{
+					GameEngine.BankHold = GameEngine.BankHold - cash;
+					playerObj.cashHold = playerObj.cashHold + cash;
+				}
+			}
+		}
+		
+		// take player cards from other players
+		public static void takePlayerCard(int playerNumber)
+		{
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				Pair pair = new Pair("empty","empty");
+				// player that should give a player card
+				if(playerObj.pNumber == playerNumber)
+				{
+					// get player card from deck of other player
+					if(playerObj.pCards.isEmpty())
+					{
+						pair = new Pair("empty","empty");
+					}
+					// get key by color green first
+					List<String> tempList = playerObj.pCards.get("Green");
+					// green cards are finished
+					if(tempList == null)
+					{
+						tempList = playerObj.pCards.get("Brown");
+						String result = tempList.get(0);
+						tempList.remove(0);
+						playerObj.pCards.remove("Brown");
+						// make sure list is not empty
+						if(tempList.size() >= 1)
+						{
+							// add again to the hashmap
+							 playerObj.pCards.put("Brown", tempList);
+						}
+						pair = new Pair(result,"Brown");
+					}
+					String result = tempList.get(0);
+					tempList.remove(0);
+					playerObj.pCards.remove("Green");
+					// make sure list is not empty
+					if(tempList.size() >= 1)
+					{
+						// add again to the hashmap
+						playerObj.pCards.put("Green", tempList);
+					}
+					pair = new Pair(result,"Green");
+				}	
+						
+				List<String> list = new ArrayList<>();
+				String color_temp = pair.getCardColor();
+				String cardNo_temp = pair.getCard();
+				// player whose turn is 1
+				if(playerObj.pNumber == 1)
+				{
+					if (playerObj.pCards.containsKey(color_temp)) {
+						list = playerObj.pCards.get(color_temp);
+						list.add(cardNo_temp);
+					} 
+					else {
+						list.add(cardNo_temp);
+					}
+					playerObj.pCards.put(color_temp, list);
+						
+				} // end if
+				
+			} // end for
+		}
+		
+		// take money from other players
+		public static void takeMoneyFromOtherPlayers(int cash, int playerNumber)
+		{
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				// not current player
+				if(playerObj.pNumber == playerNumber)
+				{
+					playerObj.cashHold = playerObj.cashHold - cash;
+				}
+			}
+		}
+		
+		// take money from every other player
+		public static void takeMoneyFromEveryPlayer(int cash)
+		{
+			int count = 0;
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 0)
+				{
+					takeMoneyFromOtherPlayers(2, playerObj.pNumber);
+					count = count + 2;
+				}
+			}
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				// current player
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + count;
+				}
+			}
+		}
+	
+		
+	// delete player card from list
+	private static void delPlayerCard(String cardName)
+	{
+		System.out.println("in method del");
+		List<String> greenList = new ArrayList<>();
+		for(Player playerObj: GameEngine.playerObjList ){
+			if(playerObj.pTurn == 1){
+				System.out.println("player's turn is 1");
+				// create temp list
+				greenList = playerObj.pCards.get("Green");
+				for(int i =0 ; i<greenList.size();i++)
+				{
+					System.out.println("in inner for, cardname: "+cardName);
+					// get index of given cardName in the list
+					if(greenList.get(i).equals(cardName))
+					{
+						System.out.println("in inner if");
+						greenList.remove(i);
+					}
+				}
+				// remove all green colored cards from hashmap
+				playerObj.pCards.remove("Green");
+				// add new list to hashmap
+				playerObj.pCards.put("Green", greenList);
+			}
+		}
+	}
+	public static void performLeftToRight(String cardName)
+	{
+		System.out.println("in method");
+		switch(cardName){
+		case "MR_BOGGIS":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "MR_BENT":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_BEGGARS_GUILD":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_BANK_OF_ANKH_MORPORK":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_ANKH_MORPORK_SUNSHINE_DRAGON_SANCTUARY":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "SERGEANT_ANGUA":
+			performActionOfSymbol("REMOVE_ONE_TROUBLE_MARKER",cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_AGONY_AUNTS":
+			performActionOfSymbol("ASSASSINATION",cardName);
+			takeLoanFromBank(2);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_DYSK":
+			performActionOfSymbol("PLACE_BUILDING",cardName);
+			performActionOfSymbol("SCROLL",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_DUCKMAN":
+			performActionOfSymbol("SCROLL",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "DRUMKNOTT":
+			performActionOfSymbol("SCROLL",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "CMOT_DIBBLER":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "DR_CRUCES":
+			performActionOfSymbol("ASSASSINATION",cardName);
+			takeLoanFromBank(3);
+			delPlayerCard(cardName);
+			break;
+		case "CAPTAIN_CARROT":
+			performActionOfSymbol("PLACE_MINION",cardName);
+			performActionOfSymbol("REMOVE_ONE_TROUBLE_MARKER",cardName);
+			takeLoanFromBank(1);
+			delPlayerCard(cardName);
+			break;
+		case "MRS_CAKE":
+			performActionOfSymbol("SCROLL",cardName);
+			takeLoanFromBank(2);
+			performActionOfSymbol("PLACE_BUILDING",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "GROAT":
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "GIMLETS_DWARF_DELICATESSEN":
+			takeLoanFromBank(1);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "GASPODE":
+			performActionOfSymbol("INTERRUPT",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "FRESH_START_CLUB":
+			performActionOfSymbol("INTERRUPT",cardName);
+			delPlayerCard(cardName);
+			break;
+		case"FOUL_OLE_RON":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_FOOLS_GUILD":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_FIRE_BRIGADE":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "INIGO_SKIMMER":
+			performActionOfSymbol("ASSASSINATION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "HISTORY_MONKS":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "HEX":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_BUILDING",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "HERE_N_NOW":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "HARRY_KING":
+			performActionOfSymbol("PLACE_MINION",cardName);
+			performActionOfSymbol("SCROLL",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "HARGAS_HOUSE_OF_RIBS":
+			takeLoanFromBank(3);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "MR_GRYLE":
+			performActionOfSymbol("ASSASSINATION",cardName);
+			takeLoanFromBank(1);
+			delPlayerCard(cardName);
+			break;
+		case "THE_PEELED_NUTS":
+			// no action specified
+			delPlayerCard(cardName);
+			break;
+		case "THE_OPERA_HOUSE":
+			performActionOfSymbol("PLACE_BUILDING",cardName);
+			performActionOfSymbol("SCROLL",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "NOBBY_NOBS":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "MODO":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_MENDED_DRUM":
+			performActionOfSymbol("PLACE_BUILDING",cardName);
+			takeLoanFromBank(2);
+			delPlayerCard(cardName);
+			break;
+		case "LIBRARIAN":
+			performActionOfSymbol("SCROLL",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "LEONARD_OF_QUIRM":
+			performActionOfSymbol("SCROLL",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "SHONKY_SHOP":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_BUILDING",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "SACHARISSA_CRIPSLOCK":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "ROSIE_PALM":
+			performActionOfSymbol("PLACE_MINION",cardName);
+			performActionOfSymbol("SCROLL",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "RINCEWIND":
+			performActionOfSymbol("RANDOM_EVENT",cardName);
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_ROYAL_MINT":
+			performActionOfSymbol("PLACE_BUILDING",cardName);
+			delPlayerCard(cardName);
+			takeLoanFromBank(5);
+			break;
+		case "QUEEN_MOLLY":
+			performActionOfSymbol("PLACE_MINION",cardName);
+			performActionOfSymbol("SCROLL",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "PINK_PUSSYCAT_CLUB":
+			takeLoanFromBank(3);
+			performActionOfSymbol("PLAY_ANOTHER_CARD",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "ZORGO_THE_RETRO_PHRENOLOGIST":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_BUILDING",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "DR_WHITEFACE":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "WALLACE_SONKY":
+			performActionOfSymbol("INTERRUPT",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "THE_SEAMSTRESSES_GUILD":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		case "MR_PIN_MR_TULIP":
+			performActionOfSymbol("ASSASSINATION",cardName);
+			takeLoanFromBank(1);
+			delPlayerCard(cardName);
+			break;
+		case "THE_THIEVES_GUILD":
+			performActionOfSymbol("SCROLL",cardName);
+			performActionOfSymbol("PLACE_MINION",cardName);
+			delPlayerCard(cardName);
+			break;
+		default:
+            throw new IllegalArgumentException("Invalid player card name: " + cardName);
+		}
+	}
+	public static void performActionOfSymbol(String symbolName, String playerCardName)
+	{
+		switch(symbolName){
+		case "PLACE_MINION":
+			System.out.println("place a minion");
+			break;
+		case "PLACE_BUILDING":
+			System.out.println("place a building");
+			break;
+		case "ASSASSINATION":
+			System.out.println("assassination");
+			break;
+		case "REMOVE_ONE_TROUBLE_MARKER":
+			System.out.println("remove one trouble marker");
+			break;
+		case "TAKE_MONEY":
+			System.out.println("take money");
+			break;
+		case "SCROLL":
+			// perform action specified at bottom of card
+			performActionInText(playerCardName);
+			break;
+		case "RANDOM_EVENT":
+			System.out.println("random event");
+			break;
+		case "PLAY_ANOTHER_CARD":
+			System.out.println("play another card");
+			break;
+		case "INTERRUPT":
+			System.out.println("interrupt");
+			break;
+		default:
+            throw new IllegalArgumentException("Invalid symbol name: " + symbolName);
+		}
+	}
+	
+	/**
+	 * method performs the action specified on the player card
+	 * at the bottom when the symbol scroll appears
+	 * @param String name of player card
+	 */
+	public static void performActionInText(String playerCardName)
+	{
+		switch(playerCardName){
+		case "MR_BOGGIS":
+			// take $2 from every other player
+			takeMoneyFromEveryPlayer(2);
+			break;
+			
+		case "MR_BENT":
+			// take loan of $10 from bank
+			takeLoanFromBank(10);
+			// at the end of game pay $12 to bank or lose 15 points
+			break;
+			
+		case "THE_BEGGARS_GUILD":
+			// select one player
+			String playerColor1 = NewGame.displayBox("Select one player according to color");
+			System.out.println("player color: "+playerColor1);
+			int playerNumber = 0;
+			// they give you two cards of their choice
+			for(int i=0; i< GameEngine.playerObjList.size();i++)
+			{
+				if(GameEngine.playerObjList.get(i).color.equals(playerColor1))
+				{
+					playerNumber = GameEngine.playerObjList.get(i).pNumber;
+				}
+			}
+			for(int i=0 ; i < 2; i++)
+			{
+				takePlayerCard(playerNumber);
+			}
+			break;
+			
+		case "THE_BANK_OF_ANKH_MORPORK":
+			// take loan of $10 from bank
+			takeLoanFromBank(10);
+			break;
+			
+		case "THE_ANKH_MORPORK_SUNSHINE_DRAGON_SANCTUARY":
+			int count1 = 0;
+			// each player card should give you either $1 or one of their cards
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 0)
+				{
+					if(playerObj.cashHold >= 1)
+					{
+						// give $1 to player i turn
+						takeMoneyFromOtherPlayers(1, playerObj.pNumber);
+						count1 = count1 + 1;
+					}
+					else
+					{
+						takePlayerCard(playerObj.pNumber);
+					}
+				}
+			}
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				// current player
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + count1;
+				}
+			}
+			break;
+			
+		case "THE_DYSK":
+			// earn $1 for each minion in Isle Of Gods
+			int number = GameEngine.objIGods.rMinionNum;
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				// current player
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + number;
+				}
+			}
+			break;
+			
+		case "THE_DUCKMAN":
+			// move a minion belonging to another player from one area to adjacent area
+			String playerColor2 = NewGame.displayBox("Select one player according to color whose minion is to be moved");
+			String area1 = NewGame.displayBox("Select area from which minion should be moved");
+			int areaBefore = Integer.parseInt(area1);
+			String area2 = NewGame.displayBox("Select area to which minion should be moved");
+			int areaAfter = Integer.parseInt(area2);
+			// call methods to remove and place minion
+			break;
+			
+		case "DRUMKNOTT":
+			// Play any two other cards
+			delPlayerCard(playerCardName);
+			NewGame.createPlayerFrame();
+			break;
+			
+		case "CMOT_DIBBLER":
+			int result = rollDie();
+			// on roll of 7 or more take $4 from bank
+			if(result >= 7)
+			{
+				takeLoanFromBank(4);
+			}
+			// on roll of 1, pay $2 to bank or remove one of minions from board
+			else if(result == 1)
+			{
+				for(Player playerObj : GameEngine.playerObjList)
+				{
+					// current player
+					if((playerObj.pTurn == 1) && (playerObj.cashHold >= 2))
+					{
+						payToBank(2);
+					}
+					else if((playerObj.pTurn == 1) && (playerObj.cashHold < 2))
+					{
+						// remove one of your minions from board
+						String area3 = NewGame.displayBox("Select area from which minion should be moved");
+						int areaBefore1 = Integer.parseInt(area3);
+					}
+				}
+			}
+			break;
+			
+		case "MRS_CAKE":
+			// look at all but one of unused personality cards
+			NewGame.displayUnusedPersonalityCards();
+			break;
+		case "GASPODE":
+			// stop a player from removing your minion area
+			break;
+		
+		case "FRESH_START_CLUB":
+			// if you have minion removed, place it in different area
+			break;
+			
+		case "FOUL_OLE_RON":
+			// move a minion belonging to another player from one area to adjacent area
+			String playerColor3 = NewGame.displayBox("Select one player according to color whose minion is to be moved");
+			String area4 = NewGame.displayBox("Select area from which minion should be moved");
+			int areaBefore2 = Integer.parseInt(area4);
+			String area5 = NewGame.displayBox("Select area to which minion should be moved");
+			int areaAfter3 = Integer.parseInt(area5);
+			// call methods to remove and place minion
+			break;
+		case "THE_FOOLS_GUILD":
+			// select another player
+			String playerColor4 = NewGame.displayBox("Select another player");
+			int count2 = 0;
+			// another player gives you $5
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.color.equals(playerColor4))
+				{
+					if(playerObj.cashHold >= 5)
+					{
+						playerObj.cashHold = playerObj.cashHold - 5;
+						count2 = count2 + 5;
+					}
+					// this card now counts towards another player's player cards
+					else
+					{
+						List<String> greenList = playerObj.pCards.get("Green");
+						for(int i =0 ; i<greenList.size();i++)
+						{
+							greenList.add(playerCardName);
+						}
+						// remove all green colored cards from hash map
+						playerObj.pCards.remove("Green");
+						// add new list to hash map
+						playerObj.pCards.put("Green", greenList);
+					}
+				}
+			}
+			
+			// add cash to current player's account
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + count2;
+				}
+			}
+			break;
+			
+		case "THE_FIRE_BRIGADE":
+			// select another player
+			String playerColor5 = NewGame.displayBox("Select another player");
+			int count3 = 0;
+			// another player gives you $5
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.color.equals(playerColor5))
+				{
+					if(playerObj.cashHold >= 5)
+					{
+						playerObj.cashHold = playerObj.cashHold - 5;
+						count3 = count3 + 5;
+					}
+					// current player can remove another player's building from board
+					else
+					{
+						// ask for region info
+						String area6 = NewGame.displayBox("Select area from which building should be removed");
+						// method to remove building
+					}
+				}
+			}
+			
+			// add cash to current player's account
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + count3;
+				}
+			}
+			break;
+			
+		case "HISTORY_MONKS":
+			// shuffle discard pile
+			break;
+		case "HEX":
+			// take three cards from draw deck
+			for(Player playerObj: GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					List<String>list = playerObj.pCards.get("Green");
+					for(int i = 0 ; i<3 ; i++)
+					{
+						Pair pair = getPlayerCard();
+						String color_temp = pair.getCardColor();
+						String cardNo_temp = pair.getCard();
+						list.add(cardNo_temp);
+					}
+					playerObj.pCards.put("Green", list);
+				}
+			}
+			break;
+			
+		case "HERE_N_NOW":
+			// roll the die
+			int result1 = rollDie();
+			// on roll of 7 or more take $ from any player
+			String playerColor6 = NewGame.displayBox("Select another player");
+			if(result1 >= 7)
+			{
+				int count4 =0;
+				// another player gives you $3
+				for(Player playerObj : GameEngine.playerObjList)
+				{
+					if(playerObj.color.equals(playerColor6))
+					{
+						if(playerObj.cashHold >= 3)
+						{
+							playerObj.cashHold = playerObj.cashHold - 3;
+							count4 = count4 + 3;
+						}
+					}
+				}
+				
+				// add cash to current player's account
+				for(Player playerObj : GameEngine.playerObjList)
+				{
+					if(playerObj.pTurn == 1)
+					{
+						playerObj.cashHold = playerObj.cashHold + count4;
+					}
+				}
+			}
+			// on roll of 1, pay $2 to bank or remove one of minions from board
+			else if(result1 == 1)
+			{
+				// remove your minion from one of areas
+			}
+			break;
+			
+		case "HARRY_KING":
+			// discard card and take $2 from bank
+			String playerCard = NewGame.displayBox("Enter card name to be discarded in upper case");
+			delPlayerCard(playerCard);
+			takeLoanFromBank(2);
+			break;
+			
+		case "THE_OPERA_HOUSE":
+			// earn $1 for each minion in Isle Of Gods
+			int number1 = GameEngine.objIGods.rMinionNum;
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				// current player
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + number1;
+				}
+			}
+			break;
+			
+		case "NOBBY_NOBS":
+			// take $3 from a player of your choice
+			// select another player
+			String playerColor7 = NewGame.displayBox("Select another player");
+			int count5 = 0;
+			// another player gives you $5
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.color.equals(playerColor7))
+				{
+					if(playerObj.cashHold >= 5)
+					{
+						playerObj.cashHold = playerObj.cashHold - 5;
+						count5 = count5 + 5;
+					}
+				}
+			}
+			// add cash to current player's account
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + count5;
+				}
+			}
+			break;
+			
+		case "MODO":
+			// discard one card
+			String playerCard1 = NewGame.displayBox("Enter card name to be discarded in upper case");
+			delPlayerCard(playerCard1);
+			break;
+			
+		case "LIBRARIAN":
+			// take 4 cards from draw deck
+			for(Player playerObj: GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					List<String>list = playerObj.pCards.get("Green");
+					for(int i = 0 ; i<4 ; i++)
+					{
+						Pair pair = getPlayerCard();
+						String color_temp = pair.getCardColor();
+						String cardNo_temp = pair.getCard();
+						list.add(cardNo_temp);
+					}
+					playerObj.pCards.put("Green", list);
+				}
+			}
+			break;
+			
+		case "LEONARD_OF_QUIRM":
+			// take 4 cards from draw deck
+			for(Player playerObj: GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					List<String>list = playerObj.pCards.get("Green");
+					for(int i = 0 ; i<4 ; i++)
+					{
+						Pair pair = getPlayerCard();
+						String color_temp = pair.getCardColor();
+						String cardNo_temp = pair.getCard();
+						list.add(cardNo_temp);
+					}
+					playerObj.pCards.put("Green", list);
+				}
+			}
+			break;
+			
+		case "SHONKY_SHOP":
+			// discard card and take $1 from bank
+			String playerCard3 = NewGame.displayBox("Enter card name to be discarded in upper case");
+			delPlayerCard(playerCard3);
+			takeLoanFromBank(1);
+			break;
+			
+		case "SACHARISSA_CRIPSLOCK":
+			// Earn $1 for each trouble marker on board
+			takeLoanFromBank(12 - GameEngine.TMarkerHold);
+			break;
+			
+		case "ROSIE_PALM":
+			// select another player
+			String playerColor8 = NewGame.displayBox("Select another player");
+			int count6 = 0;
+			// another player gives you $2
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.color.equals(playerColor8))
+				{
+					if(playerObj.cashHold >= 2)
+					{
+						playerObj.cashHold = playerObj.cashHold - 2;
+						count6 = count6 + 2;
+					}
+					// this card now counts towards another player's player cards
+					List<String> greenList = playerObj.pCards.get("Green");
+					for(int i =0 ; i<greenList.size();i++)
+					{
+						greenList.add(playerCardName);
+					}
+					// remove all green colored cards from hash map
+					playerObj.pCards.remove("Green");
+					// add new list to hash map
+					playerObj.pCards.put("Green", greenList);
+				}
+			}
+						
+			// add cash to current player's account
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + count6;
+				}
+			}
+			break;
+			
+		case"RINCEWIND":
+			// move your minion from an area containing trouble marker to adjacent area
+			String areaBefore3 = NewGame.displayBox("Enter area name that contains TM from which minion should be moved");
+			String areaBefore4 = NewGame.displayBox("Enter adjacent area name to which minion should be moved");
+			// call method to move minion
+			break;
+			
+		case "QUEEN_MOLLY":
+			// select player who will give you two cards
+			// select one player
+			String playerColor9 = NewGame.displayBox("Select one player according to color");
+			int playerNumber3 = 0;
+			// they give you two cards of their choice
+			for(int i=0; i< GameEngine.playerObjList.size();i++)
+			{
+				if(GameEngine.playerObjList.get(i).color.equals(playerColor9))
+				{
+					playerNumber = GameEngine.playerObjList.get(i).pNumber;
+				}
+			}
+			for(int i=0 ; i < 2; i++)
+			{
+				takePlayerCard(playerNumber3);
+			}
+			break;
+			
+		case "ZORGO_THE_RETRO_PHRENOLOGIST":
+			// you may exchange personality card with one chosen from from unused personality cards
+			break;
+			
+		case "DR_WHITEFACE":
+			// select another player
+			String playerColor10 = NewGame.displayBox("Select another player");
+			int count7 = 0;
+			// another player gives you $5
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.color.equals(playerColor10))
+				{
+					if(playerObj.cashHold >= 5)
+					{
+						playerObj.cashHold = playerObj.cashHold - 5;
+						count7 = count7 + 5;
+					}
+					// this card now counts towards another player's player cards
+					else
+					{
+						List<String> greenList = playerObj.pCards.get("Green");
+						for(int i =0 ; i<greenList.size();i++)
+						{
+							greenList.add(playerCardName);
+						}
+						// remove all green colored cards from hash map
+						playerObj.pCards.remove("Green");
+						// add new list to hash map
+						playerObj.pCards.put("Green", greenList);
+					}
+				}
+			}
+			
+			// add cash to current player's account
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + count7;
+				}
+			}
+			break;
+			
+		case "WALLACE_SONKY":
+			break;
+			
+		case "THE_SEAMSTRESSES_GUILD":
+			// select another player
+			String playerColor11 = NewGame.displayBox("Select another player");
+			int count8 = 0;
+			// another player gives you $2
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.color.equals(playerColor11))
+				{
+					if(playerObj.cashHold >= 2)
+					{
+						playerObj.cashHold = playerObj.cashHold - 2;
+						count8 = count8 + 2;
+					}
+					// this card now counts towards another player's player cards
+					List<String> greenList = playerObj.pCards.get("Green");
+					for(int i =0 ; i<greenList.size();i++)
+					{
+						greenList.add(playerCardName);
+					}
+					// remove all green colored cards from hash map
+					playerObj.pCards.remove("Green");
+					// add new list to hash map
+					playerObj.pCards.put("Green", greenList);
+				}
+			}
+						
+			// add cash to current player's account
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + count8;
+				}
+			}
+			break;
+			
+		case "THE_THIEVES_GUILD":
+			// take $2 from every other player
+			int count9 = 0;
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 0)
+				{
+					takeMoneyFromOtherPlayers(2, playerObj.pNumber);
+					count9 = count9 + 2;
+				}
+			}
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				// current player
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + count9;
+				}
+			}
+			break;
+			
+		default:
+            throw new IllegalArgumentException("Invalid player card name: " + playerCardName);
+		}
+	}
+	
 	
 	/**
 	 * method creates deck of brown and green cards as HashMap
@@ -57,7 +1073,7 @@ public class PlayerCards
 	 */
 	public static Pair getPlayerCard()
 	{
-		if(playerCards.isEmpty())
+		/*if(playerCards.isEmpty())
 		{
 			return new Pair(0,"empty");
 		}
@@ -88,6 +1104,11 @@ public class PlayerCards
 			playerCards.put("Green", tempList);
 		}
 		
+		return new Pair(result,"Green");*/
+		Collections.shuffle(greenPlayerCardsList);
+		String result = greenPlayerCardsList.get(0).toString();
+		greenPlayerCardsList = new ArrayList<PlayerCardDeck>(greenPlayerCardsList);
+		greenPlayerCardsList.remove(0);
 		return new Pair(result,"Green");
 	}
 }

@@ -1,6 +1,7 @@
 package Game;
 
 import java.util.Hashtable;
+import java.util.Set;
 
 import org.w3c.dom.Node;
 
@@ -19,34 +20,39 @@ import org.w3c.dom.Node;
  * and one troubleMarker in each area
  * 
  * </p>
+ * 
  * @author Archana
  *
  */
-public class Region 
-{
-	String rName;                                // name of region
-	int rNumber;                                 // number of region to be diobjSPlayed on game board
-	int rBuildingCost;                           // building cost of region
-	int rMinionNum;                              // number of minions in each area
-	int rTroubleMarker;                          // number of troublemarkers
-	int rDemon;                                  // number of demons
-	int rTroll;                                  // number of trolls
-	//int rBuildingNum;
-	
+public class Region {
+	String rName; // name of region
+	int rNumber; // number of region to be diobjSPlayed on game board
+	int rBuilding;
+	int rBuildingCost; // building cost of region
+	int rMinionNum; // number of minions in each area
+	int rTroubleMarker; // number of troublemarkers
+	int rDemon; // number of demons
+	int rTroll; // number of trolls
+	// int rBuildingNum;
+
 	// keeps track of player associated with minion or building in a region
-	Hashtable<String,PlayerStatus> H_Player;
-	
-	// class PlayerStatus that contains information of player 
-	//in the form of color and number of minions and buildings in that region
+	Hashtable<String, PlayerStatus> H_Player;
+
+	// class PlayerStatus that contains information of player
+	// in the form of color and number of minions and buildings in that region
 	PlayerStatus objSP;
-	
+
 	/**
 	 * Three parameterized constructor that initializes the name of region,
-	 * building cost and number according to given parameters
-	 * and initializes all other data members to 0
-	 * @param Name used to initialize data member region name
-	 * @param Number used to initialize data member region number
-	 * @param bCost used to initialize data member region building cost
+	 * building cost and number according to given parameters and initializes
+	 * all other data members to 0
+	 * 
+	 * @param Name
+	 *            used to initialize data member region name
+	 * @param Number
+	 *            used to initialize data member region number
+	 * @param bCost
+	 *            used to initialize data member region building cost
 	 */
 	public Region(String Name, int Number, int bCost) {
 		rName = Name;
@@ -56,58 +62,175 @@ public class Region
 		rTroubleMarker = 0;
 		rDemon = 0;
 		rTroll = 0;
-		//rBuildingNum = 0;
+		// rBuildingNum = 0;
 		H_Player = new Hashtable<String, PlayerStatus>();
 	}
-	
-	public String getRegionName()
-	{
+
+	public String getRegionName() {
 		return this.rName;
 	}
+
 	/**
-	 * One parameterized function that places the minion of the given
-	 * color of player in the three default regions
-	 * to start the game
-	 * @param color that places minion in the region according to color of player
+	 * One parameterized function that places the minion of the given color of
+	 * player in the three default regions to start the game
+	 * 
+	 * @param color
+	 *            that places minion in the region according to color of player
 	 */
-	public void placeDefaultMinion(String color)
-	{	
+	public void placeDefaultMinion(String color) {
 		rMinionNum = rMinionNum + 1;
 		// if number of minions is more than one in a region
-		if (rMinionNum > 1)
-		{
+		if (rMinionNum > 1) {
 			// place a troublemarker
 			rTroubleMarker = 1;
 		}
-		if (H_Player.containsKey(color))
-		{
+		if (H_Player.containsKey(color)) {
 			// add the values to the HashMap if key is already there
-			H_Player.get(color).pMinionRegionwise = 1;			
-		}
-		else
-		{
+			H_Player.get(color).pMinionRegionwise = 1;
+		} else {
 			// otherwise create a new key for the player and save the info
 			objSP = new PlayerStatus();
 			objSP.color = color;
 			objSP.pMinionRegionwise = 1;
-			objSP.pbuildingRegionwise = 0;			
+			objSP.pbuildingRegionwise = 0;
 			H_Player.put(color, objSP);
 		}
 	}
-	
-	
-	public int getRBCost()
-	{
+
+	public int getRBCost() {
 		return this.rBuildingCost;
 	}
-	
-	public int getMinion()
-	{
+
+	public int getMinion() {
 		return this.rMinionNum;
 	}
-	
-	public int getTMarker()
-	{
+
+	public int getTMarker() {
 		return this.rTroubleMarker;
 	}
+
+	public void placeDemon(int rNum) {
+		if(GameEngine.DemonsHold >= 1)
+		{
+			GameEngine.H_Demons.get(rNum).numDemonExist = GameEngine.H_Demons
+					.get(rNum).numDemonExist + 1;
+			GameEngine.DemonsHold--;
+		}
+		else
+		{
+			//MsgBox
+		}
+	}
+
+	public void removeDemon(int rNum) {
+		GameEngine.H_Demons.get(rNum).numDemonExist = GameEngine.H_Demons
+				.get(rNum).numDemonExist - 1;
+		GameEngine.DemonsHold++;
+	}
+
+	public void placeTroll(int rNum) {
+		if(GameEngine.TrollsHold >= 1)
+		{
+			GameEngine.H_Demons.get(rNum).numTrollExist = GameEngine.H_Demons
+					.get(rNum).numTrollExist + 1;
+			GameEngine.TrollsHold--;
+		}
+		else
+		{
+			//MsgBox
+		}
+	}
+
+	public void removeTroll(int rNum) {
+		GameEngine.H_Demons.get(rNum).numTrollExist = GameEngine.H_Demons
+				.get(rNum).numTrollExist - 1;
+		GameEngine.TrollsHold++;
+	}
+	
+	public void placeTroubleMarker(int rNum) {
+		if(GameEngine.H_Demons.get(rNum).isTroubleMarkerExist == 0)
+		{
+			GameEngine.H_Demons.get(rNum).isTroubleMarkerExist = 1;
+			GameEngine.TMarkerHold--;
+		}
+		else
+		{
+			//MsgBox
+		}
+	}
+
+	public void removeTroubleMarker(int rNum) {
+		if(GameEngine.H_Demons.get(rNum).isTroubleMarkerExist == 1)
+		{
+			GameEngine.H_Demons.get(rNum).isTroubleMarkerExist = 0;
+			GameEngine.TMarkerHold++;
+		}
+		else
+		{
+			//msgbox
+		}
+	}
+	
+	public void placeMinion(String color) {
+		rNumber++;
+		H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise + 1;
+	}
+	
+	public void removeMinion(String color) {
+		rNumber--;
+		H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise - 1;
+	}
+	
+	public void placeBuilding(String color) {
+		rBuilding++;
+		H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise + 1;
+	}
+	
+	public void removeBuilding(String color) {
+		rBuilding--;
+		H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise - 1;
+	}
+	
+	public void executeDragonEvent()
+	{
+		rMinionNum = 0;
+		rBuilding = 0;
+		Set<String> keys = H_Player.keySet();
+		for (String key : keys) {
+			H_Player.get(key).pbuildingRegionwise = 0;
+			H_Player.get(key).pMinionRegionwise = 0;
+		}
+		GameEngine.DemonsHold = GameEngine.DemonsHold + rDemon;
+		GameEngine.TrollsHold = GameEngine.TrollsHold + rTroll;
+		GameEngine.TMarkerHold = GameEngine.TMarkerHold + rTroubleMarker;
+		rDemon = 0;
+		rTroll = 0;
+		rTroubleMarker = 0;		
+	}
+	
+	public int executeFireEvent()
+	{
+		int result = 0;
+		if(rBuilding == 1)
+		{
+			Set<String> keys = H_Player.keySet();
+			for (String key : keys) {
+				H_Player.get(key).pbuildingRegionwise = 0;
+			}
+			result = 1;
+		}
+		return result;
+	}
+	
+	public void removeAllBuilding() 
+	{
+		rBuilding = 0;
+		for (String key : H_Player.keySet()) {
+			H_Player.get(key).pbuildingRegionwise  = 0;
+		}
+	}
 }
+
+
+
+

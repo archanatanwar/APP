@@ -9,18 +9,18 @@ package Game;
  */
 public final class Pair
 {
-	private final int playerCardNo;
+	private final String playerCardName;
 	private final String colorPlayerCard; 
-	public Pair(int cardNo, String color)
+	public Pair(String name, String color)
 	{
-		playerCardNo = cardNo;
+		playerCardName = name;
 		colorPlayerCard = color;
 	}
 	
 	// accessor for Card number
-	public int getCard()
+	public String getCard()
 	{
-		return playerCardNo;
+		return playerCardName;
 	}
 	
 	// accessor for Card color
