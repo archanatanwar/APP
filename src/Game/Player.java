@@ -40,7 +40,8 @@ public class Player {
 	public Player(String colorTemp, String personalityTemp) {
 		color = colorTemp;
 		personality = personalityTemp;
-		pNumber = count++;
+		pNumber = count;
+		count++;
 	}
 
 	/**
@@ -125,6 +126,25 @@ public class Player {
 			buildingHold++;
 			H_Region.get(rNum).placedbuilding = H_Region.get(rNum).placedbuilding - 1;
 		}
+	}
+	
+	public int checkMinionMove(int rNum) {
+		int result = 0;
+		if(H_Region.get(rNum).placedMinion >= 1)
+		{
+			result = 1;			
+		}
+		else
+		{
+			for (int key : H_Region.keySet()) {
+				if(GameEngine.H_Demons.get(key).listForNeighbours.contains(rNum))
+				{
+					result = 1;
+					break;
+				}
+			}
+		}
+		return result;
 	}
 	
 	public void handleSubsidenceEvent()
@@ -315,7 +335,7 @@ public class Player {
 		for (int key : H_Region.keySet()) {
 			if (H_Region.get(key).placedMinion > 0
 					&& GameEngine.H_Demons.get(key).numDemonExist == 0) {
-				count++;
+				tempCount++;
 			}
 		}
 		switch (numPlayers) {

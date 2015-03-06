@@ -58,8 +58,7 @@ public class RandomEventCards
 		int resultTemp = 0;
 		int isBuildingExist = 0;
 		int numNeighbour;
-		Collections.shuffle(regionList);
-		result = regionList.get(0);
+		result = getRollDiceNumber();
 		do
 		{			
 			isBuildingExist = GameEngine.regionObjList.get(result-1).executeFireEvent();
@@ -68,8 +67,7 @@ public class RandomEventCards
 				GameEngine.playerObjList.get(i).executeFireEvent(result);
 			}
 			
-			Collections.shuffle(regionList);
-			resultTemp = regionList.get(0);
+			resultTemp = getRollDiceNumber();
 			numNeighbour = GameEngine.H_Demons.get(result).listForNeighbours.size();
 			for(int i=0; i<numNeighbour; i++)
 			{
@@ -89,8 +87,7 @@ public class RandomEventCards
 	public static void dragonEvent()
 	{
 		int result = 0;
-		Collections.shuffle(regionList);
-		result = regionList.get(0);
+		result = getRollDiceNumber();
 		GameEngine.regionObjList.get(result-1).executeDragonEvent();
 		int size = GameEngine.playerObjList.size();
 		for(int i=0; i<size; i++){
@@ -152,8 +149,7 @@ public class RandomEventCards
 	public static void ExplosionEvent()
 	{
 		int result;
-		Collections.shuffle(regionList);
-		result = regionList.get(0);
+		result = getRollDiceNumber();
 		GameEngine.regionObjList.get(result-1).removeAllBuilding();
 		for(int i=0; i<GameEngine.playerObjList.size(); i++)
 		{
@@ -180,9 +176,19 @@ public class RandomEventCards
 		int result;
 		for(int i=0; i<3; i++)
 		{
-			Collections.shuffle(regionList);
-			result = regionList.get(0);
+			result = getRollDiceNumber();
 			GameEngine.regionObjList.get(result-1).placeTroll(result);
+		}
+	}
+	
+	public static void DungeonEvent()
+	{
+		int result;
+		for(int i=0; i<4; i++)
+		{
+			result = getRollDiceNumber();
+			GameEngine.regionObjList.get(result-1).placeDemon(result);
+			//TODO
 		}
 	}
 }

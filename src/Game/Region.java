@@ -159,16 +159,25 @@ public class Region {
 		}
 	}
 
-	public void removeTroubleMarker(int rNum) {
+	public int removeTroubleMarker(int rNum) {
+		int result = 0;
 		if(GameEngine.H_Demons.get(rNum).isTroubleMarkerExist == 1)
 		{
 			GameEngine.H_Demons.get(rNum).isTroubleMarkerExist = 0;
 			GameEngine.TMarkerHold++;
+			result = 1;
 		}
-		else
+		return result;
+	}
+	
+	public int checkBuildingMove(String tColor)
+	{
+		int result = 0;
+		if(rBuilding == 0 && rTroubleMarker == 0 && H_Player.get(tColor).pMinionRegionwise >= 1)
 		{
-			//msgbox
-		}
+			result = 1;			
+		}		
+		return result;		
 	}
 	
 	public void placeMinion(String color) {

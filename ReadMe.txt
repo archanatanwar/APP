@@ -10,6 +10,14 @@ Student Name : Kashyap, Jatin      Student Id : 6997791
 Student Name : Eftekhari, Maryam   Student Id : 7734069
 
 
+FILES AND FOLDERS
+-------------------------------------------------------------------
+src/doc/Game : Java Doc
+src/Game : Java code files
+src/tests : JUnit files/suite
+DesignDoc : Software Architectural Document
+
+
 Package Game:
 -------------------------------------------------------------------
 CityAreaCards.java
@@ -72,15 +80,21 @@ SavedGame.java
 This class is used for creating GUI for showing Players, Regions and other Information by reading XML file.
 -- Populate objects of the other class by the data read from XML.
 
-HTML FILES
+
+JAVA DOC
 -------------------------------------------------------------------
 ..\src\doc
+
+
+GITHUB PATH
+-------------------------------------------------------------------
+https://github.com/archanatanwar/APP/
 
 
 DEPLOYMENT VIEW
 -------------------------------------------------------------------
 -- Extract the Zip file.
---Open the same in your Java Workspace.
+-- Open the same in your Java Workspace.
 -- Sometimes it might give an error for : jdom-2.0.5.jar . Please include the same in your project and change the classpath if required.
 -- Run the GameEngine class.
 
