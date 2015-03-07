@@ -361,10 +361,6 @@ public class NewGame extends JFrame {
 			if (obj.pNumber == turnIndex) {
 				obj.pTurn = 1;
 			}
-			else
-			{
-				obj.pTurn = 0;
-			}
 		}
 		setRegionInfo();
 		Bank_Info.setValueAt(GameEngine.BankHold, 0, 0);
@@ -431,6 +427,9 @@ public class NewGame extends JFrame {
 		Three_Players.setEnabled(false);
 		Four_Players.setEnabled(false);
 		// remove last two objects from list
+		
+		PersonalityCards.PersonalityList.add(PersonalityCards.getPersonalityCard.valueOf(GameEngine.playerObjList.get(3).personality));
+		PersonalityCards.PersonalityList.add(PersonalityCards.getPersonalityCard.valueOf(GameEngine.playerObjList.get(2).personality));
 		GameEngine.playerObjList.remove(3);
 		GameEngine.playerObjList.remove(2);
 		if (e.getSource() == Two_Players) {
@@ -504,6 +503,7 @@ public class NewGame extends JFrame {
 		Three_Players.setEnabled(false);
 		Four_Players.setEnabled(false);
 		// remove last object from list
+		PersonalityCards.PersonalityList.add(PersonalityCards.getPersonalityCard.valueOf(GameEngine.playerObjList.get(3).personality));
 		GameEngine.playerObjList.remove(3);
 		if (e.getSource() == Three_Players) {
 			for (int i = 0; i < Players_Info.getRowCount(); i++)
@@ -690,6 +690,7 @@ public class NewGame extends JFrame {
 				playerTurn = new JLabel(playerObj.color, JLabel.CENTER);
 				greenList = playerObj.pCards.get("Green");
 			}
+
 		}
 
 		for (Player playerObj : GameEngine.playerObjList) {

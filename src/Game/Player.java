@@ -236,6 +236,10 @@ public class Player {
 
 	public int checkVimes(int numPlayers) {
 		int result = 0;
+		if(PlayerCards.greenPlayerCardsList.isEmpty())
+		{
+			result = 1;
+		}
 		return result;
 	}
 	
@@ -249,6 +253,12 @@ public class Player {
 			{
 				tempRnumber = H_Region.get(key).regionNumber;
 				MaxCost = MaxCost + GameEngine.regionObjList.get(tempRnumber-1).rBuildingCost;
+			}			
+		}
+		for (String cardKey : GameEngine.loanCards.keySet()) {
+			if(GameEngine.loanCards.get(cardKey).equals(color))
+			{
+				MaxCost = MaxCost - 12;
 			}
 		}
 		if(MaxCost >= 50)
@@ -259,11 +269,9 @@ public class Player {
 	}
 	public int checkDKArms(int numPlayers) {
 		int result = 0;
-		int tempRNum;
 		int tempCount = 0;
 		for (int i = 0; i <= 11; i++) {
-			tempRNum = GameEngine.regionObjList.get(i).rNumber;
-			if (GameEngine.regionObjList.get(tempRNum).rTroubleMarker == 1)
+			if (GameEngine.regionObjList.get(i).rTroubleMarker == 1)
 			{
 				tempCount++;
 			}
@@ -278,26 +286,26 @@ public class Player {
 	public int checkLoad(int numPlayers) {
 		int result = 0;
 		int tempCount = 0;
-		int tempRNum;
 		int minionPieces;
 		int buildingPieces;
 		int maxPieces;
 		int totalPieces;
-		boolean isMaxPieces;
+		boolean isMaxPieces = true;
 
 		for (int i = 0; i <= 11; i++) {
-			tempRNum = GameEngine.regionObjList.get(i).rNumber;
-			if (GameEngine.regionObjList.get(tempRNum).rDemon == 0) {
+			maxPieces = 0;
+			if (GameEngine.regionObjList.get(i).rDemon == 0 && GameEngine.regionObjList.get(i).H_Player.containsKey(color)) {
 				minionPieces = GameEngine.regionObjList.get(i).H_Player
 						.get(color).pMinionRegionwise;
 				buildingPieces = GameEngine.regionObjList.get(i).H_Player
 						.get(color).pbuildingRegionwise;
 				maxPieces = minionPieces + buildingPieces;
-				if (maxPieces > GameEngine.regionObjList.get(tempRNum).rTroll) {
+				if (maxPieces > GameEngine.regionObjList.get(i).rTroll) {
 					Set<String> keys = GameEngine.regionObjList.get(i).H_Player
 							.keySet();
-					isMaxPieces = true;
+					
 					for (String key : keys) {
+						isMaxPieces = true;
 						if (!key.equals(color)) {
 							minionPieces = GameEngine.regionObjList.get(i).H_Player
 									.get(key).pMinionRegionwise;

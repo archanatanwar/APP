@@ -162,7 +162,7 @@ public class PlayerCards {
 	}
 
 	public static void performLeftToRight(String cardName) {
-		cardName = "THE_DYSK";
+		int result = checkWinningCondition();
 		switch (cardName) {
 		case "MR_BOGGIS":
 			performActionOfSymbol("SCROLL", cardName);
@@ -170,6 +170,7 @@ public class PlayerCards {
 			delPlayerCard(cardName);
 			break;
 		case "MR_BENT":
+			populateLoanCards("MR_BENT");
 			performActionOfSymbol("SCROLL", cardName);
 			performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
 			delPlayerCard(cardName);
@@ -180,6 +181,7 @@ public class PlayerCards {
 			delPlayerCard(cardName);
 			break;
 		case "THE_BANK_OF_ANKH_MORPORK":
+			populateLoanCards("THE_BANK_OF_ANKH_MORPORK");
 			performActionOfSymbol("SCROLL", cardName);
 			performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
 			delPlayerCard(cardName);
@@ -1152,7 +1154,41 @@ public class PlayerCards {
 		Collections.shuffle(greenPlayerCardsList);
 		String result = greenPlayerCardsList.get(0).toString();
 		greenPlayerCardsList = new ArrayList<PlayerCardDeck>(greenPlayerCardsList);
-		greenPlayerCardsList.remove(0);
+		if(greenPlayerCardsList.isEmpty())
+		{
+			checkWinningCondition();
+		}
+		else
+		{
+			greenPlayerCardsList.remove(0);
+		}
 		return new Pair(result,"Green");
 	}
+	
+	public static int checkWinningCondition()
+	{
+		int result = 0;
+		for(Player playerObj : GameEngine.playerObjList)
+		{
+			if(playerObj.pTurn == 1)
+			{
+				result = playerObj.checkWinningCondition(playerObj.personality);
+			}
+		}
+		return result;
+	}
+	
+	public static void populateLoanCards(String loanCard)
+	{
+		for(Player playerObj : GameEngine.playerObjList)
+		{
+			if(playerObj.pTurn == 1)
+			{
+				GameEngine.loanCards.put(loanCard, playerObj.color);
+			}
+		}
+	}
 }
+
+
+

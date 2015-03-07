@@ -67,6 +67,7 @@ public class GameEngine extends JFrame implements Runnable {
 	static List<Region> regionObjList = new ArrayList<Region>(); // list of region objects
 	static List<String> randomCards = new ArrayList<>();
 	static List<String> discardCards = new ArrayList<>();
+	static HashMap<String, String> loanCards;
 
 	private JPanel panel1;
 	private static JButton Load_Game;
@@ -279,6 +280,11 @@ public class GameEngine extends JFrame implements Runnable {
 		personality_temp = PersonalityCards.getPersonalityCard();
 		objPBlue = new Player("blue", personality_temp);
 		playerObjList.add(objPBlue);
+		
+		loanCards = new HashMap<String, String>();
+		loanCards.put("MR_BENT", "");
+		loanCards.put("THE_BANK_OF_ANKH_MORPORK", "");
+		
 		(new Thread(new GameEngine())).start();
 	}
 	
