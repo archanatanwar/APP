@@ -1,6 +1,8 @@
 package Game;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Set;
 
 import org.w3c.dom.Node;
@@ -33,7 +35,7 @@ public class Region {
 	int rTroubleMarker; // number of troublemarkers
 	int rDemon; // number of demons
 	int rTroll; // number of trolls
-	// int rBuildingNum;
+	List<Integer> listForNeighbours = new ArrayList<>();
 
 	// keeps track of player associated with minion or building in a region
 	Hashtable<String, PlayerStatus> H_Player;
@@ -54,7 +56,7 @@ public class Region {
 	 * @param bCost
 	 *            used to initialize data member region building cost
 	 */
-	public Region(String Name, int Number, int bCost) {
+	public Region(String Name, int Number, int bCost, List<Integer> array) {
 		rName = Name;
 		rNumber = Number;
 		rBuildingCost = bCost;
@@ -62,7 +64,7 @@ public class Region {
 		rTroubleMarker = 0;
 		rDemon = 0;
 		rTroll = 0;
-		// rBuildingNum = 0;
+		listForNeighbours.addAll(array);
 		H_Player = new Hashtable<String, PlayerStatus>();
 	}
 
@@ -109,11 +111,14 @@ public class Region {
 		return this.rTroubleMarker;
 	}
 
-	public void placeDemon(int rNum) {
+	public void placeDemon() {
 		if(GameEngine.DemonsHold >= 1)
 		{
-			GameEngine.H_Demons.get(rNum).numDemonExist = GameEngine.H_Demons
-					.get(rNum).numDemonExist + 1;
+			rDemon++;
+			if(rDemon > 1)
+			{
+				placeTroubleMarker(rNumber);
+			}
 			GameEngine.DemonsHold--;
 		}
 		else
@@ -123,16 +128,14 @@ public class Region {
 	}
 
 	public void removeDemon(int rNum) {
-		GameEngine.H_Demons.get(rNum).numDemonExist = GameEngine.H_Demons
-				.get(rNum).numDemonExist - 1;
+		GameEngine.regionObjList.get(rNum).rDemon = GameEngine.regionObjList.get(rNum).rDemon - 1;
 		GameEngine.DemonsHold++;
 	}
 
 	public void placeTroll(int rNum) {
 		if(GameEngine.TrollsHold >= 1)
 		{
-			GameEngine.H_Demons.get(rNum).numTrollExist = GameEngine.H_Demons
-					.get(rNum).numTrollExist + 1;
+			GameEngine.regionObjList.get(rNum).rTroll = GameEngine.regionObjList.get(rNum).rTroll + 1;
 			GameEngine.TrollsHold--;
 		}
 		else
@@ -142,15 +145,14 @@ public class Region {
 	}
 
 	public void removeTroll(int rNum) {
-		GameEngine.H_Demons.get(rNum).numTrollExist = GameEngine.H_Demons
-				.get(rNum).numTrollExist - 1;
+		GameEngine.regionObjList.get(rNum).rTroll = GameEngine.regionObjList.get(rNum).rTroll - 1;
 		GameEngine.TrollsHold++;
 	}
 	
 	public void placeTroubleMarker(int rNum) {
-		if(GameEngine.H_Demons.get(rNum).isTroubleMarkerExist == 0)
+		if(GameEngine.regionObjList.get(rNum).rTroubleMarker == 0)
 		{
-			GameEngine.H_Demons.get(rNum).isTroubleMarkerExist = 1;
+			GameEngine.regionObjList.get(rNum).rTroubleMarker = 1;
 			GameEngine.TMarkerHold--;
 		}
 		else
@@ -161,9 +163,9 @@ public class Region {
 
 	public int removeTroubleMarker(int rNum) {
 		int result = 0;
-		if(GameEngine.H_Demons.get(rNum).isTroubleMarkerExist == 1)
+		if(GameEngine.regionObjList.get(rNum).rTroubleMarker == 1)
 		{
-			GameEngine.H_Demons.get(rNum).isTroubleMarkerExist = 0;
+			GameEngine.regionObjList.get(rNum).rTroubleMarker = 0;
 			GameEngine.TMarkerHold++;
 			result = 1;
 		}
@@ -173,16 +175,26 @@ public class Region {
 	public int checkBuildingMove(String tColor)
 	{
 		int result = 0;
-		if(rBuilding == 0 && rTroubleMarker == 0 && H_Player.get(tColor).pMinionRegionwise >= 1)
+		if(rBuilding == 0 && H_Player.containsKey(tColor)&& H_Player.get(tColor).pMinionRegionwise >= 1)
 		{
 			result = 1;			
 		}		
 		return result;		
 	}
 	
-	public void placeMinion(String color) {
+	public void placeMinion(String color) {	
 		rNumber++;
-		H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise + 1;
+		if (H_Player.containsKey(color)) {
+			H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise + 1;
+		}
+		else
+		{
+			objSP = new PlayerStatus();
+			objSP.color = color;
+			objSP.pbuildingRegionwise = 0;
+			objSP.pMinionRegionwise = 1;
+			H_Player.put(color, objSP);
+		}
 	}
 	
 	public void removeMinion(String color) {

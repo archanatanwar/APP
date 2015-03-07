@@ -43,14 +43,14 @@ public class TestGameEngine {
 	 * @throws Exception if an error
 	 */
 	@Before
-	public void setUp() throws Exception {
+	/*public void setUp() throws Exception {
 		 objDSisters = new Region("Dolly Sisters", 1, 6);
 		 DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
 		 DocumentBuilder icBuilder;
 		 icBuilder = icFactory.newDocumentBuilder();
 		 // create Document object dom to write to file
 		 doc = icBuilder.newDocument();
-	}
+	}*/
 	
 	/**
 	 * Tear down

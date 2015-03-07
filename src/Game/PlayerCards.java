@@ -29,7 +29,7 @@ public class PlayerCards {
 			.asList(PlayerCardDeck.values());
 	// Contains Player card color as key and list of card numbers as value
 	public static HashMap<String, List<Integer>> playerCards;
-
+	
 	// roll die to get a specific number
 	public static int rollDie() {
 		int result = 0;
@@ -61,18 +61,16 @@ public class PlayerCards {
 
 	// take player cards from other players
 	public static void takePlayerCard(int playerNumber) {
+		String result = null;
 		for (Player playerObj : GameEngine.playerObjList) {
-			Pair pair = new Pair("empty", "empty");
+			
+			Pair pair = new Pair(" "," ");
 			// player that should give a player card
 			if (playerObj.pNumber == playerNumber) {
-				// get player card from deck of other player
-				if (playerObj.pCards.isEmpty()) {
-					pair = new Pair("empty", "empty");
-				}
 				// get key by color green first
 				List<String> tempList = playerObj.pCards.get("Green");
 				// green cards are finished
-				if (tempList == null) {
+				/*if (tempList == null) {
 					tempList = playerObj.pCards.get("Brown");
 					String result = tempList.get(0);
 					tempList.remove(0);
@@ -83,8 +81,8 @@ public class PlayerCards {
 						playerObj.pCards.put("Brown", tempList);
 					}
 					pair = new Pair(result, "Brown");
-				}
-				String result = tempList.get(0);
+				}*/
+				result = tempList.get(0);
 				tempList.remove(0);
 				playerObj.pCards.remove("Green");
 				// make sure list is not empty
@@ -93,24 +91,21 @@ public class PlayerCards {
 					playerObj.pCards.put("Green", tempList);
 				}
 				pair = new Pair(result, "Green");
-			}
-
-			List<String> list = new ArrayList<>();
-			String color_temp = pair.getCardColor();
-			String cardNo_temp = pair.getCard();
-			// player whose turn is 1
-			if (playerObj.pNumber == 1) {
-				if (playerObj.pCards.containsKey(color_temp)) {
-					list = playerObj.pCards.get(color_temp);
-					list.add(cardNo_temp);
-				} else {
-					list.add(cardNo_temp);
-				}
-				playerObj.pCards.put(color_temp, list);
-
 			} // end if
 
 		} // end for
+		
+		List<String> list = new ArrayList<>();
+		for(Player playerObj : GameEngine.playerObjList)
+		{
+			// player whose turn is 1
+			if (playerObj.pTurn == 1) {
+				list = playerObj.pCards.get("Green");
+				list.add(result);
+				playerObj.pCards.put("Green", list);
+
+			} // end if
+		}
 	}
 
 	// take money from other players
@@ -131,8 +126,9 @@ public class PlayerCards {
 			{
 				if(playerObj.pTurn == 0)
 				{
-					takeMoneyFromOtherPlayers(2, playerObj.pNumber);
-					count = count + 2;
+					//takeMoneyFromOtherPlayers(2, playerObj.pNumber);
+					playerObj.cashHold = playerObj.cashHold - cash;
+					count = count + cash;
 				}
 			}
 			for(Player playerObj : GameEngine.playerObjList)
@@ -146,18 +142,14 @@ public class PlayerCards {
 		}
 	// delete player card from list
 	private static void delPlayerCard(String cardName) {
-		System.out.println("in method del");
 		List<String> greenList = new ArrayList<>();
 		for (Player playerObj : GameEngine.playerObjList) {
 			if (playerObj.pTurn == 1) {
-				System.out.println("player's turn is 1");
 				// create temp list
 				greenList = playerObj.pCards.get("Green");
 				for (int i = 0; i < greenList.size(); i++) {
-					System.out.println("in inner for, cardname: " + cardName);
 					// get index of given cardName in the list
 					if (greenList.get(i).equals(cardName)) {
-						System.out.println("in inner if");
 						greenList.remove(i);
 					}
 				}
@@ -170,12 +162,11 @@ public class PlayerCards {
 	}
 
 	public static void performLeftToRight(String cardName) {
-		System.out.println("in method");
-		// switch(cardName){
-		switch ("MR_BOGGIS") {
+		cardName = "THE_DYSK";
+		switch (cardName) {
 		case "MR_BOGGIS":
-			performActionOfSymbol("SCROLL", "MR_BOGGIS");
-			performActionOfSymbol("PLACE_MINION", "MR_BOGGIS");
+			performActionOfSymbol("SCROLL", cardName);
+			performActionOfSymbol("PLACE_MINION", cardName);
 			delPlayerCard(cardName);
 			break;
 		case "MR_BENT":
@@ -210,8 +201,8 @@ public class PlayerCards {
 			delPlayerCard(cardName);
 			break;
 		case "THE_DYSK":
-			performActionOfSymbol("PLACE_BUILDING", cardName);
-			performActionOfSymbol("SCROLL", cardName);
+			performActionOfSymbol("PLACE_BUILDING", "THE_DYSK");
+			//performActionOfSymbol("SCROLL", cardName);
 			delPlayerCard(cardName);
 			break;
 		case "THE_DUCKMAN":
@@ -548,14 +539,13 @@ public class PlayerCards {
 		case "THE_BEGGARS_GUILD":
 			// select one player
 			String playerColor1 = NewGame.displayBox("Select one player according to color");
-			System.out.println("player color: "+playerColor1);
 			int playerNumber = 0;
 			// they give you two cards of their choice
-			for(int i=0; i< GameEngine.playerObjList.size();i++)
+			for(Player playerObj : GameEngine.playerObjList)
 			{
-				if(GameEngine.playerObjList.get(i).color.equals(playerColor1))
+				if(playerObj.color.equals(playerColor1))
 				{
-					playerNumber = GameEngine.playerObjList.get(i).pNumber;
+					playerNumber = playerObj.pNumber;
 				}
 			}
 			for(int i=0 ; i < 2; i++)

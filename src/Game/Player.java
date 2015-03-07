@@ -104,7 +104,16 @@ public class Player {
 	
 	public void placeMinion(int rNum) {
 		minionHold--;
-		H_Region.get(rNum).placedMinion = H_Region.get(rNum).placedMinion + 1;
+		if (H_Region.containsKey(rNum)) {
+			H_Region.get(rNum).placedMinion = H_Region.get(rNum).placedMinion + 1;
+		}
+		else
+		{
+			SP = new RegionStatus();
+			SP.placedbuilding = 0;
+			SP.placedMinion = 1;
+			H_Region.put(rNum, SP);
+		}
 	}
 	
 	public void removeMinion(int rNum) {
@@ -130,14 +139,15 @@ public class Player {
 	
 	public int checkMinionMove(int rNum) {
 		int result = 0;
-		if(H_Region.get(rNum).placedMinion >= 1)
-		{
-			result = 1;			
+		if (H_Region.containsKey(rNum)) {			
+			if(H_Region.get(rNum).placedMinion >= 1){
+				result = 1;		
+			}
 		}
 		else
 		{
 			for (int key : H_Region.keySet()) {
-				if(GameEngine.H_Demons.get(key).listForNeighbours.contains(rNum))
+				if(GameEngine.regionObjList.get(key-1).listForNeighbours.contains(rNum))
 				{
 					result = 1;
 					break;
@@ -249,11 +259,11 @@ public class Player {
 	}
 	public int checkDKArms(int numPlayers) {
 		int result = 0;
-		String tempRName;
+		int tempRNum;
 		int tempCount = 0;
 		for (int i = 0; i <= 11; i++) {
-			tempRName = GameEngine.regionObjList.get(i).rName;
-			if (GameEngine.H_Demons.get(tempRName).isTroubleMarkerExist == 1)
+			tempRNum = GameEngine.regionObjList.get(i).rNumber;
+			if (GameEngine.regionObjList.get(tempRNum).rTroubleMarker == 1)
 			{
 				tempCount++;
 			}
@@ -268,7 +278,7 @@ public class Player {
 	public int checkLoad(int numPlayers) {
 		int result = 0;
 		int tempCount = 0;
-		String tempRName;
+		int tempRNum;
 		int minionPieces;
 		int buildingPieces;
 		int maxPieces;
@@ -276,14 +286,14 @@ public class Player {
 		boolean isMaxPieces;
 
 		for (int i = 0; i <= 11; i++) {
-			tempRName = GameEngine.regionObjList.get(i).rName;
-			if (GameEngine.H_Demons.get(tempRName).numDemonExist == 0) {
+			tempRNum = GameEngine.regionObjList.get(i).rNumber;
+			if (GameEngine.regionObjList.get(tempRNum).rDemon == 0) {
 				minionPieces = GameEngine.regionObjList.get(i).H_Player
 						.get(color).pMinionRegionwise;
 				buildingPieces = GameEngine.regionObjList.get(i).H_Player
 						.get(color).pbuildingRegionwise;
 				maxPieces = minionPieces + buildingPieces;
-				if (maxPieces > GameEngine.H_Demons.get(tempRName).numTrollExist) {
+				if (maxPieces > GameEngine.regionObjList.get(tempRNum).rTroll) {
 					Set<String> keys = GameEngine.regionObjList.get(i).H_Player
 							.keySet();
 					isMaxPieces = true;
@@ -334,7 +344,7 @@ public class Player {
 		int tempCount = 0;
 		for (int key : H_Region.keySet()) {
 			if (H_Region.get(key).placedMinion > 0
-					&& GameEngine.H_Demons.get(key).numDemonExist == 0) {
+					&& GameEngine.regionObjList.get(key).rDemon == 0) {
 				tempCount++;
 			}
 		}

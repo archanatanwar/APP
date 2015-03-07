@@ -68,10 +68,10 @@ public class RandomEventCards
 			}
 			
 			resultTemp = getRollDiceNumber();
-			numNeighbour = GameEngine.H_Demons.get(result).listForNeighbours.size();
+			numNeighbour = GameEngine.regionObjList.get(result-1).listForNeighbours.size();
 			for(int i=0; i<numNeighbour; i++)
 			{
-				if (resultTemp == GameEngine.H_Demons.get(result).listForNeighbours.get(i))
+				if (resultTemp == GameEngine.regionObjList.get(result-1).listForNeighbours.get(i))
 				{
 					result = resultTemp;
 					break;
@@ -187,7 +187,7 @@ public class RandomEventCards
 		for(int i=0; i<4; i++)
 		{
 			result = getRollDiceNumber();
-			GameEngine.regionObjList.get(result-1).placeDemon(result);
+			GameEngine.regionObjList.get(result-1).placeDemon();
 			//TODO
 		}
 	}

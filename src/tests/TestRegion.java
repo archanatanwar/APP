@@ -16,9 +16,9 @@ public class TestRegion {
 	private int minion;
 	private int minionLater;
 	@Before
-	public void setUp() throws Exception {
+	/*public void setUp() throws Exception {
 		obj = new Region("Dolly Sisters", 1, 12);
-	}
+	}*/
 
 	@After
 	public void tearDown() throws Exception {

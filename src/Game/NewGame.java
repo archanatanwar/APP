@@ -361,6 +361,10 @@ public class NewGame extends JFrame {
 			if (obj.pNumber == turnIndex) {
 				obj.pTurn = 1;
 			}
+			else
+			{
+				obj.pTurn = 0;
+			}
 		}
 		setRegionInfo();
 		Bank_Info.setValueAt(GameEngine.BankHold, 0, 0);
@@ -686,7 +690,6 @@ public class NewGame extends JFrame {
 				playerTurn = new JLabel(playerObj.color, JLabel.CENTER);
 				greenList = playerObj.pCards.get("Green");
 			}
-
 		}
 
 		for (Player playerObj : GameEngine.playerObjList) {
