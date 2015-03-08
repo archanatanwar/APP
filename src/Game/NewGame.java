@@ -129,6 +129,7 @@ public class NewGame extends JFrame {
 	 */
 	public static ImageIcon getPlayerCardImage(String cardName) {
 		switch (cardName) {
+		
 		case "MR_BOGGIS":
 			playerCardImage = new ImageIcon("PlayerCardImages/MrBoggis.png");
 			break;
@@ -360,6 +361,10 @@ public class NewGame extends JFrame {
 		for (Player obj : GameEngine.playerObjList) {
 			if (obj.pNumber == turnIndex) {
 				obj.pTurn = 1;
+			}
+			else
+			{
+				obj.pTurn = 0;
 			}
 		}
 		setRegionInfo();

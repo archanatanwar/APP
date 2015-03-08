@@ -177,7 +177,7 @@ public class RandomEventCards
 		for(int i=0; i<3; i++)
 		{
 			result = getRollDiceNumber();
-			GameEngine.regionObjList.get(result-1).placeTroll(result);
+			GameEngine.regionObjList.get(result-1).placeTroll();
 		}
 	}
 	

@@ -117,8 +117,11 @@ public class Player {
 	}
 	
 	public void removeMinion(int rNum) {
-		minionHold++;
-		H_Region.get(rNum).placedMinion = H_Region.get(rNum).placedMinion - 1;
+		if(H_Region.get(rNum).placedMinion >= 1)
+		{
+			minionHold++;
+			H_Region.get(rNum).placedMinion = H_Region.get(rNum).placedMinion - 1;
+		}
 	}
 	
 	public void placeBuilding(int rNum) {

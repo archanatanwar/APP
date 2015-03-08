@@ -85,6 +85,7 @@ public class Region {
 		if (rMinionNum > 1) {
 			// place a troublemarker
 			rTroubleMarker = 1;
+			GameEngine.TMarkerHold--;
 		}
 		if (H_Player.containsKey(color)) {
 			// add the values to the HashMap if key is already there
@@ -111,65 +112,76 @@ public class Region {
 		return this.rTroubleMarker;
 	}
 
-	public void placeDemon() {
+	public int placeDemon() {
+		int result = 0;
 		if(GameEngine.DemonsHold >= 1)
 		{
-			rDemon++;
 			if(rDemon > 1)
 			{
-				placeTroubleMarker(rNumber);
+				result = placeTroubleMarker();
 			}
+			rDemon++;
 			GameEngine.DemonsHold--;
-		}
-		else
-		{
-			//MsgBox
-		}
-	}
-
-	public void removeDemon(int rNum) {
-		GameEngine.regionObjList.get(rNum).rDemon = GameEngine.regionObjList.get(rNum).rDemon - 1;
-		GameEngine.DemonsHold++;
-	}
-
-	public void placeTroll(int rNum) {
-		if(GameEngine.TrollsHold >= 1)
-		{
-			GameEngine.regionObjList.get(rNum).rTroll = GameEngine.regionObjList.get(rNum).rTroll + 1;
-			GameEngine.TrollsHold--;
-		}
-		else
-		{
-			//MsgBox
-		}
-	}
-
-	public void removeTroll(int rNum) {
-		GameEngine.regionObjList.get(rNum).rTroll = GameEngine.regionObjList.get(rNum).rTroll - 1;
-		GameEngine.TrollsHold++;
-	}
-	
-	public void placeTroubleMarker(int rNum) {
-		if(GameEngine.regionObjList.get(rNum).rTroubleMarker == 0)
-		{
-			GameEngine.regionObjList.get(rNum).rTroubleMarker = 1;
-			GameEngine.TMarkerHold--;
-		}
-		else
-		{
-			//MsgBox
-		}
-	}
-
-	public int removeTroubleMarker(int rNum) {
-		int result = 0;
-		if(GameEngine.regionObjList.get(rNum).rTroubleMarker == 1)
-		{
-			GameEngine.regionObjList.get(rNum).rTroubleMarker = 0;
-			GameEngine.TMarkerHold++;
 			result = 1;
 		}
 		return result;
+	}
+
+	public int removeDemon() {
+		int result = 0;
+		if(rDemon >= 1)
+		{
+			rDemon = rDemon - 1;
+			GameEngine.DemonsHold++;
+			removeTroubleMarker();
+			result = 1;
+		}
+		return result;
+	}
+
+	public int placeTroll() {
+		int result = 0;
+		if(GameEngine.TrollsHold >= 1)
+		{
+			rTroll = rTroll + 1;
+			GameEngine.TrollsHold--;
+			result = 1;
+		}
+		return result;
+	}
+
+	public int removeTroll() {
+		int result = 0;
+		if(rTroll >= 1)
+		{
+			rTroll = rTroll - 1;
+			GameEngine.TrollsHold++;
+			removeTroubleMarker();
+			result = 1;
+		}
+		return result;
+	}
+	
+	public int placeTroubleMarker() {
+		int result = 0;
+		if(GameEngine.TMarkerHold >= 0)
+		{
+			if(rTroubleMarker == 0)
+			{
+				GameEngine.TMarkerHold--;
+				rTroubleMarker = 1;	
+			}					
+			result = 1;
+		}
+		return result;
+	}
+
+	public void removeTroubleMarker() {
+		if(rTroubleMarker == 1)
+		{
+			rTroubleMarker = 0;
+			GameEngine.TMarkerHold++;
+		}
 	}
 	
 	public int checkBuildingMove(String tColor)
@@ -183,7 +195,7 @@ public class Region {
 	}
 	
 	public void placeMinion(String color) {	
-		rNumber++;
+		rMinionNum++;
 		if (H_Player.containsKey(color)) {
 			H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise + 1;
 		}
@@ -198,8 +210,12 @@ public class Region {
 	}
 	
 	public void removeMinion(String color) {
-		rNumber--;
-		H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise - 1;
+		if(H_Player.get(color).pMinionRegionwise >= 1)
+		{
+			rMinionNum--;
+			H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise - 1;
+			removeTroubleMarker();
+		}
 	}
 	
 	public void placeBuilding(String color) {
@@ -208,8 +224,11 @@ public class Region {
 	}
 	
 	public void removeBuilding(String color) {
-		rBuilding--;
-		H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise - 1;
+		if(H_Player.get(color).pbuildingRegionwise >= 1)
+		{
+			rBuilding--;
+			H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise - 1;
+		}
 	}
 	
 	public void executeDragonEvent()
