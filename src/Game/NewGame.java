@@ -129,7 +129,6 @@ public class NewGame extends JFrame {
 	 */
 	public static ImageIcon getPlayerCardImage(String cardName) {
 		switch (cardName) {
-		
 		case "MR_BOGGIS":
 			playerCardImage = new ImageIcon("PlayerCardImages/MrBoggis.png");
 			break;
@@ -316,10 +315,10 @@ public class NewGame extends JFrame {
 	}
 
 	public static void reLaunchDialog() {
-		initComponents();
-		Two_Players.setEnabled(false);
-		Three_Players.setEnabled(false);
-		Four_Players.setEnabled(false);
+		//initComponents();
+		//Two_Players.setEnabled(false);
+		//Three_Players.setEnabled(false);
+		//Four_Players.setEnabled(false);
 		int count = 0;
 		turnIndex  = PlayerTurn;
 		while (count < GameEngine.playerObjList.size()) {
@@ -369,6 +368,9 @@ public class NewGame extends JFrame {
 		}
 		setRegionInfo();
 		Bank_Info.setValueAt(GameEngine.BankHold, 0, 0);
+		Bank_Info.setValueAt(GameEngine.DemonsHold, 0, 1);
+		Bank_Info.setValueAt(GameEngine.TrollsHold, 0, 2);
+		Bank_Info.setValueAt(GameEngine.TMarkerHold, 0, 3);
 		PlayerTurn++;
 		PlayerTurn = PlayerTurn % (GameEngine.playerObjList.size());
 		if (PlayerTurn == 0) {
@@ -493,6 +495,9 @@ public class NewGame extends JFrame {
 		}
 		setRegionInfo();
 		Bank_Info.setValueAt(GameEngine.BankHold, 0, 0);
+		Bank_Info.setValueAt(GameEngine.DemonsHold, 0, 1);
+		Bank_Info.setValueAt(GameEngine.TrollsHold, 0, 2);
+		Bank_Info.setValueAt(GameEngine.TMarkerHold, 0, 3);
 		PlayerTurn++;
 		PlayerTurn = PlayerTurn % (GameEngine.playerObjList.size());
 		if (PlayerTurn == 0) {
@@ -570,6 +575,9 @@ public class NewGame extends JFrame {
 		}
 		setRegionInfo();
 		Bank_Info.setValueAt(GameEngine.BankHold, 0, 0);
+		Bank_Info.setValueAt(GameEngine.DemonsHold, 0, 1);
+		Bank_Info.setValueAt(GameEngine.TrollsHold, 0, 2);
+		Bank_Info.setValueAt(GameEngine.TMarkerHold, 0, 3);
 	}
 
 	private static void Four_PlayersActionPerformed(ActionEvent e) {
@@ -638,6 +646,9 @@ public class NewGame extends JFrame {
 		}
 		setRegionInfo();
 		Bank_Info.setValueAt(GameEngine.BankHold, 0, 0);
+		Bank_Info.setValueAt(GameEngine.DemonsHold, 0, 1);
+		Bank_Info.setValueAt(GameEngine.TrollsHold, 0, 2);
+		Bank_Info.setValueAt(GameEngine.TMarkerHold, 0, 3);
 	}
 
 	private static void button1ActionPerformed(ActionEvent e) {
@@ -823,7 +834,7 @@ public class NewGame extends JFrame {
 						Font.BOLD | Font.ITALIC, 11));
 				scrollPane1.setViewportView(Players_Info);
 			}
-
+			
 			// ======== scrollPane2 ========
 			{
 
@@ -903,8 +914,8 @@ public class NewGame extends JFrame {
 			scrollPane3.setViewportView(Card_Info);
 
 			Bank_Info.setModel(new DefaultTableModel(
-					new Object[][] { { 120, }, },
-					new String[] { "Available Cash with the Bank", }));
+					new Object[][] { { 120, 4, 3, 12,}, },
+					new String[] { "Available Cash with the Bank", "Denoms", "Trolls", "Trouble Marker",}));
 			Bank_Info.setForeground(new Color(0, 102, 102));
 			Bank_Info.setBackground(new Color(255, 255, 204));
 			Bank_Info.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
@@ -919,8 +930,7 @@ public class NewGame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// contentPane.setVisible(false);
-					frame.dispatchEvent(new WindowEvent(frame,
-							WindowEvent.WINDOW_CLOSING));
+					//frame.dispatchEvent(new WindowEvent(frame,WindowEvent.WINDOW_CLOSING));
 					createPlayerFrame();
 
 				}

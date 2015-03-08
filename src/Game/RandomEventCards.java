@@ -52,6 +52,48 @@ public class RandomEventCards
 		return result;
 	}
 	
+	public static void playCard()
+	{
+		String choice  = getRandomEventCard();
+		System.out.println(choice);
+		switch("SUBSIDENCE")
+		{
+		case "THE_DRAGON":
+			dragonEvent();
+			break;
+		case "FLOOD":
+			break;
+		case "FIRE":
+			FireEvent();
+			break;
+		case "FOG":
+			FogEvent();
+			break;
+		case "RIOTS":
+			RiotsEvent();
+			break;
+		case "EXPLOSION":
+			ExplosionEvent();
+			break;
+		case "MYSTERIOUS_MURDERS":
+			break;
+		case "DEMONS_FROM_THE_DUNGEONS_DIMENSIONS":
+			DungeonEvent();//TODO
+			break;
+		case "SUBSIDENCE":
+			SubsidenceEvent();
+			break;
+		case "BLOODY_STUPID_JOHNSON":
+			break;
+		case "TROLLS":
+			TrollsEvent();
+			break;
+		case "EARTHQUAKE":
+			EarthquakeEvent();
+			break;
+		}
+	}
+	
 	public static void FireEvent()
 	{
 		int result = 0;
@@ -59,15 +101,16 @@ public class RandomEventCards
 		int isBuildingExist = 0;
 		int numNeighbour;
 		result = getRollDiceNumber();
-		do
-		{			
-			isBuildingExist = GameEngine.regionObjList.get(result-1).executeFireEvent();
+		isBuildingExist = GameEngine.regionObjList.get(result-1).executeFireEvent();
+		NewGame.showErrorDialog("Fire Event Occured in region : " + result);
+		while(isBuildingExist == 1)
+		{	
 			int size = GameEngine.playerObjList.size();
 			for(int i=0; i<size; i++){
 				GameEngine.playerObjList.get(i).executeFireEvent(result);
-			}
-			
+			}			
 			resultTemp = getRollDiceNumber();
+			NewGame.showErrorDialog("Next region selected : " + resultTemp);
 			numNeighbour = GameEngine.regionObjList.get(result-1).listForNeighbours.size();
 			for(int i=0; i<numNeighbour; i++)
 			{
@@ -76,12 +119,14 @@ public class RandomEventCards
 					result = resultTemp;
 					break;
 				}				
-			}
+			}			
 			if(result != resultTemp)
 			{
 				break;
-			}			
-		}while(isBuildingExist == 1);		
+			}
+			isBuildingExist = GameEngine.regionObjList.get(result-1).executeFireEvent();
+			NewGame.showErrorDialog("Fire Event Occured in region : " + result);
+		};		
 	}
 	
 	public static void dragonEvent()
@@ -93,6 +138,7 @@ public class RandomEventCards
 		for(int i=0; i<size; i++){
 			GameEngine.playerObjList.get(i).executeDragonEvent(result);
 		}
+		NewGame.showErrorDialog("Dragon Event Occured in Region : " + result);
 	}
 	
 	public static void FogEvent()
@@ -110,14 +156,17 @@ public class RandomEventCards
 			}
 			fogCards.put(color_temp, list);			
 		}
+		String names = fogCards.toString();
+		NewGame.showErrorDialog("Five Cards Discarded : " + names);
 	}
 	
 	public static void RiotsEvent()
 	{
 		int minion, mCost, bCost, cash, size, rNum, totalPoints; 
 		String color;
-		String winnerColor;
+		String winnerColor = "";
 		int winner = 0;
+		GameEngine.TMarkerHold = 4;
 		if(GameEngine.TMarkerHold <= 4)
 		{
 			size = GameEngine.playerObjList.size();
@@ -144,6 +193,7 @@ public class RandomEventCards
 				}
 			}
 		}
+		NewGame.showErrorDialog("Player: "+ winnerColor +" wins having total points: "+ winner);
 	}
 	
 	public static void ExplosionEvent()
@@ -155,6 +205,7 @@ public class RandomEventCards
 		{
 			GameEngine.playerObjList.get(i).removeBuilding(result);
 		}
+		NewGame.showErrorDialog("ExplosionEvent occured in region: "+ result);
 	}
 	
 	public static void SubsidenceEvent()

@@ -82,7 +82,7 @@ public class Region {
 	public void placeDefaultMinion(String color) {
 		rMinionNum = rMinionNum + 1;
 		// if number of minions is more than one in a region
-		if (rMinionNum > 1) {
+		if (rMinionNum > 1 && rTroubleMarker == 0) {
 			// place a troublemarker
 			rTroubleMarker = 1;
 			GameEngine.TMarkerHold--;
@@ -195,7 +195,7 @@ public class Region {
 	}
 	
 	public void placeMinion(String color) {	
-		rMinionNum++;
+		rNumber++;
 		if (H_Player.containsKey(color)) {
 			H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise + 1;
 		}
@@ -210,9 +210,9 @@ public class Region {
 	}
 	
 	public void removeMinion(String color) {
-		if(H_Player.get(color).pMinionRegionwise >= 1)
+		if(H_Player.get(color).pMinionRegionwise > 1)
 		{
-			rMinionNum--;
+			rNumber--;
 			H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise - 1;
 			removeTroubleMarker();
 		}
@@ -224,11 +224,8 @@ public class Region {
 	}
 	
 	public void removeBuilding(String color) {
-		if(H_Player.get(color).pbuildingRegionwise >= 1)
-		{
-			rBuilding--;
-			H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise - 1;
-		}
+		rBuilding--;
+		H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise - 1;
 	}
 	
 	public void executeDragonEvent()

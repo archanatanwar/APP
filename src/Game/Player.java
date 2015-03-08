@@ -133,7 +133,7 @@ public class Player {
 	}
 	
 	public void removeBuilding(int rNum) {
-		if(H_Region.get(rNum).placedbuilding >= 1)
+		if(H_Region.containsKey(rNum) && H_Region.get(rNum).placedbuilding >= 1)
 		{
 			buildingHold++;
 			H_Region.get(rNum).placedbuilding = H_Region.get(rNum).placedbuilding - 1;
@@ -192,22 +192,28 @@ public class Player {
 
 	public void executeFireEvent (int rNum)
 	{
-		int tempNum;
-		tempNum = H_Region.get(rNum).placedbuilding;
+		int tempNum = 0;
+		if(H_Region.containsKey(rNum))
+		{
+			tempNum = H_Region.get(rNum).placedbuilding;
+		}
 		buildingHold = buildingHold + tempNum;
 		H_Region.get(rNum).placedbuilding = 0;
 	}
 	
 	public void executeDragonEvent(int rNum)
 	{
-		int tempNum;
-		tempNum = H_Region.get(rNum).placedMinion;
-		minionHold = minionHold + tempNum;
-		H_Region.get(rNum).placedMinion = 0;
-		tempNum = H_Region.get(rNum).placedbuilding;
-		buildingHold = buildingHold + tempNum;
-		H_Region.get(rNum).placedbuilding = 0;
-		
+		int tempMinion = 0;
+		int tempBuilding = 0;
+		if(H_Region.containsKey(rNum))
+		{
+			tempMinion = H_Region.get(rNum).placedMinion;
+			tempBuilding = H_Region.get(rNum).placedbuilding;
+		}
+		minionHold = minionHold + tempMinion;
+		H_Region.get(rNum).placedMinion = 0;		
+		buildingHold = buildingHold + tempBuilding;
+		H_Region.get(rNum).placedbuilding = 0;		
 	}
 	public int checkWinningCondition(String personality) {
 		int result = 0;
