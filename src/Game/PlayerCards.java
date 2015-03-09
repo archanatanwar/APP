@@ -548,7 +548,54 @@ public class PlayerCards {
 			performActionInText(playerCardName);
 			break;
 		case "RANDOM_EVENT":
-			RandomEventCards.playCard();
+			String eventChoice  = RandomEventCards.getRandomEventCard();
+			System.out.println(eventChoice);
+			switch("THE_DRAGON")
+			{
+				case "THE_DRAGON":
+					RandomEventCards dragonEvent = new DragonEventCard();
+					dragonEvent.executeRandomEvent();
+					break;
+				case "FLOOD":
+					break;
+				case "FIRE":
+					RandomEventCards fireEvent = new FireEventCard();
+					fireEvent.executeRandomEvent();
+					break;
+				case "FOG":
+					RandomEventCards fogEvent = new FogEventCard();
+					fogEvent.executeRandomEvent();
+					break;
+				case "RIOTS":
+					RandomEventCards riotsEvent = new RiotEventCard();
+					riotsEvent.executeRandomEvent();
+					break;
+				case "EXPLOSION":
+					RandomEventCards explosionEvent = new ExplosionEventCard();
+					explosionEvent.executeRandomEvent();
+					break;
+				case "MYSTERIOUS_MURDERS":
+					break;
+				case "DEMONS_FROM_THE_DUNGEONS_DIMENSIONS":
+					RandomEventCards dungeonEvent = new DungeonEventCard();
+					dungeonEvent.executeRandomEvent();
+					break;
+				case "SUBSIDENCE":
+					RandomEventCards subsidenceEvent = new SubsidenceEventCard();
+					subsidenceEvent.executeRandomEvent();
+					break;
+				case "BLOODY_STUPID_JOHNSON":
+					break;
+				case "TROLLS":
+					RandomEventCards trollsEvent = new TrollsEventCard();
+					trollsEvent.executeRandomEvent();
+					break;
+				case "EARTHQUAKE":
+					RandomEventCards earthquakeEvent = new ExplosionEventCard();
+					earthquakeEvent.executeRandomEvent();
+					earthquakeEvent.executeRandomEvent();
+					break;
+			}
 			break;
 		case "PLAY_ANOTHER_CARD":
 			delPlayerCard(playerCardName);

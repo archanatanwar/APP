@@ -209,11 +209,13 @@ public class Player {
 		{
 			tempMinion = H_Region.get(rNum).placedMinion;
 			tempBuilding = H_Region.get(rNum).placedbuilding;
+			H_Region.get(rNum).placedMinion = 0;	
+			H_Region.get(rNum).placedbuilding = 0;	
 		}
 		minionHold = minionHold + tempMinion;
-		H_Region.get(rNum).placedMinion = 0;		
+			
 		buildingHold = buildingHold + tempBuilding;
-		H_Region.get(rNum).placedbuilding = 0;		
+			
 	}
 	public int checkWinningCondition(String personality) {
 		int result = 0;
