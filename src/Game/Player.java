@@ -58,7 +58,7 @@ public class Player {
 		pCards = new HashMap<String, List<String>>();
 		// distribute cards
 		// five to each player initially
-		for (int i = 1; i <= 5; i++) {
+		for (int i = 0; i < 5; i++) {
 			Pair pair = PlayerCards.getPlayerCard();
 			String color_temp = pair.getCardColor();
 			String cardName_temp = pair.getCard();
@@ -117,7 +117,7 @@ public class Player {
 	}
 	
 	public void removeMinion(int rNum) {
-		if(H_Region.get(rNum).placedMinion >= 1)
+		if(H_Region.containsKey(rNum) && H_Region.get(rNum).placedMinion >= 1)
 		{
 			minionHold++;
 			H_Region.get(rNum).placedMinion = H_Region.get(rNum).placedMinion - 1;
@@ -164,6 +164,7 @@ public class Player {
 	{
 		int buildingExist, count;
 		count = 0;
+		String sValue = "";
 		buildingExist = 6 - buildingHold;
 		while(cashHold < (buildingExist * 2))
 		{
@@ -173,6 +174,7 @@ public class Player {
 		cashHold = cashHold - (buildingExist * 2);
 		if(count > 0)
 		{
+			sValue = sValue + "Building removed from region:";
 			for (int key : H_Region.keySet()) 
 			{
 				if(H_Region.get(key).placedbuilding == 1)
@@ -181,6 +183,7 @@ public class Player {
 					H_Region.get(key).placedbuilding = H_Region.get(key).placedbuilding - 1;
 					GameEngine.regionObjList.get(key-1).removeBuilding(color);
 					count--;
+					sValue = sValue + key + " ";
 				}
 				if(count == 0)
 				{
@@ -188,6 +191,8 @@ public class Player {
 				}
 			}
 		}
+		sValue = sValue + "\n Cash taken from player "+color+" :"+buildingExist*2;
+		NewGame.showErrorDialog(sValue);
 	}
 
 	public void executeFireEvent (int rNum)

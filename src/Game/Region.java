@@ -145,6 +145,7 @@ public class Region {
 		{
 			rTroll = rTroll + 1;
 			GameEngine.TrollsHold--;
+			placeTroubleMarker();
 			result = 1;
 		}
 		return result;
@@ -195,7 +196,7 @@ public class Region {
 	}
 	
 	public void placeMinion(String color) {	
-		rNumber++;
+		rMinionNum++;
 		if (H_Player.containsKey(color)) {
 			H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise + 1;
 		}
@@ -207,12 +208,16 @@ public class Region {
 			objSP.pMinionRegionwise = 1;
 			H_Player.put(color, objSP);
 		}
+		if(rMinionNum > 1)
+		{
+			placeTroubleMarker();
+		}
 	}
 	
 	public void removeMinion(String color) {
-		if(H_Player.get(color).pMinionRegionwise > 1)
+		if(H_Player.get(color).pMinionRegionwise >= 1)
 		{
-			rNumber--;
+			rMinionNum--;
 			H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise - 1;
 			removeTroubleMarker();
 		}
@@ -224,8 +229,11 @@ public class Region {
 	}
 	
 	public void removeBuilding(String color) {
-		rBuilding--;
-		H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise - 1;
+		if(H_Player.get(color).pbuildingRegionwise >= 1)
+		{
+			rBuilding--;
+			H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise - 1;
+		}
 	}
 	
 	public void executeDragonEvent()

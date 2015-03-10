@@ -6,7 +6,10 @@ public class SubsidenceEventCard extends RandomEventCards{
 	{
 		for(int i=0; i<GameEngine.playerObjList.size(); i++)
 		{
-			GameEngine.playerObjList.get(i).handleSubsidenceEvent();
+			if(GameEngine.playerObjList.get(i).buildingHold < 6)
+			{			
+				GameEngine.playerObjList.get(i).handleSubsidenceEvent();
+			}
 		}		
 	}
 }

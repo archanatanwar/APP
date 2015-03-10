@@ -60,7 +60,7 @@ public class PlayerCards {
 	}
 
 	// take player cards from other players
-	public static void takePlayerCard(int playerNumber) {
+	public static void takePlayerCard(int playerNumber, String cardName) {
 		String result = null;
 		for (Player playerObj : GameEngine.playerObjList) {
 			
@@ -69,20 +69,15 @@ public class PlayerCards {
 			if (playerObj.pNumber == playerNumber) {
 				// get key by color green first
 				List<String> tempList = playerObj.pCards.get("Green");
-				// green cards are finished
-				/*if (tempList == null) {
-					tempList = playerObj.pCards.get("Brown");
-					String result = tempList.get(0);
-					tempList.remove(0);
-					playerObj.pCards.remove("Brown");
-					// make sure list is not empty
-					if (tempList.size() >= 1) {
-						// add again to the hashmap
-						playerObj.pCards.put("Brown", tempList);
-					}
-					pair = new Pair(result, "Brown");
-				}*/
-				result = tempList.get(0);
+				// if the card to be removed is same as the card being played
+				if(cardName == tempList.get(0))
+				{
+					result = tempList.get(1);
+				}
+				else
+				{
+					result = tempList.get(0);
+				}
 				tempList.remove(0);
 				playerObj.pCards.remove("Green");
 				// make sure list is not empty
@@ -142,7 +137,6 @@ public class PlayerCards {
 		}
 	// delete player card from list
 	private static void delPlayerCard(String cardName) {
-		GameEngine.discardCards.add(cardName);
 		List<String> greenList = new ArrayList<>();
 		for (Player playerObj : GameEngine.playerObjList) {
 			if (playerObj.pTurn == 1) {
@@ -151,7 +145,9 @@ public class PlayerCards {
 				for (int i = 0; i < greenList.size(); i++) {
 					// get index of given cardName in the list
 					if (greenList.get(i).equals(cardName)) {
-						greenList.remove(i);
+						String result = greenList.remove(i);
+						// add card name to dicard pile
+						GameEngine.discardCards.add(result);
 					}
 				}
 				// remove all green colored cards from hashmap
@@ -164,7 +160,7 @@ public class PlayerCards {
 
 	public static void performLeftToRight(String cardName) {
 		checkWinningCondition();
-		cardName = "RINCEWIND";
+//		cardName = "ROSIE_PALM";
 		switch (cardName) {
 		case "MR_BOGGIS":
 			performActionOfSymbol("SCROLL", cardName);
@@ -244,7 +240,7 @@ public class PlayerCards {
 			delPlayerCard(cardName);
 			break;
 		case "GIMLETS_DWARF_DELICATESSEN":
-			takeLoanFromBank(1);
+			takeLoanFromBank(3);
 			performActionOfSymbol("PLACE_MINION", cardName);
 			delPlayerCard(cardName);
 			break;
@@ -354,8 +350,8 @@ public class PlayerCards {
 			break;
 		case "RINCEWIND":
 			performActionOfSymbol("RANDOM_EVENT", cardName);
-			//performActionOfSymbol("SCROLL", cardName);
-			//performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
+			performActionOfSymbol("SCROLL", cardName);
+			performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
 			delPlayerCard(cardName);
 			break;
 		case "THE_ROYAL_MINT":
@@ -598,8 +594,9 @@ public class PlayerCards {
 			}
 			break;
 		case "PLAY_ANOTHER_CARD":
-			delPlayerCard(playerCardName);
-			NewGame.createPlayerFrame();
+		System.out.println("play another card");
+			//delPlayerCard(playerCardName);
+		//	NewGame.createPlayerFrame();
 			break;
 		case "INTERRUPT":
 			System.out.println("interrupt");
@@ -645,7 +642,7 @@ public class PlayerCards {
 			}
 			for(int i=0 ; i < 2; i++)
 			{
-				takePlayerCard(playerNumber);
+				takePlayerCard(playerNumber, playerCardName);
 			}
 			break;
 
@@ -669,7 +666,7 @@ public class PlayerCards {
 					}
 					else
 					{
-						takePlayerCard(playerObj.pNumber);
+						takePlayerCard(playerObj.pNumber , playerCardName);
 					}
 				}
 			}
@@ -699,11 +696,8 @@ public class PlayerCards {
 		case "THE_DUCKMAN":
 			// move a minion belonging to another player from one area to adjacent area
 			String playerColor2 = NewGame.displayBox("Select one player according to color whose minion is to be moved");
-			String area1 = NewGame.displayBox("Select area from which minion should be moved");
-			int areaBefore = Integer.parseInt(area1);
-			String area2 = NewGame.displayBox("Select area to which minion should be moved");
-			int areaAfter = Integer.parseInt(area2);
 			// call methods to remove and place minion
+			moveOtherPlayerMinion(playerColor2);
 			break;
 			
 		case "DRUMKNOTT":
@@ -717,6 +711,7 @@ public class PlayerCards {
 
 		case "CMOT_DIBBLER":
 			int result = rollDie();
+			NewGame.showErrorDialog("Result after rolling die: "+String.valueOf(result));
 			// on roll of 7 or more take $4 from bank
 			if(result >= 7)
 			{
@@ -737,6 +732,8 @@ public class PlayerCards {
 						// remove one of your minions from board
 						String area3 = NewGame.displayBox("Select area from which minion should be moved");
 						int areaBefore1 = Integer.parseInt(area3);
+						GameEngine.regionObjList.get(areaBefore1-1).removeMinion(playerObj.color);
+						playerObj.removeMinion(areaBefore1);
 					}
 				}
 			}
@@ -757,11 +754,8 @@ public class PlayerCards {
 		case "FOUL_OLE_RON":
 			/// move a minion belonging to another player from one area to adjacent area
 			String playerColor3 = NewGame.displayBox("Select one player according to color whose minion is to be moved");
-			String area4 = NewGame.displayBox("Select area from which minion should be moved");
-			int areaBefore2 = Integer.parseInt(area4);
-			String area5 = NewGame.displayBox("Select area to which minion should be moved");
-			int areaAfter3 = Integer.parseInt(area5);
 			// call methods to remove and place minion
+			moveOtherPlayerMinion(playerColor3);
 			break;
 		case "THE_FOOLS_GUILD":
 			// select another player
@@ -822,7 +816,10 @@ public class PlayerCards {
 					{
 						// ask for region info
 						String area6 = NewGame.displayBox("Select area from which building should be removed");
+						int value = Integer.valueOf(area6);
 						// method to remove building
+						playerObj.removeBuilding(value);
+						GameEngine.regionObjList.get(value-1).removeBuilding(playerObj.color);
 					}
 				}
 			}
@@ -839,6 +836,25 @@ public class PlayerCards {
 			
 		case "HISTORY_MONKS":
 			// shuffle discard pile
+			Collections.shuffle(GameEngine.discardCards);
+			List<String>list1 = new ArrayList<String>();
+			// draw four cards randomly
+			if(!GameEngine.discardCards.isEmpty())
+			{
+				for(int i = 0 ; i<4 ; i++)
+				{
+					String toBeAdded = GameEngine.discardCards.remove(0);
+					list1.add(toBeAdded);
+				
+				}
+				for(Player playerObj: GameEngine.playerObjList)
+				{
+					if(playerObj.pTurn == 1)
+					{
+						playerObj.pCards.put("Green", list1);
+					}
+				}
+			}
 			break;
 		case "HEX":
 			// take three cards from draw deck
@@ -862,10 +878,12 @@ public class PlayerCards {
 		case "HERE_N_NOW":
 			// roll the die
 			int result1 = rollDie();
+			NewGame.showErrorDialog("Result after rolling die: "+String.valueOf(result1));
 			// on roll of 7 or more take $ from any player
-			String playerColor6 = NewGame.displayBox("Select another player");
+			
 			if(result1 >= 7)
 			{
+				String playerColor6 = NewGame.displayBox("Select another player");
 				int count4 =0;
 				// another player gives you $3
 				for(Player playerObj : GameEngine.playerObjList)
@@ -892,7 +910,17 @@ public class PlayerCards {
 			// on roll of 1, pay $2 to bank or remove one of minions from board
 			else if(result1 == 1)
 			{
-				// remove your minion from one of areas
+				for(Player playerObj : GameEngine.playerObjList)
+				{
+					if(playerObj.pTurn == 1)
+					{
+						String value1 = NewGame.displayBox("Enter the area from which minion should be removed");
+						int valueInt = Integer.valueOf(value1);
+						// remove your minion from one of areas
+						GameEngine.regionObjList.get(valueInt-1).removeMinion(playerObj.color);
+						playerObj.removeMinion(valueInt);
+					}
+				}
 			}
 			break;
 			
@@ -903,7 +931,7 @@ public class PlayerCards {
 			takeLoanFromBank(2);
 			break;
 			
-		case "THE_OPERA_HOUSE":
+		case "THE_OPERA_HOUSE":	
 			// earn $1 for each minion in Isle Of Gods
 			int number1 = GameEngine.objIGods.rMinionNum;
 			for(Player playerObj : GameEngine.playerObjList)
@@ -926,10 +954,10 @@ public class PlayerCards {
 			{
 				if(playerObj.color.equals(playerColor7))
 				{
-					if(playerObj.cashHold >= 5)
+					if(playerObj.cashHold >= 3)
 					{
-						playerObj.cashHold = playerObj.cashHold - 5;
-						count5 = count5 + 5;
+						playerObj.cashHold = playerObj.cashHold - 3;
+						count5 = count5 + 3;
 					}
 				}
 			}
@@ -996,7 +1024,7 @@ public class PlayerCards {
 			
 		case "SACHARISSA_CRIPSLOCK":
 			// Earn $1 for each trouble marker on board
-			takeLoanFromBank(12 - GameEngine.TMarkerHold);
+			takeLoanFromBank(12 - (GameEngine.TMarkerHold));
 			break;
 			
 		case "ROSIE_PALM":
@@ -1013,13 +1041,20 @@ public class PlayerCards {
 						playerObj.cashHold = playerObj.cashHold - 2;
 						count6 = count6 + 2;
 					}
-					// this card now counts towards another player's player cards
+				}
+			}
+			
+			String card = null;
+			// add cash to current player's account
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					playerObj.cashHold = playerObj.cashHold + count6;
+					// remove one card that should be given to another player
 					List<String> greenList = playerObj.pCards.get("Green");
-					for(int i =0 ; i<greenList.size();i++)
-					{
-						greenList.add(playerCardName);
-					}
-					// remove all green colored cards from hash map
+					card = greenList.get(0);
+					greenList.remove(0);
 					playerObj.pCards.remove("Green");
 					// add new list to hash map
 					playerObj.pCards.put("Green", greenList);
@@ -1029,9 +1064,12 @@ public class PlayerCards {
 			// add cash to current player's account
 			for(Player playerObj : GameEngine.playerObjList)
 			{
-				if(playerObj.pTurn == 1)
+				if(playerObj.color.equals(playerColor8))
 				{
-					playerObj.cashHold = playerObj.cashHold + count6;
+					List<String> greenList = playerObj.pCards.get("Green");
+					greenList.add(card);
+					playerObj.pCards.remove("Green");
+					playerObj.pCards.put("Green", greenList);
 				}
 			}
 			break;
@@ -1049,16 +1087,16 @@ public class PlayerCards {
 			String playerColor9 = NewGame.displayBox("Select one player according to color");
 			int playerNumber3 = 0;
 			// they give you two cards of their choice
-			for(int i=0; i< GameEngine.playerObjList.size();i++)
+			for(Player playerObj : GameEngine.playerObjList)
 			{
-				if(GameEngine.playerObjList.get(i).color.equals(playerColor9))
+				if(playerObj.color.equals(playerColor9))
 				{
-					playerNumber = GameEngine.playerObjList.get(i).pNumber;
+					playerNumber3 = playerObj.pNumber;
 				}
 			}
 			for(int i=0 ; i < 2; i++)
 			{
-				takePlayerCard(playerNumber3);
+				takePlayerCard(playerNumber3, playerCardName);
 			}
 			break;
 			
@@ -1123,25 +1161,33 @@ public class PlayerCards {
 						playerObj.cashHold = playerObj.cashHold - 2;
 						count8 = count8 + 2;
 					}
-					// this card now counts towards another player's player cards
-					List<String> greenList = playerObj.pCards.get("Green");
-					for(int i =0 ; i<greenList.size();i++)
-					{
-						greenList.add(playerCardName);
-					}
-					// remove all green colored cards from hash map
-					playerObj.pCards.remove("Green");
-					// add new list to hash map
-					playerObj.pCards.put("Green", greenList);
 				}
 			}
 						
+			String card1 = null;
 			// add cash to current player's account
 			for(Player playerObj : GameEngine.playerObjList)
 			{
 				if(playerObj.pTurn == 1)
 				{
 					playerObj.cashHold = playerObj.cashHold + count8;
+					// remove one card that should be given to another player
+					List<String> greenList = playerObj.pCards.get("Green");
+					card1 = greenList.get(0);
+					greenList.remove(0);
+					playerObj.pCards.remove("Green");
+					playerObj.pCards.put("Green", greenList);
+				}
+			}
+			
+			for(Player playerObj : GameEngine.playerObjList)
+			{
+				if(playerObj.color.equals(playerColor11))
+				{
+					List<String> greenList = playerObj.pCards.get("Green");
+					greenList.add(card1);
+					playerObj.pCards.remove("Green");
+					playerObj.pCards.put("Green", greenList);
 				}
 			}
 			break;
@@ -1215,38 +1261,6 @@ public class PlayerCards {
 	 */
 	public static Pair getPlayerCard()
 	{
-		/*if(playerCards.isEmpty())
-		{
-			return new Pair(0,"empty");
-		}
-		// get key by color green first
-		List<Integer> tempList = playerCards.get("Green");
-		// green cards are finished
-		if(tempList == null)
-		{
-			 tempList = playerCards.get("Brown");
-			 int result = tempList.get(0);
-			 tempList.remove(0);
-			 playerCards.remove("Brown");
-			 // make sure list is not empty
-			 if(tempList.size() >= 1)
-			 {
-				// add again to the hashmap
-				 playerCards.put("Brown", tempList);
-			 }
-			 return new Pair(result,"Brown");
-		}
-		int result = tempList.get(0);
-		tempList.remove(0);
-		playerCards.remove("Green");
-		// make sure list is not empty
-		if(tempList.size() >= 1)
-		{
-			// add again to the hashmap
-			playerCards.put("Green", tempList);
-		}
-		
-		return new Pair(result,"Green");*/
 		Collections.shuffle(greenPlayerCardsList);
 		String result = greenPlayerCardsList.get(0).toString();
 		greenPlayerCardsList = new ArrayList<PlayerCardDeck>(greenPlayerCardsList);
@@ -1309,17 +1323,17 @@ public class PlayerCards {
 					newReg = Integer.parseInt(newRegion);
 					result = playerObj.checkMinionMove(newReg);
 				}
-				if (playerObj.minionHold < 1) {
+				//if (playerObj.minionHold < 1) {
 					oldRegion = NewGame
 							.displayBox("Select region from which minion should be moved:");
 					oldReg = Integer.parseInt(oldRegion);
 					playerObj.removeMinion(oldReg);
 					GameEngine.regionObjList.get(oldReg-1).removeMinion(playerObj.color);
-				}					
+				//}					
 				playerObj.placeMinion(newReg);
 				GameEngine.regionObjList.get(newReg-1).placeMinion(playerObj.color);
 				break;
-			}								
+			}// end if						
 		}
 	}
 	public static int checkInterruptCard(String pColor)

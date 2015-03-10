@@ -61,8 +61,148 @@ public class CityAreaCards
 		return valueToReturn.toString();
 	}
 	
-//	public static void main(String[] args)
-//	{
-//		System.out.println(getCityAreaCard(3));
-//	}
+	static // get money from bank
+	void takeMoneyFromBank(int amount)
+	{
+		GameEngine.BankHold = GameEngine.BankHold - amount;
+		for(Player playerObj : GameEngine.playerObjList)
+		{
+			if(playerObj.pTurn == 1)
+			{
+				playerObj.cashHold = playerObj.cashHold + amount;
+			}
+		}
+	}
+	
+	static // give money to bank
+	void giveMoneyToBank(int amount)
+	{
+		GameEngine.BankHold = GameEngine.BankHold + amount;
+		for(Player playerObj : GameEngine.playerObjList)
+		{
+			if(playerObj.pTurn == 1)
+			{
+				playerObj.cashHold = playerObj.cashHold - amount;
+			}
+		}
+	}
+	/**
+	 * Function gets name of city area and performs the actions accordingly
+	 * 					whose action is to be performed
+	 */
+	public static void playCityAreaCard(int cityArea)
+	{
+		switch(cityArea){
+		// Dolly Sisters
+		case 1:
+			//pay $3
+			giveMoneyToBank(3);
+			// place minion in dolly sisters or adjacent area
+			
+			break;
+		// Unreal Estate	
+		case 2:
+			for(Player playerObj: GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					// take one card from deck
+					List<String>list = playerObj.pCards.get("Green");
+					Pair pair = PlayerCards.getPlayerCard();
+					String color_temp = pair.getCardColor();
+					String cardNo_temp = pair.getCard();
+					list.add(cardNo_temp);
+					playerObj.pCards.put("Green", list);
+					
+					// discard one card
+					String cardName = NewGame.displayBox("Enter name of player card you want to discard");
+					List<String> greenList = new ArrayList<>();
+					greenList = playerObj.pCards.get("Green");
+					for (int i = 0; i < greenList.size(); i++) {
+						// get index of given cardName in the list
+						if (greenList.get(i).equals(cardName)) {
+							greenList.remove(i);
+						}
+					}
+					// remove all green colored cards from hashmap
+					playerObj.pCards.remove("Green");
+					// add new list to hashmap
+					playerObj.pCards.put("Green", greenList);
+				}
+			}
+			break;
+		// Dragon's Landing
+		case 3:
+			// take $2 from the bank
+			takeMoneyFromBank(2);
+			break;
+		// Small Gods
+		case 4:
+			break;
+		// The Scours
+		case 5:
+			// discard one card
+			for(Player playerObj: GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					String cardName = NewGame.displayBox("Enter name of player card you want to discard");
+					List<String> greenList = new ArrayList<>();
+					greenList = playerObj.pCards.get("Green");
+					for (int i = 0; i < greenList.size(); i++) {
+						// get index of given cardName in the list
+						if (greenList.get(i).equals(cardName)) {
+							greenList.remove(i);
+						}
+					}
+					// remove all green colored cards from hashmap
+					playerObj.pCards.remove("Green");
+					// add new list to hashmap
+					playerObj.pCards.put("Green", greenList);
+				}
+			}	
+			// take $2 from the bank
+			takeMoneyFromBank(2);
+			break;
+		// The Hippo
+		case 6:
+			// player takes $2 from the bank
+			takeMoneyFromBank(2);
+			break;
+		// The Shades
+		case 7:
+			// place trouble marker in Shades or adjacent area
+			break;
+		// Dimwell
+		case 8:
+			// pay $3
+			giveMoneyToBank(3);
+			// place minion in Dimwell or adjacent areas
+			break;	
+		// Longwall
+		case 9:
+			// Take $1 from bank
+			takeMoneyFromBank(1);
+			break;
+		// Isle Of Gods
+		case 10:
+			//pay $2
+			giveMoneyToBank(2);
+			// remove trouble marker from board
+			break;
+		// Seven Sleepers	
+		case 11:
+			// take $3 from bank
+			takeMoneyFromBank(3);
+			break;
+		// Nap Hill
+		case 12:
+			//take $1 from bank
+			takeMoneyFromBank(1);
+			break;
+
+		 default:
+             throw new IllegalArgumentException("Invalid city area: " + cityArea);
+		}
+	}
 }
