@@ -380,7 +380,7 @@ public class NewGame extends JFrame {
 					"PlayerCardImages/TheThievesGuild.png");
 			break;
 		default:
-			throw new IllegalArgumentException("Invalid player card name: "
+			throw new IllegalArgumentException("Invalid player card name:"
 					+ cardName);
 
 		}

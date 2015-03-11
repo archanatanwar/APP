@@ -42,6 +42,7 @@ public class Player {
 		personality = personalityTemp;
 		pNumber = count;
 		count++;
+		H_Region = new Hashtable<Integer, RegionStatus>();
 	}
 
 	/**
@@ -54,7 +55,7 @@ public class Player {
 		cashHold = 10;
 		// update cash with bank
 		GameEngine.BankHold = GameEngine.BankHold - cashHold;
-		H_Region = new Hashtable<Integer, RegionStatus>();
+		
 		pCards = new HashMap<String, List<String>>();
 		// distribute cards
 		// five to each player initially

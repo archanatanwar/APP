@@ -348,6 +348,9 @@ public class GameEngine extends JFrame implements Runnable {
 			int placedBuilding = 0;
 			// create children of root element as Player tag
 			for (Player a : playerObjList) {
+				regionNumber = 0;
+				placedMinion = 0;
+				placedBuilding = 0;
 				Element RegionStatusElement = doc
 						.createElement("Region_Status");
 				// region status info
@@ -356,10 +359,10 @@ public class GameEngine extends JFrame implements Runnable {
 					// region number
 					regionNumber = a.H_Region.get(key).regionNumber;
 					// minions placed
-					placedMinion = a.H_Region.get(key).placedbuilding;
+					placedMinion = a.H_Region.get(key).placedMinion;
 					// buildings placed
 					placedBuilding = a.H_Region.get(key).placedbuilding;
-					RegionStatusElement.appendChild(getRegionStatus(doc, regionNumber, placedMinion, placedMinion));
+					RegionStatusElement.appendChild(getRegionStatus(doc, regionNumber, placedMinion, placedBuilding));
 					
 				}
 				mainRootElement.appendChild(getPlayer(doc,a.color, a.buildingHold, a.cashHold, a.minionHold, a.personality, a.pCards, a.pNumber, a.pTurn, RegionStatusElement));
@@ -658,12 +661,40 @@ public class GameEngine extends JFrame implements Runnable {
 									NodeList PSList = (NodeList) firstPlayerStatusElement
 											.getElementsByTagName("PlayerColor");
 									Element PSElement = (Element) PSList
-											.item(0);
+											.item(z);
 									NodeList pColorList = PSElement
 											.getChildNodes();
-									// add region name to list of objects of region
-									regionObjList.get(s).rName = pColorList.item(0)
-											.getNodeValue();
+									
+									// add color of player to hash table of player status
+									String color = pColorList.item(0).getNodeValue();
+									// add the values to the HashMap if key is already there
+									PlayerStatus objSP = new PlayerStatus();
+									objSP.color = color;
+									
+									// pMinionRegion wise
+									NodeList BRList = (NodeList) firstPlayerStatusElement
+											.getElementsByTagName("BuildingRegionWise");
+									Element BRElement = (Element) BRList
+											.item(z);
+									NodeList buildingRegionWiseList = BRElement
+											.getChildNodes();
+									int buildingWise = Integer
+											.parseInt(buildingRegionWiseList.item(0).getNodeValue());
+									objSP.pbuildingRegionwise = buildingWise;
+									
+									
+									// pMinion region wise
+									NodeList MRList = (NodeList) firstPlayerStatusElement
+											.getElementsByTagName("MinionRegionWise");
+									Element MRElement = (Element) MRList
+											.item(z);
+									NodeList minionRegionWiseList = MRElement
+											.getChildNodes();
+									int minionWise = Integer
+											.parseInt(minionRegionWiseList.item(0).getNodeValue());
+									objSP.pMinionRegionwise = minionWise;
+			
+									regionObjList.get(s).H_Player.put(color, objSP);	
 								}
 							}
 							
@@ -820,12 +851,67 @@ public class GameEngine extends JFrame implements Runnable {
 						// add player number
 						playerObjList.get(s).pNumber = Integer.parseInt(pNumberList.item(0).getNodeValue());
 						
+						
+						// add region status to hash table
+						NodeList RegionStatusList = (NodeList) firstPlayerElement
+								.getElementsByTagName("RegionInfo");
+						for (int z = 0; z < RegionStatusList.getLength(); z++) {
+							Node firstRegionStatusNode = listOfPlayers.item(s);
+							if (firstRegionStatusNode.getNodeType() == Node.ELEMENT_NODE) {
+								Element firstRegionStatusElement = (Element) firstPlayerNode;
+								
+								// region number
+								NodeList RSList = (NodeList) firstRegionStatusElement
+										.getElementsByTagName("RegionNumber");
+								Element RSElement = (Element) RSList
+										.item(z);
+								NodeList regionNoList = RSElement
+										.getChildNodes();
+								
+								// add  region number to hash table of region status
+								int regionNo =  Integer
+										.parseInt((regionNoList.item(0).getNodeValue()));
+								RegionStatus objRS = new RegionStatus();
+								objRS.regionNumber = regionNo;
+							//	System.out.println("Region number:================================="+ regionNo);
+								
+								// placed Minion
+								NodeList minionList = (NodeList) firstRegionStatusElement
+										.getElementsByTagName("MinionsPlaced");
+								Element minionElement = (Element) minionList
+										.item(z);
+								NodeList minionRSList = minionElement
+										.getChildNodes();
+								int minions = Integer
+										.parseInt(minionRSList.item(0).getNodeValue());
+								objRS.placedMinion = minions;
+								//System.out.println("minion number:================================="+ minions);
+								
+								// placed building
+								NodeList buildingList = (NodeList) firstRegionStatusElement
+										.getElementsByTagName("BuildingsPlaced");
+								Element buildingElement = (Element) buildingList
+										.item(z);
+								NodeList buildingRSList = buildingElement
+										.getChildNodes();
+								int buildings = Integer
+										.parseInt(buildingRSList.item(0).getNodeValue());
+								objRS.placedbuilding = buildings;
+								//System.out.println("building number:================================="+ buildings);
+								playerObjList.get(s).H_Region.put(regionNo, objRS);
+								
+							}
+						}
 						// player turn
 						NodeList PTurnList = firstPlayerElement.getElementsByTagName("Player_Turn");
 						Element PTurnElement = (Element)PTurnList.item(0);
 						NodeList TurnList = PTurnElement.getChildNodes();
 						// add player turn
 						playerObjList.get(s).pTurn = Integer.parseInt(TurnList.item(0).getNodeValue());
+						if(playerObjList.get(s).pTurn == 1)
+						{
+							NewGame.PlayerTurn = playerObjList.get(s).pNumber;
+						}
 						
 							// amount of cash with player currently
 							NodeList CashList = firstPlayerElement
@@ -886,7 +972,14 @@ public class GameEngine extends JFrame implements Runnable {
 								//temp = Integer.parseInt(a.trim());
 								//convertToInt.add(temp);
 							//}
-
+							for(int i=0; i<tempList.size(); i++)
+							{
+								String temp = tempList.get(i).replaceAll("\\}", "");
+								temp = temp.trim();
+								tempList.set(i, temp);
+								//System.out.println("----"+tempList.get(i)+ "----------");
+								
+							}
 							player_Cards.put(keyValuePair[0], tempList);
 							playerObjList.get(s).pCards = player_Cards;
 						}// end if
