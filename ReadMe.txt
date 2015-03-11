@@ -1,5 +1,5 @@
 Project: Discworld: Ankh-Morpork 
-BUILD 1
+BUILD 2
 
 Team Information
 -------------------------------------------------------------------
@@ -25,24 +25,30 @@ This class is used to get the names for the City Area Cards.
 This class is responsible for :
 -- Returning a City Area Card for the specific city.
 -- Maintain consistency so that no card is given twice.
+-- Perform action according to the city selected.
 
 GameEngine.java
-It is the main class for the Game Package.
+Driver class of the game application.
 This class is responsible for :
--- Controls the execution of the entire game.
--- Creates object for Player and Region Class.
--- Saves and Load XML file to/from class objects
+--Execution of the entire game.
+--Creation of objects for Player and Region Class.
+--Saving and Loading XML file to/from class objects.
+
 
 NewGame.java
-This class is used to create GUI. 
+An object of this class is created when Player click on the button "Start New Game". 
 This class is responsible for :
--- Showing Players, Regions and other Information in GUI.
--- Populate objects of the Player Class.
+--Initialization of GUI elements.
+--Populate objects of the Player Class.
+--Placing minions in the default area.
+--Display of City Area Card according corresponding to selected.
+--Display of Personality Card according to selected.
+
 
 Pair.java
 This class is a utility class.
 This class is responsible for :
--- Returning two values from single function i.e. color and list of player class.
+--Returning two values from single function i.e. color and list of player class.
 
 PersonalityCards.java
 This class is used to assign personalities to the Players.
@@ -50,35 +56,52 @@ This class is responsible for :
 -- Returning a personality card at random.
 -- Maintain consistency so that no player is assigned with the same personality.
 
-Players.java
-This class is used to maintaining Player Info like color, personality, minions, buildings, cash etc.
+Player.java
+Player class is used to store the colour, number of minions and presence of building in the region for a particular Player. Number of objects created of this class is equal to number of players in the game.
+This class is responsible for :
+--Maintaining Player Info like colour, personality, minions, buildings, cash etc.
+--Handling of the Random Events.
+--Checking the winning condition related to personality.
 
 PlayerCards.java
-This class is used to assign cards to the players.
+This class is called from the Players class to assign cards to the players.
 This class is responsible for :
--- Returning card numbers for each player at random.
--- Maintain consistency so that no player is assigned with the same cards.
+--Creation of deck of brown and green cards and shuffling it.
+--Returning card numbers for each player at random.
+--Maintain consistency so that no player is assigned with the same cards.
+--Moving minion of from one region to another.
+--Checking the Interrupt Card.
+
 
 PlayerStatus.java
-This class is used from the region class to store regionwise data for each player. 
+This class is used by the Region class to store region wise data for each player.
+It keeps track of which player has minion or building in a region.
 
 RandomEventCards.java
-This class is used to get the names for the Random Event Cards.
+It is an abstract class used to get the names for the Random Event Cards.
+Separate classes for each RandomEvent are created as concrete classes.
 This class is responsible for :
--- Returning a RandomEventCard at random.
--- Maintain consistency so that no card is drawn twice.
+--Return of a random RandomEventCard.
+--Maintaining consistency so that no card is drawn twice.
+
 
 Region.java
-This class is used to assign default values to the all the 12 Regions like Region Name, Region Number, Building Cost etc..
+This class is called from the GameEngine class to assign default values to the all the twelve different regions like Region Name, Region Number, Building Cost etc.
 This class is responsible for :
--- Maintaining Region Info like number of minions, demons, trolls, existence of building, trouble Marker.
+--Maintaining Region Info like number of minions, demons, trolls, existence of building, trouble Marker.
+--Perform function relevant to the region selected.
 
 RegionStatus.java
-This class is used from the players class to store playerwise data for each region.
+This class is used from the Player class to store playerwise data for each region. 
+It keeps track of which region has minion or building of which player.
 
 SavedGame.java
-This class is used for creating GUI for showing Players, Regions and other Information by reading XML file.
--- Populate objects of the other class by the data read from XML.
+This class object is created when Player click on the button "Load Game". 
+This class is responsible for :
+--Creation of GUI for showing Players, Regions and other Information by reading XML file.
+--Loading of GUI.
+--Populate objects of the other class by the reading XML data file.
+
 
 
 JAVA DOC
@@ -93,9 +116,10 @@ https://github.com/archanatanwar/APP/
 
 DEPLOYMENT VIEW
 -------------------------------------------------------------------
--- Extract the Zip file.
--- Open the same in your Java Workspace.
--- Sometimes it might give an error for : jdom-2.0.5.jar . Please include the same in your project and change the classpath if required.
--- Run the GameEngine class.
+--Extract the Zip file.
+--Import it as an existing Java project into your Java Workspace.
+--Sometimes it might throw an error for: jdom-2.0.5.jar . Please include the same in your project and change the classpath if required.
+--Run the GameEngine class as a Java application and play the game.
+
 
 
