@@ -1,5 +1,16 @@
 package Game;
 
+/**
+ * <h1> Explotion </h1>
+ * <p>
+ * Roll the die to select an area<br>
+ * Remove any building in that area
+ * </p>
+ * 
+ * @author mary
+ *
+ */
+
 public class ExplosionEventCard extends RandomEventCards{
 	public void executeRandomEvent()
 	{

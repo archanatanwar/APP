@@ -394,11 +394,8 @@ public class NewGame extends JFrame {
 		GameEngine.objDSisters.placeDefaultMinion(color);
 	}
 
-	public static void reLaunchDialog() {
-		//initComponents();
-		//Two_Players.setEnabled(false);
-		//Three_Players.setEnabled(false);
-		//Four_Players.setEnabled(false);
+	// populates values of objects into tables for GUI
+	public static void reLaunchDialog() {		 
 		int count = 0;
 		turnIndex  = PlayerTurn;
 		while (count < GameEngine.playerObjList.size()) {
@@ -491,11 +488,32 @@ public class NewGame extends JFrame {
 		}
 	}
 
+	/**
+	 * utility method used to place values in the table for cards using objects
+	 * of players 
+	 */
 	public static void setCardInfo() {
+		List<String> greenListTemp = new ArrayList<>();
 		int i;
 		int rIndex=0;
-		int cIndex=0;
+		int cIndex = 0;
 		for (Player obj : GameEngine.playerObjList) {
+			if(obj.color.equals("red"))
+			{
+				cIndex = 0;
+			}
+			else if(obj.color.equals("yellow"))
+			{
+				cIndex = 1;
+			}
+			else if(obj.color.equals("green"))
+			{
+				cIndex = 2;
+			}
+			else if(obj.color.equals("blue"))
+			{
+				cIndex = 3;
+			}
 			
 			for(i=0; i<10; i++)
 			{
@@ -503,22 +521,21 @@ public class NewGame extends JFrame {
 			}
 			
 			rIndex=0;
-			greenList = obj.pCards.get("Green");
-			System.out.println(obj.color + "   " + greenList.toString());
+			greenListTemp = obj.pCards.get("Green");
+			System.out.println(obj.color + "   " + greenListTemp.toString());
 			//brownList = obj.pCards.get("Brown");
-			if(!greenList.isEmpty())
+			if(!greenListTemp.isEmpty())
 			{
-				for(i=0; i<greenList.size(); i++)
+				for(i=0; i<greenListTemp.size(); i++)
 				{
-					Card_Info.setValueAt("G: "+ greenList.get(i), rIndex, cIndex);
+					Card_Info.setValueAt("G: "+ greenListTemp.get(i), rIndex, cIndex);
 					rIndex++;
 				}
 			}
 			/*for (i = 0; i < brownList.size(); i++) {
 				Card_Info.setValueAt("B: " + brownList.get(i), rIndex, cIndex);
 				rIndex++;
-			}*/			
-			cIndex++;
+			}*/					
 		}
 	}
 	/**
@@ -744,31 +761,42 @@ public class NewGame extends JFrame {
 		}
 	}
 	
+	// shows a message on dialog box
 	public static void showErrorDialog(String errMessage)
 	{
 		JOptionPane.showMessageDialog(null, errMessage);
 	}
 
+	// displays the unused personality cards that have not been distributed to the players
 	public static void displayUnusedPersonalityCards() {
 		JFrame frame = new JFrame("Unused Personality Cards");
 		panel = new JPanel();
 		List<PersonalityCards.getPersonalityCard> list = PersonalityCards.PersonalityList;
+		// array of labels to save all the personality card images
 		labels = new JLabel[list.size()];
 		for (PersonalityCards.getPersonalityCard a : list) {
+			// get path for image of personality card
 			ImageIcon playerPath1 = getPersonalityCardImage(a.toString());
 			final JLabel label = new JLabel("", playerPath1, JLabel.CENTER);
 			label.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+			// add label to panel
 			panel.add(label);
 		}
+		// display frame
 		frame.setContentPane(panel);
 		frame.pack();
 		frame.setVisible(true);
 	}
 
+	/**
+	 * The window opens up when user clicks on Play Game button.
+	 * The method helps to display player cards, personality card
+	 * and city area card if any according to the player's turn.
+	 */
 	public static void createPlayerFrame() {
 		final JFrame frame = new JFrame("Player Info");
 		panel = new JPanel();
-
+		// label holds player's color according to the turn
 		JLabel playerTurn = new JLabel(" ");
 
 		String personalityCard = " ";
@@ -788,7 +816,7 @@ public class NewGame extends JFrame {
 					greenList.add(cardNo_temp);
 				}
 			playerObj.pCards.put("Green", greenList);
-			System.out.println("Cards in greenlist----------------: "+greenList);
+			
 			// city area cards
 			if(playerObj.buildingHold < 6)
 			{
@@ -816,20 +844,23 @@ public class NewGame extends JFrame {
 		labels = new JLabel[labelSize]; // array of label that contains images
 										// of player cards
 		index = 0;
-		//setCardInfo();
+		setCardInfo();
 		for (final String a : greenList) {
 			// player Cards
 			System.out.println("Get image for card: "+a);
 			ImageIcon playerPath1 = getPlayerCardImage(a);
 			final JLabel label = new JLabel("", playerPath1, JLabel.CENTER);
 			label.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+			// on click event on player card
 			label.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent e) {
 					// call the function to be invoked to perform function
 					// according to actions on specific player card
 					PlayerCards.performLeftToRight(a);
+					// disable the frame once the action gets performed
 					frame.dispatchEvent(new WindowEvent(frame,
 							WindowEvent.WINDOW_CLOSING));
+					// call method to display updates region and player info
 					reLaunchDialog();
 				}
 			});
@@ -849,8 +880,6 @@ public class NewGame extends JFrame {
 						// call the function to be invoked to perform function
 						// according to actions on specific player card
 						CityAreaCards.playCityAreaCard(z);
-						frame.dispatchEvent(new WindowEvent(frame,
-								WindowEvent.WINDOW_CLOSING));
 						reLaunchDialog();
 					}
 				});
@@ -859,10 +888,6 @@ public class NewGame extends JFrame {
 		}
 		personalityPath = getPersonalityCardImage(personalityCard);
 		JLabel playerPersonality = new JLabel("", personalityPath, JLabel.RIGHT);
-
-		/*
-		 * for(int j =0 ;j <labels.length; j++) { panel.add(labels[j]); }
-		 */
 		panel.add(playerPersonality);
 		frame.setContentPane(panel);
 		frame.pack();
@@ -870,6 +895,7 @@ public class NewGame extends JFrame {
 		frame.setVisible(true);
 	}
 
+	// method asks for input from user and the parameter contains string to be displayed for the user
 	public static String displayBox(String input) {
 		String response = JOptionPane.showInputDialog(null, input,
 				"Enter input", JOptionPane.QUESTION_MESSAGE);

@@ -38,7 +38,10 @@ public class PlayerCards {
 		return result;
 	}
 
-	// pay specified money to bank
+	/** method helps the player to pay specified money to bank
+	 * 
+	 * @param cash Integer amount of money to be paid to bank
+	 */
 	public static void payToBank(int cash) {
 		for (Player playerObj : GameEngine.playerObjList) {
 			if (playerObj.pTurn == 1) {
@@ -48,18 +51,25 @@ public class PlayerCards {
 		}
 	}
 
-	// take loan from bank
+	/** method helps the player to take loan from bank
+	 * 
+	 * @param cash Integer amount of money taken from bank
+	 */
 	public static void takeLoanFromBank(int cash) {
 		for (Player playerObj : GameEngine.playerObjList) {
 			// current player
-			if (playerObj.pTurn == 1) {
+			if (playerObj.pTurn == 1 && (GameEngine.BankHold >= cash)) {
 				GameEngine.BankHold = GameEngine.BankHold - cash;
 				playerObj.cashHold = playerObj.cashHold + cash;
 			}
 		}
 	}
 
-	// take player cards from other players
+	/** take player cards from other players
+	 * 
+	 * @param playerNumber Integer denotes player number who will give player card
+	 * @param cardName String name of card that is being played currently
+	 */
 	public static void takePlayerCard(int playerNumber, String cardName) {
 		String result = null;
 		for (Player playerObj : GameEngine.playerObjList) {
@@ -72,6 +82,7 @@ public class PlayerCards {
 				// if the card to be removed is same as the card being played
 				if(cardName == tempList.get(0))
 				{
+					// take next card
 					result = tempList.get(1);
 				}
 				else
@@ -103,29 +114,37 @@ public class PlayerCards {
 		}
 	}
 
-	// take money from other players
+	/** method helps to take money from other players
+	 * 
+	 * @param cash Integer amount of money to be taken
+	 * @param playerNumber Integer player from whom money should be taken
+	 */
 	public static void takeMoneyFromOtherPlayers(int cash, int playerNumber) {
 		for (Player playerObj : GameEngine.playerObjList) {
 			// not current player
-			if (playerObj.pNumber == playerNumber) {
+			if (playerObj.pNumber == playerNumber && (playerObj.cashHold >= cash)) {
 				playerObj.cashHold = playerObj.cashHold - cash;
 			}
 		}
 	}
 
-	// take money from every other player
+	/** method helps to take money from every other player
+	 * 
+	 * @param cash Integer amount of money to be taken
+	 */
 		public static void takeMoneyFromEveryPlayer(int cash)
 		{
 			int count = 0;
 			for(Player playerObj : GameEngine.playerObjList)
 			{
-				if(playerObj.pTurn == 0)
+				if(playerObj.pTurn == 0 && (playerObj.cashHold >= cash))
 				{
 					//takeMoneyFromOtherPlayers(2, playerObj.pNumber);
 					playerObj.cashHold = playerObj.cashHold - cash;
 					count = count + cash;
 				}
 			}
+			// add money into current player's account
 			for(Player playerObj : GameEngine.playerObjList)
 			{
 				// current player
@@ -135,7 +154,11 @@ public class PlayerCards {
 				}
 			}
 		}
-	// delete player card from list
+		
+	/** Helps delete player card from list
+	 * 
+	 * @param cardName String card name that is supposed to be deleted
+	 */
 	private static void delPlayerCard(String cardName) {
 		List<String> greenList = new ArrayList<>();
 		for (Player playerObj : GameEngine.playerObjList) {
@@ -158,9 +181,18 @@ public class PlayerCards {
 		}
 	}
 
+	/**
+	 * Method defines actions from left to right at the top of player cards.<br>
+	 * It makes sure that all the symbols are being performed <br>
+	 * from left to right
+	 * @param cardName String name of player card for which functions should be performed
+	 */
 	public static void performLeftToRight(String cardName) {
+		// check winning condition before playing the player card
 		checkWinningCondition();
-//		cardName = "ROSIE_PALM";
+		//cardName = "RINCEWIND";
+		
+		// all the player cards' actions are defined by switch case
 		switch (cardName) {
 		case "MR_BOGGIS":
 			performActionOfSymbol("SCROLL", cardName);
@@ -202,7 +234,7 @@ public class PlayerCards {
 			break;
 		case "THE_DYSK":
 			performActionOfSymbol("PLACE_BUILDING", "THE_DYSK");
-			//performActionOfSymbol("SCROLL", cardName);
+			performActionOfSymbol("SCROLL", cardName);
 			delPlayerCard(cardName);
 			break;
 		case "THE_DUCKMAN":
@@ -310,7 +342,7 @@ public class PlayerCards {
 			performActionOfSymbol("SCROLL", cardName);
 			delPlayerCard(cardName);
 			break;
-		case "NOBBY_NOBS":
+		case "NOBBY_NOBBS":
 			performActionOfSymbol("SCROLL", cardName);
 			performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
 			delPlayerCard(cardName);
@@ -403,10 +435,19 @@ public class PlayerCards {
 					+ cardName);
 		}
 	}
-
+	
+	/**
+	 * Function defines actions for the symbols.<br>
+	 * The actions of symbols are performed here depending<br>
+	 * on the type of symbol
+	 * 
+	 * @param symbolName String name of symbol to perform the action
+	 * @param playerCardName String card name that was clicked by user
+	 */
 	public static void performActionOfSymbol(String symbolName,
 			String playerCardName) {
 		switch (symbolName) {
+		// place minion
 		case "PLACE_MINION":
 			String oldRegion = "";
 			String newRegion = "";
@@ -439,6 +480,7 @@ public class PlayerCards {
 				}								
 			}
 			break;
+			// place building
 		case "PLACE_BUILDING":
 			oldRegion = "";
 			newRegion = "";			
@@ -469,6 +511,7 @@ public class PlayerCards {
 				}								
 			}
 			break;
+			// assassination
 		case "ASSASSINATION":
 			result = 0;
 			int interruptStatus = 0;
@@ -489,7 +532,7 @@ public class PlayerCards {
 									.displayBox("Select player color:");
 							for (Player playerObj1 : GameEngine.playerObjList) {
 								if (playerObj1.color.equals(playerChoice)) {									
-									interruptStatus = checkInterruptCard(playerChoice);
+									interruptStatus = checkInterruptCard(newReg, playerChoice);
 									if(interruptStatus == 0)
 									{
 										playerObj1.removeMinion(newReg);
@@ -515,6 +558,7 @@ public class PlayerCards {
 				}					
 			}
 			break;
+			// remove one trouble marker
 		case "REMOVE_ONE_TROUBLE_MARKER":
 			int tRegion;
 			String tempRegion;
@@ -539,20 +583,24 @@ public class PlayerCards {
 				}				
 			}
 			break;
+			// scroll
 		case "SCROLL":
 			// perform action specified at bottom of card
 			performActionInText(playerCardName);
 			break;
+			// random event
 		case "RANDOM_EVENT":
+			// randomly choose an event from random event cards
 			String eventChoice  = RandomEventCards.getRandomEventCard();
-			System.out.println(eventChoice);
-			switch("THE_DRAGON")
+			// cases for random event cards that calls respective methods
+			switch(eventChoice)
 			{
 				case "THE_DRAGON":
 					RandomEventCards dragonEvent = new DragonEventCard();
 					dragonEvent.executeRandomEvent();
 					break;
 				case "FLOOD":
+					System.out.println("Flood event occurred !!!!!!!");
 					break;
 				case "FIRE":
 					RandomEventCards fireEvent = new FireEventCard();
@@ -571,8 +619,10 @@ public class PlayerCards {
 					explosionEvent.executeRandomEvent();
 					break;
 				case "MYSTERIOUS_MURDERS":
+					System.out.println("MYSTERIOUS_MURDERS event occurred !!!!!!!");
 					break;
 				case "DEMONS_FROM_THE_DUNGEONS_DIMENSIONS":
+					System.out.println("DEMONS_FROM_THE_DUNGEONS_DIMENSIONS event occurred !!!!!!!");
 					RandomEventCards dungeonEvent = new DungeonEventCard();
 					dungeonEvent.executeRandomEvent();
 					break;
@@ -581,6 +631,7 @@ public class PlayerCards {
 					subsidenceEvent.executeRandomEvent();
 					break;
 				case "BLOODY_STUPID_JOHNSON":
+					System.out.println("BLOODY_STUPID_JOHNSON event occurred !!!!!!!");
 					break;
 				case "TROLLS":
 					RandomEventCards trollsEvent = new TrollsEventCard();
@@ -593,11 +644,13 @@ public class PlayerCards {
 					break;
 			}
 			break;
+			// play another card
 		case "PLAY_ANOTHER_CARD":
-		System.out.println("play another card");
-			//delPlayerCard(playerCardName);
-		//	NewGame.createPlayerFrame();
+			System.out.println("play another card");
+			delPlayerCard(playerCardName);
+			NewGame.createPlayerFrame();
 			break;
+			// interrupt
 		case "INTERRUPT":
 			System.out.println("interrupt");
 			break;
@@ -944,7 +997,7 @@ public class PlayerCards {
 			}
 			break;
 			
-		case "NOBBY_NOBS":
+		case "NOBBY_NOBBS":
 			// take $3 from a player of your choice
 			// select another player
 			String playerColor7 = NewGame.displayBox("Select another player");
@@ -1102,6 +1155,19 @@ public class PlayerCards {
 			
 		case "ZORGO_THE_RETRO_PHRENOLOGIST":
 			// you may exchange personality card with one chosen from from unused personality cards
+			List<PersonalityCards.getPersonalityCard> list = PersonalityCards.PersonalityList;
+			String pCard = list.get(0).toString();
+			String response = NewGame.displayBox("Do you want to exchange personality card? (y/n)");
+			if(response.equals("y"))
+			{
+				for(Player playerObj : GameEngine.playerObjList)
+				{
+					if(playerObj.pTurn == 1)
+					{
+						playerObj.personality = pCard;
+					}
+				}
+			}
 			break;
 			
 		case "DR_WHITEFACE":
@@ -1275,6 +1341,7 @@ public class PlayerCards {
 		return new Pair(result,"Green");
 	}
 	
+	// check winning condition of current player accordingly
 	public static void checkWinningCondition()
 	{
 		int result = 0;
@@ -1284,6 +1351,7 @@ public class PlayerCards {
 			{
 				result = playerObj.checkWinningCondition(playerObj.personality);
 			}
+			// winning condition satisfies
 			if(result == 1)
 			{
 				NewGame.showErrorDialog("Congratulations "+ playerObj.color +" Win The Game!");
@@ -1292,6 +1360,7 @@ public class PlayerCards {
 		}		
 	}
 	
+	// the cards that might have taken loan from bank and who need to pay back at the end of game
 	public static void populateLoanCards(String loanCard)
 	{
 		for(Player playerObj : GameEngine.playerObjList)
@@ -1303,6 +1372,11 @@ public class PlayerCards {
 		}
 	}
 	
+	/**
+	 * Method helps to move minion of another player from one region<br>
+	 * to another
+	 * @param pcolor String represents player whose minion needs to be moved
+	 */
 	public static void moveOtherPlayerMinion(String pcolor)
 	{
 		String oldRegion = "";
@@ -1336,7 +1410,16 @@ public class PlayerCards {
 			}// end if						
 		}
 	}
-	public static int checkInterruptCard(String pColor)
+	
+	/**
+	 * Method that checks if a player's minion is about to be removed<br>
+	 * by another player during assassination and the player has interrupt card.<br>
+	 * So he should stop the other player immediately.
+	 * @param oldRegion Integer region from which minion of player is supposed to be removed
+	 * @param pColor String denotes player whose minion is being removed
+	 * @return
+	 */
+	public static int checkInterruptCard(int oldRegion, String pColor)
 	{
 		int result = 0;
 		List<String> greenList = new ArrayList<>();
@@ -1346,9 +1429,34 @@ public class PlayerCards {
 				greenList = playerObj.pCards.get("Green");
 				for (int i = 0; i < greenList.size(); i++) {
 					// get index of given cardName in the list	
-					if (greenList.get(i).equals("GASPODE") || greenList.get(i).equals("FRESH_START_CLUB") || greenList.get(i).equals("WALLACE_SONKY")) {
-						greenList.remove(i);
+					// check for player cards Gaspode and Wallace Sonky
+					if (greenList.get(i).equals("GASPODE") || greenList.get(i).equals("WALLACE_SONKY")) {
 						NewGame.showErrorDialog(greenList.get(i)+" Interrupt Card Played by "+pColor+" !");
+						greenList.remove(i);
+						result = 1;
+						break;
+					}
+					// check for fresh start club player card
+					else if(greenList.get(i).equals("FRESH_START_CLUB"))
+					{
+						String newRegion = NewGame
+								.displayBox("Select region number:");
+						int newReg = Integer.parseInt(newRegion);
+						result = playerObj.checkMinionMove(newReg);
+						while(result == 0)
+						{
+							NewGame.showErrorDialog("Wrong Input!");
+							newRegion = NewGame
+									.displayBox("Select region in which minion should be placed:");
+							newReg = Integer.parseInt(newRegion);
+							result = playerObj.checkMinionMove(newReg);
+						}
+						playerObj.removeMinion(oldRegion);
+						GameEngine.regionObjList.get(oldRegion-1).removeMinion(playerObj.color);										
+						playerObj.placeMinion(newReg);
+						GameEngine.regionObjList.get(newReg-1).placeMinion(playerObj.color);
+						NewGame.showErrorDialog(greenList.get(i)+" Interrupt Card Played by "+pColor+" !");
+						greenList.remove(i);
 						result = 1;
 						break;
 					}

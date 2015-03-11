@@ -1,5 +1,16 @@
 package Game;
 
+/**
+ * <h1> Trolls </h1>
+ * <p>
+ * Roll the die three times to select three areas<br>
+ * Place one Troll minion piece in each area
+ * </p>
+ * 
+ * @author mary
+ *
+ */
+
 public class TrollsEventCard extends RandomEventCards{
 	
 	public void executeRandomEvent()

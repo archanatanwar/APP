@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -305,13 +306,29 @@ public class GameEngine extends JFrame implements Runnable {
 			// create root element i.e. XML
 			Element mainRootElement = doc
 					.createElementNS("CreateXMLDOM", "XML");
+			Element PlayerStatusElement = doc
+					.createElement("Player_Info");
 			// add it to doc
 			doc.appendChild(mainRootElement);
+			int buildingRegionWise = 0;
+			int minionRegionWise = 0;
+			String pcolor = null;
 			// create children of root element as Region tag
 			for (Region a : regionObjList) {
+				// player status info
+				Set<String> keys = Region.H_Player.keySet();
+				for (String key : keys) {
+					// color
+					pcolor = a.H_Player.get(key).color;
+					// buildings of player in an area
+					buildingRegionWise = a.H_Player.get(key).pbuildingRegionwise;
+					// minions of player in an area
+					minionRegionWise = a.H_Player.get(key).pMinionRegionwise;
+					PlayerStatusElement.appendChild(getPlayerStatus(doc, pcolor, buildingRegionWise, minionRegionWise));
+				}
 				mainRootElement.appendChild(getRegion(doc, a.rName, a.rNumber,
-						a.rBuildingCost, a.rMinionNum, a.rTroubleMarker,
-						a.rDemon, a.rTroll));
+						a.rBuildingCost, a.rMinionNum, a.rBuilding, a.rTroubleMarker,
+						a.rDemon, a.rTroll, PlayerStatusElement));
 			}
 			int count = 1;
 			// create children of root element as Player tag
@@ -319,6 +336,9 @@ public class GameEngine extends JFrame implements Runnable {
 				mainRootElement.appendChild(getPlayer(doc,a.color, a.buildingHold, a.cashHold, a.minionHold, a.personality, a.pCards, a.pNumber, a.pTurn));
 				count++;
 			}
+			
+			//  for board
+			mainRootElement.appendChild(getBoard(doc, BankHold, TMarkerHold, DemonsHold, TrollsHold));
 			// output DOM XML to console
 			Transformer transformer = TransformerFactory.newInstance()
 					.newTransformer();
@@ -333,6 +353,47 @@ public class GameEngine extends JFrame implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	public static Node getPlayerStatus(Document doc, String pcolor, int buildingRegionWise, int minionRegionWise){
+		// Region gets added to root element and all parameters as Region's
+		// children
+		Element Player_info = doc.createElement("PlayerInfo");
+		// color
+		Element Player_color = doc.createElement("PlayerColor");
+		Player_color.appendChild(doc.createTextNode(pcolor));
+		Player_info.appendChild(Player_color);
+		// building
+		Element buildingRegionWise_info = doc.createElement("BuildingRegionWise");
+		buildingRegionWise_info.appendChild(doc.createTextNode(Integer.toString(buildingRegionWise)));
+		Player_info.appendChild(buildingRegionWise_info);
+		// minion
+		Element minionRegionWise_info = doc.createElement("MinionRegionWise");
+		minionRegionWise_info.appendChild(doc.createTextNode(Integer.toString(minionRegionWise)));
+		Player_info.appendChild(minionRegionWise_info);
+		return Player_info;
+	}
+	public static Node getBoard(Document doc, int money, int troubleMarkers, int demons, int trolls){
+		// Region gets added to root element and all parameters as Region's
+		// children
+		Element board = doc.createElement("Board");
+		board.appendChild(getBoardInfo(doc, board, "Cash",
+				money));
+		board.appendChild(getBoardInfo(doc, board, "TroubleMarkers",
+				troubleMarkers));
+		board.appendChild(getBoardInfo(doc, board, "Demons",
+				demons));
+		board.appendChild(getBoardInfo(doc, board, "Trolls",
+				trolls));
+		return board;
+	}
+	
+	// utility method to create text node
+	public static Node getBoardInfo(Document doc, Element element,
+				String name, int value) {
+			Element node = doc.createElement(name);
+			node.appendChild(doc.createTextNode(Integer.toString(value)));
+			return node;
+		}
 
 	/**
 	 * Function acts as a utility method that creates a child node of region for
@@ -358,20 +419,22 @@ public class GameEngine extends JFrame implements Runnable {
 	 * @return Node that should be added to root element
 	 */
 	public static Node getRegion(Document doc, String name, int rNumber,
-			int rBuildingCost, int rMinionNum, int rTroubleMarker, int rDemon,
-			int rTroll) {
+			int rBuildingCost, int rMinionNum, int rBuildingNum, int rTroubleMarker, int rDemon,
+			int rTroll, Element PlayerStatusElement) {
 		// Region gets added to root element and all parameters as Region's
 		// children
 		Element region = doc.createElement("Region");
 		Element Region_name = doc.createElement("Name");
 		Region_name.appendChild(doc.createTextNode(name));
-		region.appendChild(Region_name);
-		region.appendChild(getRegionElements(doc, region, "RegionNumber",
+		region.appendChild(PlayerStatusElement);
+		Region_name.appendChild(getRegionElements(doc, region, "RegionNumber",
 				rNumber));
 		region.appendChild(getRegionElements(doc, region, "rBuildingCost",
 				rBuildingCost));
 		region.appendChild(getRegionElements(doc, region, "NumberOfMinions",
 				rMinionNum));
+		region.appendChild(getRegionElements(doc, region, "NumberOfBuildings",
+				rBuildingNum));
 		region.appendChild(getRegionElements(doc, region,
 				"NumberOfrTroubleMarkers", rTroubleMarker));
 		region.appendChild(getRegionElements(doc, region, "NumberOfrDemons",
@@ -487,7 +550,10 @@ public class GameEngine extends JFrame implements Runnable {
 					int totalRegions = listOfRegions.getLength();
 					// List of players present in XML file
 					NodeList listOfPlayers = doc.getElementsByTagName("Player");
-
+					
+					// board present in XML file
+					NodeList listOfBoard = doc.getElementsByTagName("Board");
+					
 					// for regions
 					for (int s = 0; s < listOfRegions.getLength(); s++) {
 						Node firstRegionNode = listOfRegions.item(s);
@@ -536,6 +602,17 @@ public class GameEngine extends JFrame implements Runnable {
 							regionObjList.get(s).rMinionNum = Integer
 									.parseInt(rMinionList.item(0)
 											.getNodeValue());
+							// number of buildings in region
+							NodeList BuildingList = firstRegionElement
+									.getElementsByTagName("NumberOfBuildings");
+							Element BuildingElement = (Element) BuildingList
+									.item(0);
+							NodeList rBuildingList = BuildingElement
+									.getChildNodes();
+							// add minion number to list of objects of region
+							regionObjList.get(s).rBuilding = Integer
+									.parseInt(rBuildingList.item(0)
+											.getNodeValue());
 
 							// number of trouble markers in region
 							NodeList TMList = firstRegionElement
@@ -560,13 +637,60 @@ public class GameEngine extends JFrame implements Runnable {
 							NodeList TList = firstRegionElement
 									.getElementsByTagName("NumberOfrTrolls");
 							Element TElement = (Element) TList.item(0);
-							NodeList TrollList = DElement.getChildNodes();
+							NodeList TrollList = TElement.getChildNodes();
 							// add troll number to list of objects of region
 							regionObjList.get(s).rTroll = Integer
 									.parseInt(TrollList.item(0).getNodeValue());
 						} // end if
 					}// end for
-
+					
+					// for board
+					for (int s = 0; s < listOfBoard.getLength(); s++) {
+						Node firstBoardNode = listOfBoard.item(s);
+						if (firstBoardNode.getNodeType() == Node.ELEMENT_NODE) {
+							Element firstBoardElement = (Element) firstBoardNode;
+							
+							// cash with bank
+							NodeList BList = firstBoardElement
+									.getElementsByTagName("Cash");
+							Element BElement = (Element) BList.item(0);
+							NodeList BankList = BElement.getChildNodes();
+							// add cash to board's status
+							BankHold = Integer
+									.parseInt(BankList.item(0)
+											.getNodeValue());
+							
+							// troublemarkers with bank
+							NodeList TMList = firstBoardElement
+									.getElementsByTagName("TroubleMarkers");
+							Element TMElement = (Element) TMList.item(0);
+							NodeList troubleMarkerList = TMElement.getChildNodes();
+							// add cash to board's status
+							TMarkerHold = Integer
+									.parseInt(troubleMarkerList.item(0)
+											.getNodeValue());
+							
+							// demons with bank
+							NodeList DList = firstBoardElement
+									.getElementsByTagName("Demons");
+							Element DElement = (Element) DList.item(0);
+							NodeList demonList = DElement.getChildNodes();
+							// add cash to board's status
+							DemonsHold = Integer
+									.parseInt(demonList.item(0)
+											.getNodeValue());
+							
+							// trolls with bank
+							NodeList TList = firstBoardElement
+									.getElementsByTagName("Trolls");
+							Element TElement = (Element) TList.item(0);
+							NodeList trollList = TElement.getChildNodes();
+							// add cash to board's status
+							TrollsHold = Integer
+									.parseInt(trollList.item(0)
+											.getNodeValue());
+						}
+					}
 					// for players
 					for (int s = 0; s < listOfPlayers.getLength(); s++) {
 						Node firstPlayerNode = listOfPlayers.item(s);
@@ -659,23 +783,25 @@ public class GameEngine extends JFrame implements Runnable {
 							List<String> tempList = new ArrayList<String>(
 									Arrays.asList(replace1.split(",")));
 
-							List<Integer> convertToInt = new ArrayList<Integer>();
-							for (String a : tempList) {
-								Integer temp = 0;
-								temp = Integer.parseInt(a.trim());
-								convertToInt.add(temp);
-							}
+							//List<Integer> convertToInt = new ArrayList<Integer>();
+							//for (String a : tempList) {
+								//Integer temp = 0;
+								//temp = Integer.parseInt(a.trim());
+								//convertToInt.add(temp);
+							//}
 
 							player_Cards.put(keyValuePair[0], tempList);
 							playerObjList.get(s).pCards = player_Cards;
 						}// end if
 					}// end for
 
+					NewGame Game = new NewGame();
+					Game.reLaunchDialog();
 					// call constructor of SavedGame to load GUI
-					SavedGame Loaded = new SavedGame();
+					//SavedGame Loaded = new SavedGame();
 
 					// load the table that contains info about regions
-					for (int s = 0; s < listOfRegions.getLength(); s++) {
+					/*for (int s = 0; s < listOfRegions.getLength(); s++) {
 						Loaded.Loaded_Region_Info.setValueAt(
 								regionObjList.get(s).rName, s, 0);
 						
@@ -696,10 +822,10 @@ public class GameEngine extends JFrame implements Runnable {
 								regionObjList.get(s).rDemon, s, 6);
 						Loaded.Loaded_Region_Info.setValueAt(
 								regionObjList.get(s).rTroll, s, 7);
-					}
+					}*/
 
 					// load the table that contains info about players
-					for (int s = 0; s < listOfPlayers.getLength(); s++) {
+					/*for (int s = 0; s < listOfPlayers.getLength(); s++) {
 						Loaded.Loaded_Players_Info.setValueAt(playerObjList.get(s).pNumber, s, 0);
 						Loaded.Loaded_Players_Info.setValueAt(
 								playerObjList.get(s).color, s, 1);
@@ -713,8 +839,8 @@ public class GameEngine extends JFrame implements Runnable {
 								playerObjList.get(s).cashHold, s, 5);
 						Loaded.Loaded_Players_Info.setValueAt(
 								playerObjList.get(s).pCards, s, 6);
-					}
-					Loaded.setVisible(true);
+					}*/
+					//Loaded.setVisible(true);
 				}// end try
 				catch (SAXParseException err) {
 					System.out.println("** Parsing error" + ", line "

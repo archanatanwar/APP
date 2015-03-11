@@ -3,6 +3,16 @@ package Game;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * <h1> Fog </h1>
+ * <p>
+ * Draw and discard the top five cards from the deck
+ * </p>
+ * 
+ * @author mary
+ *
+ */
+
 public class FogEventCard extends RandomEventCards{
 	
 	public void executeRandomEvent()

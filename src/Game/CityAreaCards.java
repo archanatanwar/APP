@@ -61,8 +61,8 @@ public class CityAreaCards
 		return valueToReturn.toString();
 	}
 	
-	static // get money from bank
-	void takeMoneyFromBank(int amount)
+	// player gets money from bank
+	static void takeMoneyFromBank(int amount)
 	{
 		GameEngine.BankHold = GameEngine.BankHold - amount;
 		for(Player playerObj : GameEngine.playerObjList)
@@ -74,8 +74,8 @@ public class CityAreaCards
 		}
 	}
 	
-	static // give money to bank
-	void giveMoneyToBank(int amount)
+	// player gives money to bank
+	static void giveMoneyToBank(int amount)
 	{
 		GameEngine.BankHold = GameEngine.BankHold + amount;
 		for(Player playerObj : GameEngine.playerObjList)
@@ -86,19 +86,22 @@ public class CityAreaCards
 			}
 		}
 	}
+	
+	
 	/**
 	 * Function gets name of city area and performs the actions accordingly
 	 * 					whose action is to be performed
+	 * @param cityArea Integer name of region in which player's building is placed
 	 */
 	public static void playCityAreaCard(int cityArea)
 	{
 		switch(cityArea){
 		// Dolly Sisters
-		case 1:
+		case 1:			
 			//pay $3
 			giveMoneyToBank(3);
 			// place minion in dolly sisters or adjacent area
-			
+			placeMinion(1);			
 			break;
 		// Unreal Estate	
 		case 2:
@@ -171,13 +174,47 @@ public class CityAreaCards
 			break;
 		// The Shades
 		case 7:
-			// place trouble marker in Shades or adjacent area
+			// place trouble marker in Shades or adjacent area			
+			int result=0;
+			String newRegion;
+			int newReg;
+			newRegion = NewGame
+					.displayBox("Select region number (Shades or adjacent area) in which trouble marker should be placed:");
+			newReg = Integer.parseInt(newRegion);
+			for(Player playerObj: GameEngine.playerObjList)
+			{
+				if(playerObj.pTurn == 1)
+				{
+					if(GameEngine.regionObjList.get(6).listForNeighbours.contains(newReg) || newReg==7)
+					{
+						result = 1;
+					}
+					while(result == 0)
+					{
+						NewGame.showErrorDialog("Wrong Input!");
+						newRegion = NewGame
+								.displayBox("Select region number (Shades or adjacent area) in which trouble marker should be placed:");
+						newReg = Integer.parseInt(newRegion);
+						if(GameEngine.regionObjList.get(0).listForNeighbours.contains(newReg) || newReg==7)
+						{
+							result = 1;
+						}
+					}
+					if(result == 1)
+					{
+						GameEngine.regionObjList.get(newReg-1).placeTroubleMarker();
+						break;
+					}
+				}
+			}
+			
 			break;
 		// Dimwell
 		case 8:
 			// pay $3
 			giveMoneyToBank(3);
 			// place minion in Dimwell or adjacent areas
+			placeMinion(8);
 			break;	
 		// Longwall
 		case 9:
@@ -188,7 +225,11 @@ public class CityAreaCards
 		case 10:
 			//pay $2
 			giveMoneyToBank(2);
-			// remove trouble marker from board
+			// remove trouble marker from board			
+			newRegion = NewGame
+					.displayBox("Select region number from which trouble marker should be removed:");
+			newReg = Integer.parseInt(newRegion);
+			GameEngine.regionObjList.get(newReg-1).removeTroubleMarker();			
 			break;
 		// Seven Sleepers	
 		case 11:
@@ -205,4 +246,49 @@ public class CityAreaCards
              throw new IllegalArgumentException("Invalid city area: " + cityArea);
 		}
 	}
+	
+	/**
+	 * Helps player to place minion in the given region
+	 * or an adjacent region
+	 * @param region Integer in which player's minion can be placed
+	 */
+	public static void placeMinion(int region)
+	{
+		String newRegion;
+		int newReg, result=0;
+		
+		newRegion = NewGame
+				.displayBox("Select region number ("+region+" or adjacent area) in which minion should be placed:");
+		newReg = Integer.parseInt(newRegion);
+		for(Player playerObj: GameEngine.playerObjList)
+		{
+			if(playerObj.pTurn == 1)
+			{
+				if(GameEngine.regionObjList.get(region-1).listForNeighbours.contains(newReg) || newReg==region)
+				{
+					result = 1;
+				}
+				while(result == 0)
+				{
+					NewGame.showErrorDialog("Wrong Input!");
+					newRegion = NewGame
+							.displayBox("Select region number ("+region+" or adjacent area) in which minion should be placed:");
+					newReg = Integer.parseInt(newRegion);
+					if(GameEngine.regionObjList.get(region-1).listForNeighbours.contains(newReg) || newReg==region)
+					{
+						result = 1;
+					}
+				}
+				if(playerObj.minionHold >= 1 && result == 1)
+				{
+					playerObj.placeMinion(newReg);
+					GameEngine.regionObjList.get(newReg-1).placeMinion(playerObj.color);
+					break;
+				}
+			}
+		}
+		
+	}
 }
+
+

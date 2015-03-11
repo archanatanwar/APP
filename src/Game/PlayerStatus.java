@@ -15,4 +15,19 @@ public class PlayerStatus
 	String color;                           // color of player
 	int pMinionRegionwise;                  // number of minions of a player in a region
 	int pbuildingRegionwise;                // number of buildings of a player in a region
+	
+	public String getColor()
+	{
+		return color;
+	}
+	
+	public int getMinionRegionwise()
+	{
+		return pMinionRegionwise;
+	}
+	
+	public int getBuildingRegionwise()
+	{
+		return pbuildingRegionwise;
+	}
 }

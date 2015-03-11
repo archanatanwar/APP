@@ -1,5 +1,16 @@
 package Game;
 
+/**
+ * <h1> The Dragon </h1>
+ * <p>
+ * Roll the die to select an area <br>
+ * remove all pieces from that area
+ * </p>
+ * 
+ * @author mary
+ *
+ */
+
 public class DragonEventCard extends RandomEventCards{
 	
 	public void executeRandomEvent()

@@ -1,5 +1,15 @@
 package Game;
 
+/**
+ * <h1> Riots </h1>
+ * <p>
+ * If there are eight or more Trouble Markers on the board then the game ends immediately
+ * </p>
+ * 
+ * @author mary
+ *
+ */
+
 public class RiotEventCard extends RandomEventCards{
 	
 	public void executeRandomEvent()

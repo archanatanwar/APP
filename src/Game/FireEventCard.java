@@ -1,5 +1,17 @@
 package Game;
 
+/**
+ * <h1> Fire </h1>
+ * <p>
+ * Roll the die to select an area<br>
+ * REmove any building in that area<br>
+ * Then spread fire, remove all building in the adjacent areas
+ * </p>
+ * 
+ * @author mary
+ *
+ */
+
 public class FireEventCard extends RandomEventCards{
 	public void executeRandomEvent()
 	{

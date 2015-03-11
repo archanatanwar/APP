@@ -102,6 +102,10 @@ public class Player {
 		return minionHold;
 	}
 	
+	/**
+	 * Helps place player's minion in the region specified
+	 * @param rNum Integer represents region number
+	 */
 	public void placeMinion(int rNum) {
 		minionHold--;
 		if (H_Region.containsKey(rNum)) {
@@ -116,6 +120,10 @@ public class Player {
 		}
 	}
 	
+	/**
+	 * Helps remove player's minion from the given region
+	 * @param rNum Integer represents region number
+	 */
 	public void removeMinion(int rNum) {
 		if(H_Region.containsKey(rNum) && H_Region.get(rNum).placedMinion >= 1)
 		{
@@ -124,6 +132,10 @@ public class Player {
 		}
 	}
 	
+	/**
+	 *  Helps place player's building in the region specified
+	 * @param rNum Integer represents region number
+	 */
 	public void placeBuilding(int rNum) {
 		if(buildingHold >= 1)
 		{
@@ -132,6 +144,10 @@ public class Player {
 		}
 	}
 	
+	/**
+	 * Helps remove player's building from the given region
+	 * @param rNum Integer represents region number
+	 */
 	public void removeBuilding(int rNum) {
 		if(H_Region.containsKey(rNum) && H_Region.get(rNum).placedbuilding >= 1)
 		{
@@ -140,6 +156,12 @@ public class Player {
 		}
 	}
 	
+	/**
+	 * Method checks if a minion can be moved to a region or an adjacent area.
+	 * It acts as a utility method for place minion method.
+	 * @param rNum Integer represents region number
+	 * @return Integer 1 if minion can be placed
+	 */
 	public int checkMinionMove(int rNum) {
 		int result = 0;
 		if (H_Region.containsKey(rNum)) {			
@@ -159,6 +181,11 @@ public class Player {
 		}
 		return result;
 	}
+	
+	/**
+	 * Utility method to execute Subsidence event card
+	 * 
+	 */
 	
 	public void handleSubsidenceEvent()
 	{
@@ -195,6 +222,11 @@ public class Player {
 		NewGame.showErrorDialog(sValue);
 	}
 
+	/**
+	 * utility method to execute fire event
+	 * @param region number
+	 */
+	
 	public void executeFireEvent (int rNum)
 	{
 		int tempNum = 0;
@@ -205,6 +237,11 @@ public class Player {
 		buildingHold = buildingHold + tempNum;
 		H_Region.get(rNum).placedbuilding = 0;
 	}
+	
+	/**
+	 * Utility method to execute Dragon event card
+	 * @param region number
+	 */
 	
 	public void executeDragonEvent(int rNum)
 	{
@@ -222,6 +259,13 @@ public class Player {
 		buildingHold = buildingHold + tempBuilding;
 			
 	}
+	
+	/**
+	 * Method check winning condition before each player turn
+	 * @param personality
+	 * @return 1 if any of winning conditions is established
+	 */
+	
 	public int checkWinningCondition(String personality) {
 		int result = 0;
 		int numPlayers = GameEngine.playerObjList.size();
@@ -250,6 +294,12 @@ public class Player {
 		return result;
 	}
 
+	/**
+	 * Method check if CommanderVimes wins the game
+	 * @param number of players
+	 * @return 1 all player cards are already played
+	 */
+	
 	public int checkVimes(int numPlayers) {
 		int result = 0;
 		if(PlayerCards.greenPlayerCardsList.isEmpty())
@@ -258,6 +308,13 @@ public class Player {
 		}
 		return result;
 	}
+	
+	/**
+	 * Method check if Chrysoprase wins the game
+	 * @param number of players
+	 * @return 1 if player has more than 50$ worth in hand (cash money + buildings - loans)
+	 * 
+	 */
 	
 	public int checkChrysoprase(int numPlayers) {
 		int result = 0;
@@ -283,6 +340,13 @@ public class Player {
 		}
 		return result;
 	}
+	
+	/**
+	 * Method check if Dragon King of Arms wins the game
+	 * @param number of players
+	 * @return 1 if there are more than eight trouble markers on the board
+	 */
+	
 	public int checkDKArms(int numPlayers) {
 		int result = 0;
 		int tempCount = 0;
@@ -298,6 +362,12 @@ public class Player {
 		}
 		return result;
 	}
+	
+	/**
+	 * Method check if Lord Selachii wins the game
+	 * @param number of players
+	 * @return 1 if player has control of 7,5 or 4 areas depends on 2,3 or 4 players
+	 */
 	
 	public int checkLoad(int numPlayers) {
 		int result = 0;
@@ -363,6 +433,12 @@ public class Player {
 		return result;
 	}
 
+	/**
+	 * Method check if Lord Vetinari wins the game
+	 * @param number of players
+	 * @return 1 if player has minion on 11,10 or 9 areas depend on number of players 2,3 or 4
+	 */
+	
 	public int checkLordVetinari(int numPlayers) {
 		int result = 0;
 		int tempCount = 0;

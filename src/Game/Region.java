@@ -38,7 +38,7 @@ public class Region {
 	List<Integer> listForNeighbours = new ArrayList<>();
 
 	// keeps track of player associated with minion or building in a region
-	Hashtable<String, PlayerStatus> H_Player;
+	static Hashtable<String, PlayerStatus> H_Player;
 
 	// class PlayerStatus that contains information of player
 	// in the form of color and number of minions and buildings in that region
@@ -112,6 +112,10 @@ public class Region {
 		return this.rTroubleMarker;
 	}
 
+	/**
+	 * Method helps to place demon in the region
+	 * @return 1 if place successful
+	 */
 	public int placeDemon() {
 		int result = 0;
 		if(GameEngine.DemonsHold >= 1)
@@ -127,6 +131,10 @@ public class Region {
 		return result;
 	}
 
+	/**
+	 * Method helps to remove demon from the region
+	 * @return 1 if removal successful
+	 */
 	public int removeDemon() {
 		int result = 0;
 		if(rDemon >= 1)
@@ -138,7 +146,11 @@ public class Region {
 		}
 		return result;
 	}
-
+	
+	/**
+	 * Method helps to place troll in the region
+	 * @return 1 if place successful
+	 */
 	public int placeTroll() {
 		int result = 0;
 		if(GameEngine.TrollsHold >= 1)
@@ -150,7 +162,11 @@ public class Region {
 		}
 		return result;
 	}
-
+	
+	/**
+	 * Method helps to remove troll from the region
+	 * @return 1 if removal successful
+	 */
 	public int removeTroll() {
 		int result = 0;
 		if(rTroll >= 1)
@@ -163,6 +179,11 @@ public class Region {
 		return result;
 	}
 	
+	
+	/**
+	 * Method helps to place trouble marker in the region
+	 * @return 1 if place successful
+	 */
 	public int placeTroubleMarker() {
 		int result = 0;
 		if(GameEngine.TMarkerHold >= 0)
@@ -176,7 +197,11 @@ public class Region {
 		}
 		return result;
 	}
-
+	
+	/**
+	 * Method helps to remove troll from the region
+	 * @return 1 if removal successful
+	 */
 	public void removeTroubleMarker() {
 		if(rTroubleMarker == 1)
 		{
@@ -184,6 +209,7 @@ public class Region {
 			GameEngine.TMarkerHold++;
 		}
 	}
+	
 	
 	public int checkBuildingMove(String tColor)
 	{
@@ -195,6 +221,10 @@ public class Region {
 		return result;		
 	}
 	
+	/**
+	 * Method helps to place minion in the region
+	 * 
+	 */
 	public void placeMinion(String color) {	
 		rMinionNum++;
 		if (H_Player.containsKey(color)) {
@@ -214,6 +244,10 @@ public class Region {
 		}
 	}
 	
+	/**
+	 * Method helps to remove minion from the region
+	 * 
+	 */
 	public void removeMinion(String color) {
 		if(H_Player.get(color).pMinionRegionwise >= 1)
 		{
@@ -223,11 +257,20 @@ public class Region {
 		}
 	}
 	
+	/**
+	 * Method helps to place building in the region
+	 * 
+	 */
 	public void placeBuilding(String color) {
 		rBuilding++;
 		H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise + 1;
 	}
 	
+	
+	/**
+	 * Method helps to remove building from the region
+	 * 
+	 */
 	public void removeBuilding(String color) {
 		if(H_Player.get(color).pbuildingRegionwise >= 1)
 		{
@@ -235,6 +278,11 @@ public class Region {
 			H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise - 1;
 		}
 	}
+	
+	/**
+	 * Method execute Dragon event card
+	 * 
+	 */
 	
 	public void executeDragonEvent()
 	{
@@ -253,6 +301,12 @@ public class Region {
 		rTroubleMarker = 0;		
 	}
 	
+	/**
+	 * Method execute Fire event card
+	 * 
+	 * @return 1 if building is removed
+	 */
+	
 	public int executeFireEvent()
 	{
 		int result = 0;
@@ -266,6 +320,10 @@ public class Region {
 		}
 		return result;
 	}
+	
+	/**
+	 * Method remove all building in an area
+	 */
 	
 	public void removeAllBuilding() 
 	{
