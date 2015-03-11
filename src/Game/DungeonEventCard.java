@@ -16,11 +16,13 @@ public class DungeonEventCard extends RandomEventCards{
 	public void executeRandomEvent()
 	{
 		int result;
+		String value = "";
 		for(int i=0; i<4; i++)
 		{
 			result = getRollDiceNumber();
 			GameEngine.regionObjList.get(result-1).placeDemon();
-			//TODO
+			value = value + result + " ";
 		}
+		NewGame.showErrorDialog("Demons from the Dungeon Dimensions Event Occured in Region : " + value);
 	}
 }

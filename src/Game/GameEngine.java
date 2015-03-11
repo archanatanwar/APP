@@ -306,8 +306,8 @@ public class GameEngine extends JFrame implements Runnable {
 			// create root element i.e. XML
 			Element mainRootElement = doc
 					.createElementNS("CreateXMLDOM", "XML");
-			Element PlayerStatusElement = doc
-					.createElement("Player_Info");
+			//Element PlayerStatusElement = doc
+					//.createElement("Player_Info");
 			// add it to doc
 			doc.appendChild(mainRootElement);
 			int buildingRegionWise = 0;
@@ -315,8 +315,14 @@ public class GameEngine extends JFrame implements Runnable {
 			String pcolor = null;
 			// create children of root element as Region tag
 			for (Region a : regionObjList) {
+				Element PlayerStatusElement = doc
+						.createElement("Player_Status");
 				// player status info
-				Set<String> keys = Region.H_Player.keySet();
+				buildingRegionWise = 0;
+				minionRegionWise = 0;
+				pcolor = null;
+				
+				Set<String> keys = a.H_Player.keySet();
 				for (String key : keys) {
 					// color
 					pcolor = a.H_Player.get(key).color;
@@ -325,15 +331,38 @@ public class GameEngine extends JFrame implements Runnable {
 					// minions of player in an area
 					minionRegionWise = a.H_Player.get(key).pMinionRegionwise;
 					PlayerStatusElement.appendChild(getPlayerStatus(doc, pcolor, buildingRegionWise, minionRegionWise));
+					
 				}
+			
+			
+				//mainRootElement.appendChild(getRegion(doc, a.rName, a.rNumber,
+						//a.rBuildingCost, a.rMinionNum, a.rBuilding, a.rTroubleMarker,
+						//a.rDemon, a.rTroll, pcolor, buildingRegionWise, minionRegionWise));
 				mainRootElement.appendChild(getRegion(doc, a.rName, a.rNumber,
 						a.rBuildingCost, a.rMinionNum, a.rBuilding, a.rTroubleMarker,
 						a.rDemon, a.rTroll, PlayerStatusElement));
 			}
 			int count = 1;
+			int regionNumber = 0;
+			int placedMinion = 0;
+			int placedBuilding = 0;
 			// create children of root element as Player tag
 			for (Player a : playerObjList) {
-				mainRootElement.appendChild(getPlayer(doc,a.color, a.buildingHold, a.cashHold, a.minionHold, a.personality, a.pCards, a.pNumber, a.pTurn));
+				Element RegionStatusElement = doc
+						.createElement("Region_Status");
+				// region status info
+				Set<Integer> keys = a.H_Region.keySet();
+				for (Integer key : keys) {
+					// region number
+					regionNumber = a.H_Region.get(key).regionNumber;
+					// minions placed
+					placedMinion = a.H_Region.get(key).placedbuilding;
+					// buildings placed
+					placedBuilding = a.H_Region.get(key).placedbuilding;
+					RegionStatusElement.appendChild(getRegionStatus(doc, regionNumber, placedMinion, placedMinion));
+					
+				}
+				mainRootElement.appendChild(getPlayer(doc,a.color, a.buildingHold, a.cashHold, a.minionHold, a.personality, a.pCards, a.pNumber, a.pTurn, RegionStatusElement));
 				count++;
 			}
 			
@@ -352,6 +381,25 @@ public class GameEngine extends JFrame implements Runnable {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static Node getRegionStatus(Document doc, int regionNumber, int placedMinion, int placedBuilding){
+		// Region gets added to root element and all parameters as Region's
+		// children
+		Element Region_info = doc.createElement("RegionInfo");
+		// color
+		Element region_number = doc.createElement("RegionNumber");
+		region_number.appendChild(doc.createTextNode(Integer.toString(regionNumber)));
+		Region_info.appendChild(region_number);
+		// building
+		Element placed_minion = doc.createElement("MinionsPlaced");
+		placed_minion.appendChild(doc.createTextNode(Integer.toString(placedMinion)));
+		Region_info.appendChild(placed_minion);
+		// minion
+		Element placed_building = doc.createElement("BuildingsPlaced");
+		placed_building.appendChild(doc.createTextNode(Integer.toString(placedBuilding)));
+		Region_info.appendChild(placed_building);
+		return Region_info;
 	}
 	
 	public static Node getPlayerStatus(Document doc, String pcolor, int buildingRegionWise, int minionRegionWise){
@@ -426,8 +474,9 @@ public class GameEngine extends JFrame implements Runnable {
 		Element region = doc.createElement("Region");
 		Element Region_name = doc.createElement("Name");
 		Region_name.appendChild(doc.createTextNode(name));
+		region.appendChild(Region_name);
 		region.appendChild(PlayerStatusElement);
-		Region_name.appendChild(getRegionElements(doc, region, "RegionNumber",
+		region.appendChild(getRegionElements(doc, region, "RegionNumber",
 				rNumber));
 		region.appendChild(getRegionElements(doc, region, "rBuildingCost",
 				rBuildingCost));
@@ -441,6 +490,20 @@ public class GameEngine extends JFrame implements Runnable {
 				rDemon));
 		region.appendChild(getRegionElements(doc, region, "NumberOfrTrolls",
 				rTroll));
+		
+		// color
+				/*Element Player_color = doc.createElement("PlayerColor");
+				Player_color.appendChild(doc.createTextNode(pcolor));
+				region.appendChild(Player_color);
+				// building
+				Element buildingRegionWise_info = doc.createElement("BuildingRegionWise");
+				buildingRegionWise_info.appendChild(doc.createTextNode(Integer.toString(buildingRegionWise)));
+				region.appendChild(buildingRegionWise_info);
+				// minion
+				Element minionRegionWise_info = doc.createElement("MinionRegionWise");
+				minionRegionWise_info.appendChild(doc.createTextNode(Integer.toString(minionRegionWise)));
+				region.appendChild(minionRegionWise_info);*/
+				//return Player_info;
 		return region;
 	}
 
@@ -478,7 +541,7 @@ public class GameEngine extends JFrame implements Runnable {
 	 * @return Node of player that should be added to root element
 	 */
 	public static Node getPlayer(Document doc, String color, int buildingHold, int cashHold, int minionHold, String personality, 
-			HashMap<String, List<String>> pCards, int pNumber, int pTurn)
+			HashMap<String, List<String>> pCards, int pNumber, int pTurn, Element RegionStatusElement)
 	{
 		// Player gets added to root element and all parameters as Player's children
 		Element player = doc.createElement("Player");
@@ -488,6 +551,7 @@ public class GameEngine extends JFrame implements Runnable {
 		Element Player_color = doc.createElement("Color");
 		Player_color.appendChild(doc.createTextNode(color));
 		player.appendChild(Player_color);
+		player.appendChild(RegionStatusElement);
 		player.appendChild(getPlayerElements(doc, player, "Player_Turn",
 				pTurn));
 		player.appendChild(getPlayerElements(doc, player, "Building_Hold",
@@ -550,7 +614,7 @@ public class GameEngine extends JFrame implements Runnable {
 					int totalRegions = listOfRegions.getLength();
 					// List of players present in XML file
 					NodeList listOfPlayers = doc.getElementsByTagName("Player");
-					
+				
 					// board present in XML file
 					NodeList listOfBoard = doc.getElementsByTagName("Board");
 					
@@ -581,7 +645,28 @@ public class GameEngine extends JFrame implements Runnable {
 							// add region name to list of objects of region
 							regionObjList.get(s).rName = NameList.item(0)
 									.getNodeValue();
-
+							
+							// add player status to hash table
+							NodeList PlayersStatusList = (NodeList) firstRegionElement
+									.getElementsByTagName("PlayerInfo");
+							for (int z = 0; z < PlayersStatusList.getLength(); z++) {
+								Node firstPlayerStatusNode = listOfRegions.item(s);
+								if (firstPlayerStatusNode.getNodeType() == Node.ELEMENT_NODE) {
+									Element firstPlayerStatusElement = (Element) firstRegionNode;
+									
+									// color of player
+									NodeList PSList = (NodeList) firstPlayerStatusElement
+											.getElementsByTagName("PlayerColor");
+									Element PSElement = (Element) PSList
+											.item(0);
+									NodeList pColorList = PSElement
+											.getChildNodes();
+									// add region name to list of objects of region
+									regionObjList.get(s).rName = pColorList.item(0)
+											.getNodeValue();
+								}
+							}
+							
 							// building cost of region
 							NodeList CostList = firstRegionElement
 									.getElementsByTagName("rBuildingCost");
@@ -692,6 +777,18 @@ public class GameEngine extends JFrame implements Runnable {
 						}
 					}
 					// for players
+					if(listOfPlayers.getLength() == 2)
+					{
+						PersonalityCards.PersonalityList.add(PersonalityCards.getPersonalityCard.valueOf(playerObjList.get(3).personality));
+						PersonalityCards.PersonalityList.add(PersonalityCards.getPersonalityCard.valueOf(playerObjList.get(2).personality));
+						playerObjList.remove(3);
+						playerObjList.remove(2);
+					}
+					else if(listOfPlayers.getLength() == 3)
+					{
+						PersonalityCards.PersonalityList.add(PersonalityCards.getPersonalityCard.valueOf(playerObjList.get(3).personality));
+						playerObjList.remove(3);						
+					}
 					for (int s = 0; s < listOfPlayers.getLength(); s++) {
 						Node firstPlayerNode = listOfPlayers.item(s);
 						if (firstPlayerNode.getNodeType() == Node.ELEMENT_NODE) {

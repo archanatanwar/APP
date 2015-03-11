@@ -823,7 +823,7 @@ public class NewGame extends JFrame {
 				// get region numbers
 				for (int key : playerObj.H_Region.keySet()) 
 				{
-					if(playerObj.H_Region.get(key).placedbuilding >= 1)
+					if(playerObj.H_Region.get(key).placedbuilding >= 1 && GameEngine.regionObjList.get(key-1).stopBenefit == 0)
 					{
 						cityAreaList.clear();
 						cityAreaList.add(key);

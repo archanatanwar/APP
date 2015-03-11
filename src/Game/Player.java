@@ -83,6 +83,7 @@ public class Player {
 				H_Region.get(defaultRegions[i]).placedMinion = 1;
 			} else {
 				SP = new RegionStatus();
+				SP.regionNumber = defaultRegions[i];
 				SP.placedbuilding = 0;
 				SP.placedMinion = 1;
 				H_Region.put(defaultRegions[i], SP);
@@ -114,6 +115,7 @@ public class Player {
 		else
 		{
 			SP = new RegionStatus();
+			SP.regionNumber = rNum;
 			SP.placedbuilding = 0;
 			SP.placedMinion = 1;
 			H_Region.put(rNum, SP);
@@ -470,4 +472,34 @@ public class Player {
 		}
 		return result;
 	}
+	
+	public void moveAllMinion(int oldArea, int newArea)
+	{
+		int tempMinion = 0;
+		if(H_Region.containsKey(oldArea))
+		{
+			tempMinion = H_Region.get(oldArea).placedMinion;
+			H_Region.get(oldArea).placedMinion = 0;
+			if(H_Region.contains(newArea))
+			{
+				H_Region.get(newArea).placedMinion = H_Region.get(newArea).placedMinion + tempMinion;
+			}
+			else
+			{
+				SP = new RegionStatus();
+				SP.regionNumber = newArea;
+				SP.placedbuilding = 0;
+				SP.placedMinion = tempMinion;			
+				H_Region.put(newArea, SP);
+			}
+			int numMinion = GameEngine.regionObjList.get(oldArea-1).removeAllMinion(color);
+			GameEngine.regionObjList.get(newArea).placeAllMinion(color, numMinion);
+			
+		}		
+	}
 }
+
+
+
+
+

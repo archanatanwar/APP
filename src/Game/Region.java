@@ -35,10 +35,11 @@ public class Region {
 	int rTroubleMarker; // number of troublemarkers
 	int rDemon; // number of demons
 	int rTroll; // number of trolls
+	int stopBenefit; // if 1, not allowed to take benefit from city area card
 	List<Integer> listForNeighbours = new ArrayList<>();
 
 	// keeps track of player associated with minion or building in a region
-	static Hashtable<String, PlayerStatus> H_Player;
+	Hashtable<String, PlayerStatus> H_Player;
 
 	// class PlayerStatus that contains information of player
 	// in the form of color and number of minions and buildings in that region
@@ -64,6 +65,7 @@ public class Region {
 		rTroubleMarker = 0;
 		rDemon = 0;
 		rTroll = 0;
+		stopBenefit = 0;
 		listForNeighbours.addAll(array);
 		H_Player = new Hashtable<String, PlayerStatus>();
 	}
@@ -120,11 +122,11 @@ public class Region {
 		int result = 0;
 		if(GameEngine.DemonsHold >= 1)
 		{
+			rDemon++;
 			if(rDemon > 1)
 			{
 				result = placeTroubleMarker();
-			}
-			rDemon++;
+			}			
 			GameEngine.DemonsHold--;
 			result = 1;
 		}
@@ -209,7 +211,6 @@ public class Region {
 			GameEngine.TMarkerHold++;
 		}
 	}
-	
 	
 	public int checkBuildingMove(String tColor)
 	{
@@ -332,7 +333,34 @@ public class Region {
 			H_Player.get(key).pbuildingRegionwise  = 0;
 		}
 	}
+	
+	public int removeAllMinion(String pColor)
+	{
+		int numMinion = H_Player.get(pColor).pMinionRegionwise;
+		H_Player.get(pColor).pMinionRegionwise = 0;
+		rMinionNum = rMinionNum - numMinion;
+		return numMinion;
+	}
+	
+	public void placeAllMinion (String pColor, int numMinion)
+	{
+		if(H_Player.containsKey(pColor))
+		{
+			H_Player.get(pColor).pMinionRegionwise = H_Player.get(pColor).pMinionRegionwise + numMinion;
+		}
+		else
+		{
+			objSP = new PlayerStatus();
+			objSP.color = pColor;
+			objSP.pMinionRegionwise = numMinion;
+			objSP.pbuildingRegionwise = 0;
+			H_Player.put(pColor, objSP);
+		}
+		rMinionNum = rMinionNum + numMinion;
+	}
 }
+
+
 
 
 

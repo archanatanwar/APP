@@ -18,6 +18,8 @@ public class TestPlayer {
 	private PlayerCards obj2;
 	private int minionHold;
 	private int minionHoldLater;
+	private int regionNum = 1;
+	
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -52,6 +54,22 @@ public class TestPlayer {
 			obj2.createPlayerCardsDeck();
 			obj.initialisePlayer();
 			minionHold = obj.getMinion();
+			assertNotNull(obj.getMinion());
+		}
+		catch(Exception e){
+			fail("Should not throw exception. Message: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * test placeMinion method
+	 */
+	@Test
+	public void testplaceMinion() {
+		try{
+			minionHold = obj.getMinion();
+			obj.placeMinion(regionNum);
+			minionHoldLater = obj.getMinion();
 			assertNotNull(obj.getMinion());
 		}
 		catch(Exception e){

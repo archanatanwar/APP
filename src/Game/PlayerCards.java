@@ -601,6 +601,7 @@ public class PlayerCards {
 					break;
 				case "FLOOD":
 					System.out.println("Flood event occurred !!!!!!!");
+					RandomEventCards floodEvent = new FloodEventCard();
 					break;
 				case "FIRE":
 					RandomEventCards fireEvent = new FireEventCard();
@@ -620,6 +621,8 @@ public class PlayerCards {
 					break;
 				case "MYSTERIOUS_MURDERS":
 					System.out.println("MYSTERIOUS_MURDERS event occurred !!!!!!!");
+					RandomEventCards mMurdersEvent = new ExplosionEventCard();
+					mMurdersEvent.executeRandomEvent();
 					break;
 				case "DEMONS_FROM_THE_DUNGEONS_DIMENSIONS":
 					System.out.println("DEMONS_FROM_THE_DUNGEONS_DIMENSIONS event occurred !!!!!!!");
@@ -632,6 +635,8 @@ public class PlayerCards {
 					break;
 				case "BLOODY_STUPID_JOHNSON":
 					System.out.println("BLOODY_STUPID_JOHNSON event occurred !!!!!!!");
+					RandomEventCards bsJohnsonEventCard = new bsJohnsonEventCard();
+					bsJohnsonEventCard.executeRandomEvent();
 					break;
 				case "TROLLS":
 					RandomEventCards trollsEvent = new TrollsEventCard();

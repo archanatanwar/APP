@@ -7,7 +7,7 @@ package Game;
  * and presence of building in the region for the particular Player.</p>
  */
 public class RegionStatus {
-		 int regionNumber;
+		int regionNumber;
 		int placedMinion;
 		int placedbuilding;
 		

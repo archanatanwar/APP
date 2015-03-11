@@ -99,8 +99,8 @@ public class TestGameEngine {
 	 * Test getRegion() method
 	 * should not throw exception
 	 */
-	@Test
-	public void testgetRegion() {
+	//@Test
+	/*public void testgetRegion() {
 		try{
 			org.w3c.dom.Node node = GameEngine.getRegion(doc,"DollySisters", 1, 12, 4, 1, 2, 1);
 			//Element e = (Element)node;
@@ -111,7 +111,7 @@ public class TestGameEngine {
 		catch(Exception e){
 			fail("Should not throw exception. Message: " + e.getMessage());
 		}
-	}
+	}*/
 	
 	/**
 	 * Test getPlayer() method
