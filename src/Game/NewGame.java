@@ -70,7 +70,9 @@ public class NewGame extends JFrame {
 	static ImageIcon personalityCardImage;
 	static ImageIcon cityAreaCardImage;
 	static int turnIndex;
-	static int PlayerTurn;
+	static int currentPlayerTurn;
+	static int nextPlayerTurn;
+	static int playAnotherCard;
 	// Constructor calls method to initialize the elements of GUI
 	public NewGame() {
 		initComponents();
@@ -81,7 +83,7 @@ public class NewGame extends JFrame {
 	 * Function takes city area card name as parameter and returns image
 	 * corresponding to the city area card
 	 * 
-	 * @param String
+	 * @param cardName Integer
 	 *            city area card name
 	 * @return image object
 	 */
@@ -158,7 +160,7 @@ public class NewGame extends JFrame {
 	 * Function takes personality card name as parameter and returns image
 	 * corresponding to the personality card
 	 * 
-	 * @param String
+	 * @param cardName String
 	 *            personality card name
 	 * @return image object
 	 */
@@ -318,7 +320,7 @@ public class NewGame extends JFrame {
 			playerCardImage = new ImageIcon(
 					"PlayerCardImages/TheOperaHouse.png");
 			break;
-		case "NOBBY_NOBS":
+		case "NOBBY_NOBBS":
 			playerCardImage = new ImageIcon("PlayerCardImages/NobbyNobbs.png");
 			break;
 		case "MODO":
@@ -393,11 +395,37 @@ public class NewGame extends JFrame {
 		GameEngine.objTShades.placeDefaultMinion(color);
 		GameEngine.objDSisters.placeDefaultMinion(color);
 	}
+	
 
 	// populates values of objects into tables for GUI
-	public static void reLaunchDialog() {		 
+	public static void reLaunchDialog() {	
+		if(playAnotherCard == 0)
+		{
+			currentPlayerTurn = nextPlayerTurn;
+		}
+		currentPlayerTurn = currentPlayerTurn % (GameEngine.playerObjList.size());
+		if (currentPlayerTurn == 0) {
+			currentPlayerTurn = GameEngine.playerObjList.size();
+		}
+		setPlayerInfo();
+		setRegionInfo();
+		setCardInfo();
+		setBoardInfo();
+		nextPlayerTurn = currentPlayerTurn + 1;	
+	}
+	
+	public static void setBoardInfo()
+	{
+		Bank_Info.setValueAt(GameEngine.BankHold, 0, 0);
+		Bank_Info.setValueAt(GameEngine.DemonsHold, 0, 1);
+		Bank_Info.setValueAt(GameEngine.TrollsHold, 0, 2);
+		Bank_Info.setValueAt(GameEngine.TMarkerHold, 0, 3);
+	}
+	
+	public static void setPlayerInfo()
+	{
 		int count = 0;
-		turnIndex  = PlayerTurn;
+		turnIndex  = currentPlayerTurn;
 		while (count < GameEngine.playerObjList.size()) {
 			for (int i = 0; i < GameEngine.playerObjList.size(); i++) {
 				if (turnIndex == GameEngine.playerObjList.get(i).pNumber) {					
@@ -430,17 +458,6 @@ public class NewGame extends JFrame {
 			{
 				obj.pTurn = 0;
 			}
-		}
-		setRegionInfo();
-		setCardInfo();
-		Bank_Info.setValueAt(GameEngine.BankHold, 0, 0);
-		Bank_Info.setValueAt(GameEngine.DemonsHold, 0, 1);
-		Bank_Info.setValueAt(GameEngine.TrollsHold, 0, 2);
-		Bank_Info.setValueAt(GameEngine.TMarkerHold, 0, 3);
-		PlayerTurn++;
-		PlayerTurn = PlayerTurn % (GameEngine.playerObjList.size());
-		if (PlayerTurn == 0) {
-			PlayerTurn = GameEngine.playerObjList.size();
 		}
 	}
 
@@ -522,7 +539,7 @@ public class NewGame extends JFrame {
 			
 			rIndex=0;
 			greenListTemp = obj.pCards.get("Green");
-			System.out.println(obj.color + "   " + greenListTemp.toString());
+			//System.out.println(obj.color + "   " + greenListTemp.toString());
 			//brownList = obj.pCards.get("Brown");
 			if(!greenListTemp.isEmpty())
 			{
@@ -574,7 +591,7 @@ public class NewGame extends JFrame {
 		Collections.shuffle(GameEngine.playerObjList);
 
 		turnIndex = GameEngine.playerObjList.get(0).pNumber;
-		PlayerTurn = turnIndex;
+		currentPlayerTurn = turnIndex;
 		for (int i = 0; i <= 1; i++) {
 			for (Player obj : GameEngine.playerObjList) {
 				if (obj.pNumber == turnIndex) {
@@ -605,11 +622,11 @@ public class NewGame extends JFrame {
 		Bank_Info.setValueAt(GameEngine.DemonsHold, 0, 1);
 		Bank_Info.setValueAt(GameEngine.TrollsHold, 0, 2);
 		Bank_Info.setValueAt(GameEngine.TMarkerHold, 0, 3);
-		PlayerTurn++;
-		PlayerTurn = PlayerTurn % (GameEngine.playerObjList.size());
+		nextPlayerTurn = currentPlayerTurn + 1;
+		/*PlayerTurn = PlayerTurn % (GameEngine.playerObjList.size());
 		if (PlayerTurn == 0) {
 			PlayerTurn = GameEngine.playerObjList.size();
-		}
+		}*/
 	}
 
 	// ///////////// Three PLAYERS Info Fill //////////////////////////////
@@ -641,7 +658,7 @@ public class NewGame extends JFrame {
 		Collections.shuffle(GameEngine.playerObjList);
 
 		turnIndex = GameEngine.playerObjList.get(0).pNumber;
-		PlayerTurn = turnIndex;
+		currentPlayerTurn = turnIndex;
 		for (int i = 0; i <= 2; i++) {
 			for (Player obj : GameEngine.playerObjList) {
 				if (obj.pNumber == turnIndex) {
@@ -665,11 +682,11 @@ public class NewGame extends JFrame {
 				obj.pTurn = 1;
 			}
 		}
-		PlayerTurn++;
-		PlayerTurn = PlayerTurn % (GameEngine.playerObjList.size());
+		nextPlayerTurn = currentPlayerTurn + 1;
+		/*PlayerTurn = PlayerTurn % (GameEngine.playerObjList.size());
 		if (PlayerTurn == 0) {
 			PlayerTurn = GameEngine.playerObjList.size();
-		}
+		}*/
 		setRegionInfo();
 		setCardInfo();
 		Bank_Info.setValueAt(GameEngine.BankHold, 0, 0);
@@ -702,7 +719,7 @@ public class NewGame extends JFrame {
 		Collections.shuffle(GameEngine.playerObjList);
 
 		turnIndex = GameEngine.playerObjList.get(0).pNumber;
-		PlayerTurn = turnIndex;
+		currentPlayerTurn = turnIndex;
 		for (int i = 0; i <= 3; i++) {
 			for (Player obj : GameEngine.playerObjList) {
 				if (obj.pNumber == turnIndex) {
@@ -727,11 +744,11 @@ public class NewGame extends JFrame {
 				obj.pTurn = 1;
 			}
 		}
-		PlayerTurn++;
-		PlayerTurn = PlayerTurn % (GameEngine.playerObjList.size());
+		nextPlayerTurn = currentPlayerTurn + 1;
+		/*PlayerTurn = PlayerTurn % (GameEngine.playerObjList.size());
 		if (PlayerTurn == 0) {
 			PlayerTurn = GameEngine.playerObjList.size();
-		}
+		}*/
 		setRegionInfo();
 		setCardInfo();
 		Bank_Info.setValueAt(GameEngine.BankHold, 0, 0);
@@ -816,7 +833,7 @@ public class NewGame extends JFrame {
 					greenList.add(cardNo_temp);
 				}
 			playerObj.pCards.put("Green", greenList);
-			
+			cityAreaList.clear();
 			// city area cards
 			if(playerObj.buildingHold < 6)
 			{
@@ -825,7 +842,7 @@ public class NewGame extends JFrame {
 				{
 					if(playerObj.H_Region.get(key).placedbuilding >= 1 && GameEngine.regionObjList.get(key-1).stopBenefit == 0)
 					{
-						cityAreaList.clear();
+						
 						cityAreaList.add(key);
 					}
 				}
@@ -847,7 +864,7 @@ public class NewGame extends JFrame {
 		setCardInfo();
 		for (final String a : greenList) {
 			// player Cards
-			System.out.println("Get image for card: "+a);
+			//System.out.println("Get image for card: "+a);
 			ImageIcon playerPath1 = getPlayerCardImage(a);
 			final JLabel label = new JLabel("", playerPath1, JLabel.CENTER);
 			label.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -880,7 +897,10 @@ public class NewGame extends JFrame {
 						// call the function to be invoked to perform function
 						// according to actions on specific player card
 						CityAreaCards.playCityAreaCard(z);
-						reLaunchDialog();
+						setPlayerInfo();
+						setRegionInfo();
+						setCardInfo();
+						setBoardInfo();
 					}
 				});
 				panel.add(label);
@@ -1075,7 +1095,12 @@ public class NewGame extends JFrame {
 			// ---- Exit ----
 			Exit.setText("Leave Ankh-Morpork");
 			Exit.setFont(new Font("Tahoma", Font.PLAIN, 18));
-
+			Exit.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.exit(0);
+				}
+			});
 			GroupLayout panel1Layout = new GroupLayout(panel1);
 			panel1.setLayout(panel1Layout);
 			panel1Layout

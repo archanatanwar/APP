@@ -12,14 +12,18 @@ package Game;
  */
 
 public class TrollsEventCard extends RandomEventCards{
-	
+	/**
+	 * executes Random Event Trolls functionality
+	 */
 	public void executeRandomEvent()
 	{
 		int result;
 		String sValue = "Trolls placed in region: ";
 		for(int i=0; i<3; i++)
 		{
+			// roll the die
 			result = getRollDiceNumber();
+			// place troll in the respective area
 			GameEngine.regionObjList.get(result-1).placeTroll();
 			sValue = sValue + result + "  ";
 		}

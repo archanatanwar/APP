@@ -15,7 +15,12 @@ import java.util.*;
 */
 public abstract class RandomEventCards
 {
-	// Contains Random Event card names to which details will be added
+	/**
+	 * <h1>Random Event cards enum</h1>
+	 * <p> Contains Random Event card names to which details will be added </p>
+	 * @author nav_k
+	 *
+	 */
 	public enum getRandomEventCard{
 		THE_DRAGON, FLOOD, FIRE, FOG, RIOTS, EXPLOSION, MYSTERIOUS_MURDERS, DEMONS_FROM_THE_DUNGEONS_DIMENSIONS, SUBSIDENCE, BLOODY_STUPID_JOHNSON, TROLLS, EARTHQUAKE
 	}

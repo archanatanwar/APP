@@ -16,7 +16,12 @@ import java.util.*;
 
 public class CityAreaCards
 {
-	// Contains City Area Card names to which details will be added
+	/**
+	 * <h1>City Area Cards Enum</h1>
+	 * <p> Contains City Area Card names to which details will be added </p>
+	 * @author nav_k
+	 *
+	 */
 	public enum getCityAreaCard
 	{
 		DOLLY_SISTERS, UNREAL_ESTATE, DRAGONS_LANDING, SMALL_GODS, THE_SCOURS, 
@@ -44,10 +49,6 @@ public class CityAreaCards
 	{
 		String valueToAdd = "";
 		int counter = 1;
-//		for(getCityAreaCard a: tempList)
-//		{
-//			System.out.println(a.toString());
-//		}
 		
 		for(getCityAreaCard a: cityAreaList)
 		{
@@ -62,7 +63,7 @@ public class CityAreaCards
 	}
 	
 	// player gets money from bank
-	static void takeMoneyFromBank(int amount)
+	public static void takeMoneyFromBank(int amount)
 	{
 		GameEngine.BankHold = GameEngine.BankHold - amount;
 		for(Player playerObj : GameEngine.playerObjList)
@@ -75,7 +76,7 @@ public class CityAreaCards
 	}
 	
 	// player gives money to bank
-	static void giveMoneyToBank(int amount)
+	public static void giveMoneyToBank(int amount)
 	{
 		GameEngine.BankHold = GameEngine.BankHold + amount;
 		for(Player playerObj : GameEngine.playerObjList)

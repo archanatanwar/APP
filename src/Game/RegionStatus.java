@@ -11,16 +11,19 @@ public class RegionStatus {
 		int placedMinion;
 		int placedbuilding;
 		
+		// accessor for regionNumber
 		public int getRegionNumber()
 		{
 			return regionNumber;
 		}
 		
+		// accessor for placedMinion
 		public int getPlacedMinion()
 		{
 			return placedMinion;
 		}
 		
+		// accessor for placedbuilding
 		public int getPlacedBuilding()
 		{
 			return placedbuilding;

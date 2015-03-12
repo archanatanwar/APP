@@ -11,7 +11,9 @@ package Game;
  */
 
 public class RiotEventCard extends RandomEventCards{
-	
+	/**
+	 * executes Random Event Riots functionality
+	 */
 	public void executeRandomEvent()
 	{
 		int minion, mCost, bCost, cash, size, rNum, totalPoints; 
@@ -19,6 +21,7 @@ public class RiotEventCard extends RandomEventCards{
 		String winnerColor = "";
 		int winner = 0;
 		GameEngine.TMarkerHold = 4;
+		// if there are eight or more trouble markers on board
 		if(GameEngine.TMarkerHold <= 4)
 		{
 			size = GameEngine.playerObjList.size();
@@ -37,6 +40,7 @@ public class RiotEventCard extends RandomEventCards{
 						bCost = bCost + GameEngine.regionObjList.get(rNum-1).rBuildingCost;
 					}
 				}
+				// calculate total points
 				totalPoints = mCost + cash + bCost;
 				if(winner < totalPoints)
 				{
@@ -45,7 +49,8 @@ public class RiotEventCard extends RandomEventCards{
 				}
 			}
 		}
-		NewGame.showErrorDialog("Player: "+ winnerColor +" wins having total points: "+ winner);
+		NewGame.showErrorDialog("Riots Event Occured, Player: "+ winnerColor +" wins having total points: "+ winner);
+		 System.exit(0);
 	}
 
 }

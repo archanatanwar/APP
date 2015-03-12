@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,14 +44,14 @@ public class TestGameEngine {
 	 * @throws Exception if an error
 	 */
 	@Before
-	/*public void setUp() throws Exception {
-		 objDSisters = new Region("Dolly Sisters", 1, 6);
+	public void setUp() throws Exception {
+		 objDSisters = new Region("Dolly Sisters", 1, 6,  Arrays.asList(2,3,12));
 		 DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
 		 DocumentBuilder icBuilder;
 		 icBuilder = icFactory.newDocumentBuilder();
 		 // create Document object dom to write to file
 		 doc = icBuilder.newDocument();
-	}*/
+	}
 	
 	/**
 	 * Tear down
@@ -100,9 +101,10 @@ public class TestGameEngine {
 	 * should not throw exception
 	 */
 	//@Test
-	/*public void testgetRegion() {
+	public void testgetRegion() {
 		try{
-			org.w3c.dom.Node node = GameEngine.getRegion(doc,"DollySisters", 1, 12, 4, 1, 2, 1);
+			Element mainRootElement = doc.createElement("abc");
+			org.w3c.dom.Node node = GameEngine.getRegion(doc,"DollySisters", 1, 12, 6, 4, 1, 2, 1, mainRootElement);
 			//Element e = (Element)node;
 			//Node fChild = e.getFirstChild();
 			String name = node.getNodeName();
@@ -111,7 +113,7 @@ public class TestGameEngine {
 		catch(Exception e){
 			fail("Should not throw exception. Message: " + e.getMessage());
 		}
-	}*/
+	}
 	
 	/**
 	 * Test getPlayer() method
@@ -120,19 +122,20 @@ public class TestGameEngine {
 	 * 
 	 */
 	//@Test
-	/*public void testgetPlayer() {
+	public void testgetPlayer() {
 		try{
-			HashMap<String, List<Integer>> pCards = new HashMap<String, List<Integer>>();
-			List<Integer>pList = new ArrayList<Integer>();
-			pList.add(2);
-			pList.add(4);
+			Element mainRootElement = doc.createElement("abc");
+			HashMap<String, List<String>> pCards = new HashMap<String, List<String>>();
+			List<String>pList = new ArrayList<String>();
+			pList.add("MRS_CAKE");
+			pList.add("MR_BENT");
 			pCards.put("Green", pList);
-			org.w3c.dom.Node node = GameEngine.getPlayer(doc,"red", 1, 12, 4, "Lord_Rust", pCards,1,2);
+			org.w3c.dom.Node node = GameEngine.getPlayer(doc,"red", 1, 12, 4, "Lord_Rust", pCards,1,2, mainRootElement);
 			assertTrue(node.hasChildNodes());
 			assertTrue(node.getChildNodes().getLength() == 8);
 		}
 		catch(Exception e){
 			fail("Should not throw exception. Message: " + e.getMessage());
 		}
-	}*/
+	}
 }

@@ -91,9 +91,17 @@ public class Player {
 			}
 		}
 	}
-
+	
+	public int getBuilding()
+	{
+		return buildingHold;
+	}
 	public String getColor() {
 		return color;
+	}
+	
+	public int getTurn() {
+		return pTurn;
 	}
 
 	public int getPlayerNo() {
@@ -102,6 +110,30 @@ public class Player {
 
 	public int getMinion() {
 		return minionHold;
+	}
+	
+	public int getCash()
+	{
+		return cashHold;
+	}
+	
+/*	public String getPCard()
+	{
+		return pCards.get("Green").get(2);
+	}*/
+	
+	
+	public List<String> getPCards()
+	{
+		return pCards.get("Green");
+	}
+	
+	public void setTurn(int turn) {
+		pTurn = turn;
+	}
+	
+	public void setPNumber(int number) {
+		pNumber = number;
 	}
 	
 	/**
@@ -221,13 +253,13 @@ public class Player {
 				}
 			}
 		}
-		sValue = sValue + "\n Cash taken from player "+color+" :"+buildingExist*2;
+		sValue = "Subsidence Event Occured, "+ sValue + "\n Cash taken from player "+color+" :"+buildingExist*2;
 		NewGame.showErrorDialog(sValue);
 	}
 
 	/**
 	 * utility method to execute fire event
-	 * @param region number
+	 * @param rNum region number
 	 */
 	
 	public void executeFireEvent (int rNum)
@@ -243,7 +275,7 @@ public class Player {
 	
 	/**
 	 * Utility method to execute Dragon event card
-	 * @param region number
+	 * @param rNum region number
 	 */
 	
 	public void executeDragonEvent(int rNum)
@@ -265,7 +297,7 @@ public class Player {
 	
 	/**
 	 * Method check winning condition before each player turn
-	 * @param personality
+	 * @param personality personality card for which winning condition should be checked
 	 * @return 1 if any of winning conditions is established
 	 */
 	
@@ -273,21 +305,21 @@ public class Player {
 		int result = 0;
 		int numPlayers = GameEngine.playerObjList.size();
 		switch (personality) {
-		case "Lord Vetinari":
+		case "LORD_VETINARI":
 			result = checkLordVetinari(numPlayers);
 			break;
-		case "Lord Selachii":
-		case "Lord Rust":
-		case "Lord de Worde":
+		case "LORD_SELACHII":
+		case "LORD_RUST": 
+		case "LORD_DE_WORDE":
 			result = checkLoad(numPlayers);
 			break;
-		case "Dragon King of Arms":
+		case "DRAGON_KING_OF_ARMS":
 			result = checkDKArms(numPlayers);
 			break;
-		case "Chrysoprase":
+		case "CHRYSOPRASE":
 			result = checkChrysoprase(numPlayers);
 			break;
-		case "Commander Vimes":
+		case "COMMANDER_VIMES":
 			result = checkVimes(numPlayers);
 			break;
 		default:
@@ -299,7 +331,7 @@ public class Player {
 
 	/**
 	 * Method check if CommanderVimes wins the game
-	 * @param number of players
+	 * @param numPlayers number of players
 	 * @return 1 all player cards are already played
 	 */
 	
@@ -314,7 +346,7 @@ public class Player {
 	
 	/**
 	 * Method check if Chrysoprase wins the game
-	 * @param number of players
+	 * @param numPlayers number of players
 	 * @return 1 if player has more than 50$ worth in hand (cash money + buildings - loans)
 	 * 
 	 */
@@ -346,7 +378,7 @@ public class Player {
 	
 	/**
 	 * Method check if Dragon King of Arms wins the game
-	 * @param number of players
+	 * @param numPlayers number of players
 	 * @return 1 if there are more than eight trouble markers on the board
 	 */
 	
@@ -368,7 +400,7 @@ public class Player {
 	
 	/**
 	 * Method check if Lord Selachii wins the game
-	 * @param number of players
+	 * @param numPlayers number of players
 	 * @return 1 if player has control of 7,5 or 4 areas depends on 2,3 or 4 players
 	 */
 	
@@ -438,7 +470,7 @@ public class Player {
 
 	/**
 	 * Method check if Lord Vetinari wins the game
-	 * @param number of players
+	 * @param numPlayers  number of players
 	 * @return 1 if player has minion on 11,10 or 9 areas depend on number of players 2,3 or 4
 	 */
 	
@@ -447,7 +479,7 @@ public class Player {
 		int tempCount = 0;
 		for (int key : H_Region.keySet()) {
 			if (H_Region.get(key).placedMinion > 0
-					&& GameEngine.regionObjList.get(key).rDemon == 0) {
+					&& GameEngine.regionObjList.get(key-1).rDemon == 0) {
 				tempCount++;
 			}
 		}
@@ -474,6 +506,11 @@ public class Player {
 		return result;
 	}
 	
+	/**
+	 * helps move a minion from one area to another
+	 * @param oldArea Integer from which minion should be moved
+	 * @param newArea  Integer area to which minion should be moved
+	 */
 	public void moveAllMinion(int oldArea, int newArea)
 	{
 		int tempMinion = 0;

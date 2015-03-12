@@ -13,7 +13,12 @@ import java.util.*;
 public class PersonalityCards 
 {
 	
-	// Contains Personality card names to which details will be added
+	/**
+	 * <h1>Personality Cards enum</h1>
+	 *  <p>Contains Personality card names to which details will be added</p>
+	 * @author nav_k
+	 *
+	 */
 	public enum getPersonalityCard{
 		LORD_VETINARI, LORD_SELACHII, LORD_RUST, LORD_DE_WORDE, DRAGON_KING_OF_ARMS, CHRYSOPRASE, COMMANDER_VIMES
 	}

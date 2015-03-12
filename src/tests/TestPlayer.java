@@ -19,9 +19,12 @@ public class TestPlayer {
 	private int minionHold;
 	private int minionHoldLater;
 	private int regionNum = 1;
-	
+	private int buildingHold;
+	private int buildingHoldLater;
+	private int result;
 	@Before
 	public void setUp() throws Exception {
+		//obj = new Player("red","Lord_Rust");
 	}
 
 	@After
@@ -67,13 +70,126 @@ public class TestPlayer {
 	@Test
 	public void testplaceMinion() {
 		try{
+			obj = new Player("red","Lord_Rust");
+			obj.initialisePlayer();
 			minionHold = obj.getMinion();
 			obj.placeMinion(regionNum);
 			minionHoldLater = obj.getMinion();
-			assertNotNull(obj.getMinion());
+			
+			assertTrue(minionHold != minionHoldLater);
 		}
 		catch(Exception e){
 			fail("Should not throw exception. Message: " + e.getMessage());
 		}
 	}
+	
+	/**
+	 * test removeMinion method
+	 */
+	@Test
+	public void testremoveMinion() {
+		try{
+			obj = new Player("red","Lord_Rust");
+			obj.initialisePlayer();
+			obj.placeMinion(regionNum);
+			minionHold = obj.getMinion();
+			obj.removeMinion(regionNum);
+			minionHoldLater = obj.getMinion();
+			assertFalse(minionHold == minionHoldLater);
+		}
+		catch(Exception e){
+			fail("Should not throw exception. Message: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * test initialPlayerStatus method
+	 */
+	@Test
+	public void testinitialPlayerStatus() {
+		try{
+			obj = new Player("red","Lord_Rust");
+			//obj.initialisePlayer();
+			minionHold = obj.getMinion();
+			obj.initialPlayerStatus();
+			minionHoldLater = obj.getMinion();
+			assertTrue((minionHold-3) == minionHoldLater);
+		}
+		catch(Exception e){
+			fail("Should not throw exception. Message: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * test placeBuilding method
+	 */
+	@Test
+	public void testplaceBuildingMinion() {
+		try{
+			obj = new Player("red","Lord_Rust");
+			obj.initialisePlayer();
+			obj.placeMinion(regionNum);
+			buildingHold = obj.getBuilding();
+			obj.placeBuilding(regionNum);
+			buildingHoldLater = obj.getBuilding();
+			assertTrue(buildingHold != buildingHoldLater);
+		}
+		catch(Exception e){
+			fail("Should not throw exception. Message: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * test removeBuilding method
+	 */
+	@Test
+	public void testremoveBuildingMinion() {
+		try{
+			obj = new Player("red","Lord_Rust");
+			obj.initialisePlayer();
+			obj.placeMinion(regionNum);
+			obj.placeBuilding(regionNum);
+			buildingHold = obj.getBuilding();
+			obj.removeBuilding(regionNum);
+			buildingHoldLater = obj.getBuilding();
+			assertTrue(buildingHold != buildingHoldLater);
+		}
+		catch(Exception e){
+			fail("Should not throw exception. Message: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * test checkMinionMove method
+	 */
+	@Test
+	public void testcheckMinionMove() {
+		try{
+			obj = new Player("red","Lord_Rust");
+			obj.initialisePlayer();
+			result = obj.checkMinionMove(regionNum);
+			assertTrue(result == 0);
+		}
+		catch(Exception e){
+			fail("Should not throw exception. Message: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * test checkMinionMove method
+	 */
+	@Test
+	public void testcheckMinionMove1() {
+		try{
+			obj = new Player("red","Lord_Rust");
+			obj.initialisePlayer();
+			obj.placeMinion(regionNum);
+			result = obj.checkMinionMove(regionNum);
+			assertTrue(result == 1);
+		}
+		catch(Exception e){
+			fail("Should not throw exception. Message: " + e.getMessage());
+		}
+	}
+	
 }

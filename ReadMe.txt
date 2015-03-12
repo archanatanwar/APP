@@ -102,6 +102,38 @@ This class is responsible for :
 --Loading of GUI.
 --Populate objects of the other class by the reading XML data file.
 
+bsJohnsonEventCard.java	
+--This class is responsible for executing Random Event Bloody Stupid Johnson functionality.
+
+DragonEventCard.java	
+--This class is responsible for executing Random Event Dragon functionality.
+
+DungeonEventCard.java	
+--This class is responsible for executing Random Event Dungeon functionality.
+
+ExplosionEventCard.java	
+--This class is responsible for executing Random Event Explosion functionality.
+
+FireEventCard.java	
+--This class is responsible for executing Random Event Fire functionality.
+
+FloodEventCard.java	
+--This class is responsible for executing Random Event Flood functionality.
+
+FogEventCard.java	
+--This class is responsible for executing Random Event Fog functionality.
+
+mMurdersEventCard.java	
+--This class is responsible for executing Random Event Mysterious Murders functionality.
+
+FogEventCard.java	
+--This class is responsible for executing Random Event Fog functionality.
+
+SubsidenceEventCard.java	
+--This class is responsible for executing Random Event Subsidence functionality.
+
+TrollsEventCard.java	
+--This class is responsible for executing Random Event Trolls functionality.
 
 
 JAVA DOC
@@ -111,7 +143,7 @@ JAVA DOC
 
 GITHUB PATH
 -------------------------------------------------------------------
-https://github.com/archanatanwar/APP/
+https://github.com/archanatanwar/APP/tree/Build-2
 
 
 DEPLOYMENT VIEW

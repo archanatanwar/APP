@@ -58,14 +58,14 @@ public class GameEngine extends JFrame implements Runnable {
 	public static Player objPYellow;
 	public static Player objPGreen;
 	public static Player objPBlue;
-	static int BankHold = 120;
+	public static int BankHold = 120;
 	static int TrollsHold = 3;
 	static int DemonsHold = 4;
 	static int TMarkerHold = 12;
 	static int numPlayers; // number of players
 	
-	static List<Player> playerObjList = new ArrayList<Player>(); // list of player objects
-	static List<Region> regionObjList = new ArrayList<Region>(); // list of region objects
+	public static List<Player> playerObjList = new ArrayList<Player>(); // list of player objects
+	public static List<Region> regionObjList = new ArrayList<Region>(); // list of region objects
 	static List<String> randomCards = new ArrayList<>();
 	static List<String> discardCards = new ArrayList<>();
 	static HashMap<String, String> loanCards;
@@ -461,12 +461,16 @@ public class GameEngine extends JFrame implements Runnable {
 	 *            Integer building cost of region
 	 * @param rMinionNum
 	 *            Integer minion number of region
+	 * @param rBuildingNumber 
+	 * 				Integer building number of region
 	 * @param rTroubleMarker
 	 *            Integer trouble markers in a region
 	 * @param rDemon
 	 *            Integer number of demon in region
 	 * @param rTroll
 	 *            Integer number of trolls in region
+	 * @param PlayerStatusElement
+	 * 				Element Containing info about PlayerStatus Hash
 	 * @return Node that should be added to root element
 	 */
 	public static Node getRegion(Document doc, String name, int rNumber,
@@ -541,6 +545,8 @@ public class GameEngine extends JFrame implements Runnable {
 	 *				player number
 	 *@param pTurn
 	 *           turn of player
+	 * @param RegionStatusElement
+	 * 			 Element RegionStatus hash info
 	 * @return Node of player that should be added to root element
 	 */
 	public static Node getPlayer(Document doc, String color, int buildingHold, int cashHold, int minionHold, String personality, 
@@ -897,7 +903,6 @@ public class GameEngine extends JFrame implements Runnable {
 								int buildings = Integer
 										.parseInt(buildingRSList.item(0).getNodeValue());
 								objRS.placedbuilding = buildings;
-								//System.out.println("building number:================================="+ buildings);
 								playerObjList.get(s).H_Region.put(regionNo, objRS);
 								
 							}
@@ -910,7 +915,7 @@ public class GameEngine extends JFrame implements Runnable {
 						playerObjList.get(s).pTurn = Integer.parseInt(TurnList.item(0).getNodeValue());
 						if(playerObjList.get(s).pTurn == 1)
 						{
-							NewGame.PlayerTurn = playerObjList.get(s).pNumber;
+							NewGame.currentPlayerTurn = playerObjList.get(s).pNumber;
 						}
 						
 							// amount of cash with player currently

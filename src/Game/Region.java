@@ -250,7 +250,7 @@ public class Region {
 	 * 
 	 */
 	public void removeMinion(String color) {
-		if(H_Player.get(color).pMinionRegionwise >= 1)
+		if(H_Player.containsKey(color) && H_Player.get(color).pMinionRegionwise >= 1)
 		{
 			rMinionNum--;
 			H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise - 1;
@@ -263,6 +263,7 @@ public class Region {
 	 * 
 	 */
 	public void placeBuilding(String color) {
+		
 		rBuilding++;
 		H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise + 1;
 	}
@@ -334,6 +335,11 @@ public class Region {
 		}
 	}
 	
+	/**
+	 * Method removes all the minions from region
+	 * @param pColor String color of player
+	 * @return Integer number of minions
+	 */
 	public int removeAllMinion(String pColor)
 	{
 		int numMinion = H_Player.get(pColor).pMinionRegionwise;
@@ -342,6 +348,12 @@ public class Region {
 		return numMinion;
 	}
 	
+	
+	/**
+	 * place minions 
+	 * @param pColor color of player
+	 * @param numMinion number of minions
+	 */
 	public void placeAllMinion (String pColor, int numMinion)
 	{
 		if(H_Player.containsKey(pColor))

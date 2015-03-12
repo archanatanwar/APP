@@ -14,7 +14,9 @@ import java.util.List;
  */
 
 public class FogEventCard extends RandomEventCards{
-	
+	/**
+	 * executes Random Event Fog functionality
+	 */
 	public void executeRandomEvent()
 	{
 		fogCards = new HashMap<String, List<String>>();
@@ -31,6 +33,6 @@ public class FogEventCard extends RandomEventCards{
 			fogCards.put(color_temp, list);			
 		}
 		String names = fogCards.toString();
-		NewGame.showErrorDialog("Five Cards Discarded : " + names);
+		NewGame.showErrorDialog("Fog Event Occured, Five Cards Discarded : " + names);
 	}
 }

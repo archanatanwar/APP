@@ -15,16 +15,30 @@ import java.util.*;
  *
  */
 public class PlayerCards {
+	/**
+	 * <h1>Player cards enum</h1>
+	 *  <p>deck of player cards(Green as of now)</p>
+	 * @author nav_k
+	 *
+	 */
 	public enum PlayerCardDeck {
-		MR_BOGGIS, MR_BENT, THE_BEGGARS_GUILD, THE_BANK_OF_ANKH_MORPORK, THE_ANKH_MORPORK_SUNSHINE_DRAGON_SANCTUARY, SERGEANT_ANGUA, THE_AGONY_AUNTS, THE_DYSK, THE_DUCKMAN, DRUMKNOTT, CMOT_DIBBLER, DR_CRUCES, CAPTAIN_CARROT, MRS_CAKE, GROAT, GIMLETS_DWARF_DELICATESSEN, GASPODE, FRESH_START_CLUB, FOUL_OLE_RON, THE_FOOLS_GUILD, THE_FIRE_BRIGADE, INIGO_SKIMMER, HISTORY_MONKS, HEX, HERE_N_NOW, HARRY_KING, HARGAS_HOUSE_OF_RIBS, MR_GRYLE, THE_PEELED_NUTS, THE_OPERA_HOUSE, NOBBY_NOBS, MODO, THE_MENDED_DRUM, LIBRARIAN, LEONARD_OF_QUIRM, SHONKY_SHOP, SACHARISSA_CRIPSLOCK, ROSIE_PALM, RINCEWIND, THE_ROYAL_MINT, QUEEN_MOLLY, PINK_PUSSYCAT_CLUB, ZORGO_THE_RETRO_PHRENOLOGIST, DR_WHITEFACE, WALLACE_SONKY, THE_SEAMSTRESSES_GUILD, MR_PIN_MR_TULIP, THE_THIEVES_GUILD
+		MR_BOGGIS, MR_BENT, THE_BEGGARS_GUILD, THE_BANK_OF_ANKH_MORPORK, THE_ANKH_MORPORK_SUNSHINE_DRAGON_SANCTUARY, SERGEANT_ANGUA, THE_AGONY_AUNTS, THE_DYSK, THE_DUCKMAN, DRUMKNOTT, CMOT_DIBBLER, DR_CRUCES, CAPTAIN_CARROT, MRS_CAKE, GROAT, GIMLETS_DWARF_DELICATESSEN, GASPODE, FRESH_START_CLUB, FOUL_OLE_RON, THE_FOOLS_GUILD, THE_FIRE_BRIGADE, INIGO_SKIMMER, HISTORY_MONKS, HEX, HERE_N_NOW, HARRY_KING, HARGAS_HOUSE_OF_RIBS, MR_GRYLE, THE_PEELED_NUTS, THE_OPERA_HOUSE, NOBBY_NOBBS, MODO, THE_MENDED_DRUM, LIBRARIAN, LEONARD_OF_QUIRM, SHONKY_SHOP, SACHARISSA_CRIPSLOCK, ROSIE_PALM, RINCEWIND, THE_ROYAL_MINT, QUEEN_MOLLY, PINK_PUSSYCAT_CLUB, ZORGO_THE_RETRO_PHRENOLOGIST, DR_WHITEFACE, WALLACE_SONKY, THE_SEAMSTRESSES_GUILD, MR_PIN_MR_TULIP, THE_THIEVES_GUILD
 	}
-
+	
+	/**
+	 * symbols on top of cards
+	 * @author nav_k
+	 *
+	 */
 	enum playerCardSymbols {
 		PLACE_MINON, PLACE_BUILDING, ASSASSINATION, REMOVE_ONE_TROUBLE_MARKER, TAKE_MONEY, SCROLL, RANDOM_EVENT, PLAY_ANOTHER_CARD, INTERRUPT
 	}
-
+	
+	// list containing region number
 	public static List<Integer> regionList = Arrays.asList(1, 2, 3, 4, 5, 6, 7,
 			8, 9, 10, 11, 12);
+	
+	// list containing all the names of player cards
 	public static List<PlayerCardDeck> greenPlayerCardsList = Arrays
 			.asList(PlayerCardDeck.values());
 	// Contains Player card color as key and list of card numbers as value
@@ -159,7 +173,7 @@ public class PlayerCards {
 	 * 
 	 * @param cardName String card name that is supposed to be deleted
 	 */
-	private static void delPlayerCard(String cardName) {
+	public static void delPlayerCard(String cardName) {
 		List<String> greenList = new ArrayList<>();
 		for (Player playerObj : GameEngine.playerObjList) {
 			if (playerObj.pTurn == 1) {
@@ -189,8 +203,10 @@ public class PlayerCards {
 	 */
 	public static void performLeftToRight(String cardName) {
 		// check winning condition before playing the player card
+		NewGame.playAnotherCard = 0;
 		checkWinningCondition();
-		//cardName = "RINCEWIND";
+		
+		//cardName = "MR_PIN_MR_TULIP";
 		
 		// all the player cards' actions are defined by switch case
 		switch (cardName) {
@@ -459,6 +475,7 @@ public class PlayerCards {
 							.displayBox("Select region in which minion should be placed:");
 					newReg = Integer.parseInt(newRegion);
 					result = playerObj.checkMinionMove(newReg);
+					// user input is not correct, minion cannot be placed in that area
 					while(result == 0)
 					{
 						NewGame.showErrorDialog("Wrong Input!");
@@ -467,6 +484,8 @@ public class PlayerCards {
 						newReg = Integer.parseInt(newRegion);
 						result = playerObj.checkMinionMove(newReg);
 					}
+					// player doesn't have any minion left with him
+					// so move a minion from one region to another
 					if (playerObj.minionHold < 1) {
 						oldRegion = NewGame
 								.displayBox("Select region from which minion should be moved:");
@@ -490,6 +509,7 @@ public class PlayerCards {
 							.displayBox("Select region in which building should be placed:");
 					newReg = Integer.parseInt(newRegion);
 					result = GameEngine.regionObjList.get(newReg-1).checkBuildingMove(playerObj.color);
+					// user input is not correct, building cannot be placed in that area
 					while(result == 0)
 					{
 						NewGame.showErrorDialog("Wrong Input!");
@@ -498,16 +518,22 @@ public class PlayerCards {
 						newReg = Integer.parseInt(newRegion);
 						result = GameEngine.regionObjList.get(newReg-1).checkBuildingMove(playerObj.color);
 					}
+					// player doesn't have any building left with him
+					// so move a building from one region to another
 					if (playerObj.buildingHold < 1) {
 						oldRegion = NewGame
 								.displayBox("Select region from which building should be moved:");
 						oldReg = Integer.parseInt(oldRegion);
 						playerObj.removeBuilding(oldReg);
 						GameEngine.regionObjList.get(oldReg-1).removeBuilding(playerObj.color);
-					}					
-					playerObj.placeBuilding(newReg);
-					GameEngine.regionObjList.get(newReg-1).placeBuilding(playerObj.color);
-					break;
+					}	
+					// if there is no trouble marker in that area, building cannot be placed
+					if(GameEngine.regionObjList.get(newReg-1).rTroubleMarker ==0)
+					{
+						playerObj.placeBuilding(newReg);
+						GameEngine.regionObjList.get(newReg-1).placeBuilding(playerObj.color);
+						break;
+					}
 				}								
 			}
 			break;
@@ -518,9 +544,9 @@ public class PlayerCards {
 			String choice, playerChoice;
 			for (Player playerObj : GameEngine.playerObjList) {
 				if (playerObj.pTurn == 1) {
-					newRegion = NewGame
-							.displayBox("Select region number:");
-					newReg = Integer.parseInt(newRegion);
+					oldRegion = NewGame
+							.displayBox("Select region number from where (Minion/Demon/Troll) to be removed:");
+					oldReg = Integer.parseInt(oldRegion);
 					choice = NewGame
 							.displayBox("Select choice (Minion/Demon/Troll) to be removed:");					
 					while(result == 0)
@@ -532,22 +558,24 @@ public class PlayerCards {
 									.displayBox("Select player color:");
 							for (Player playerObj1 : GameEngine.playerObjList) {
 								if (playerObj1.color.equals(playerChoice)) {									
-									interruptStatus = checkInterruptCard(newReg, playerChoice);
+									interruptStatus = checkInterruptCard(oldReg, playerChoice);
+									
 									if(interruptStatus == 0)
 									{
-										playerObj1.removeMinion(newReg);
-										GameEngine.regionObjList.get(newReg-1).removeMinion(playerObj1.color);
+										
+										playerObj1.removeMinion(oldReg);
+										GameEngine.regionObjList.get(oldReg-1).removeMinion(playerObj1.color);
 									}
 									result = 1;
 								}
 							}
 							break;
 						case "demon" :
-							GameEngine.regionObjList.get(newReg-1).removeDemon();
+							GameEngine.regionObjList.get(oldReg-1).removeDemon();
 							result = 1;
 							break;
 						case "troll":
-							GameEngine.regionObjList.get(newReg-1).removeTroll();
+							GameEngine.regionObjList.get(oldReg-1).removeTroll();
 							result = 1;
 							break;
 						default:
@@ -602,6 +630,7 @@ public class PlayerCards {
 				case "FLOOD":
 					System.out.println("Flood event occurred !!!!!!!");
 					RandomEventCards floodEvent = new FloodEventCard();
+					floodEvent.executeRandomEvent();
 					break;
 				case "FIRE":
 					RandomEventCards fireEvent = new FireEventCard();
@@ -651,8 +680,9 @@ public class PlayerCards {
 			break;
 			// play another card
 		case "PLAY_ANOTHER_CARD":
-			System.out.println("play another card");
+			//System.out.println("play another card");
 			delPlayerCard(playerCardName);
+			NewGame.playAnotherCard = 1;
 			NewGame.createPlayerFrame();
 			break;
 			// interrupt
@@ -747,6 +777,7 @@ public class PlayerCards {
 				if(playerObj.pTurn == 1)
 				{
 					playerObj.cashHold = playerObj.cashHold + number;
+					GameEngine.BankHold = GameEngine.BankHold - number;
 				}
 			}
 			break;
@@ -761,10 +792,8 @@ public class PlayerCards {
 		case "DRUMKNOTT":
 			// Play any two other cards
 			delPlayerCard(playerCardName);
-			for(int i=0; i<2; i++)
-			{
-				NewGame.createPlayerFrame();
-			}
+			NewGame.playAnotherCard = 1;
+			NewGame.createPlayerFrame();
 			break;
 
 		case "CMOT_DIBBLER":
@@ -909,6 +938,10 @@ public class PlayerCards {
 				{
 					if(playerObj.pTurn == 1)
 					{
+						List<String>greenList = playerObj.pCards.get("Green");
+						for(String a : greenList){
+							list1.add(a);
+						}
 						playerObj.pCards.put("Green", list1);
 					}
 				}
@@ -998,6 +1031,7 @@ public class PlayerCards {
 				if(playerObj.pTurn == 1)
 				{
 					playerObj.cashHold = playerObj.cashHold + number1;
+					GameEngine.BankHold = GameEngine.BankHold - number1;
 				}
 			}
 			break;
@@ -1133,10 +1167,45 @@ public class PlayerCards {
 			break;
 			
 		case"RINCEWIND":
-			// move your minion from an area containing trouble marker to adjacent area
-			String areaBefore3 = NewGame.displayBox("Enter area name that contains TM from which minion should be moved");
-			String areaBefore4 = NewGame.displayBox("Enter adjacent area name to which minion should be moved");
-			// call method to move minion
+			
+			String oldRegion = "";
+			String newRegion = "";
+			int value;
+			int oldReg, newReg;
+			for (Player playerObj : GameEngine.playerObjList) {
+				if (playerObj.pTurn == 1) {
+					newRegion = NewGame
+							.displayBox("Select region in which minion should be placed:");
+					newReg = Integer.parseInt(newRegion);
+					value = playerObj.checkMinionMove(newReg);
+					while(value == 0)
+					{
+						NewGame.showErrorDialog("Wrong Input!");
+						newRegion = NewGame
+								.displayBox("Select region in which minion should be placed:");
+						newReg = Integer.parseInt(newRegion);
+						result = playerObj.checkMinionMove(newReg);
+					}
+					
+					oldRegion = NewGame
+							.displayBox("Select region from which minion should be moved having Trouble Marker:");
+					oldReg = Integer.parseInt(oldRegion);
+					while(GameEngine.regionObjList.get(oldReg-1).rTroubleMarker == 0)
+					{
+						NewGame.showErrorDialog("Wrong Input!");
+						oldRegion = NewGame
+								.displayBox("Select region from which minion should be moved having Trouble Marker:");
+						oldReg = Integer.parseInt(oldRegion);
+					}
+					playerObj.removeMinion(oldReg);
+					GameEngine.regionObjList.get(oldReg-1).removeMinion(playerObj.color);
+										
+					playerObj.placeMinion(newReg);
+					GameEngine.regionObjList.get(newReg-1).placeMinion(playerObj.color);
+					break;
+				}								
+			}
+			
 			break;
 			
 		case "QUEEN_MOLLY":
@@ -1333,20 +1402,59 @@ public class PlayerCards {
 	public static Pair getPlayerCard()
 	{
 		Collections.shuffle(greenPlayerCardsList);
-		String result = greenPlayerCardsList.get(0).toString();
-		greenPlayerCardsList = new ArrayList<PlayerCardDeck>(greenPlayerCardsList);
+		String result = null;
 		if(greenPlayerCardsList.isEmpty())
 		{
 			checkWinningCondition();
+			checkWinningPoints();
 		}
 		else
 		{
+			result = greenPlayerCardsList.get(0).toString();
+			greenPlayerCardsList = new ArrayList<PlayerCardDeck>(greenPlayerCardsList);
 			greenPlayerCardsList.remove(0);
 		}
 		return new Pair(result,"Green");
 	}
+	/*
+	 * methods checks winning points of all players
+	 */
 	
-	// check winning condition of current player accordingly
+	public static void checkWinningPoints()
+	{
+		int minion, mCost, bCost, cash, size, rNum, totalPoints; 
+		String color;
+		String winnerColor = "";
+		int winner = 0;		
+		size = GameEngine.playerObjList.size();
+		for(int i=0; i<size; i++)
+		{
+			bCost = 0;
+			totalPoints = 0;
+			color = GameEngine.playerObjList.get(i).color;
+			minion = GameEngine.playerObjList.get(i).minionHold;				
+			mCost = (12-minion)*5;
+			cash = GameEngine.playerObjList.get(i).cashHold;
+			for (int key : GameEngine.playerObjList.get(i).H_Region.keySet()) {
+				if(GameEngine.playerObjList.get(i).H_Region.get(key).placedbuilding == 1)
+				{
+					rNum = GameEngine.playerObjList.get(i).H_Region.get(key).regionNumber;
+					bCost = bCost + GameEngine.regionObjList.get(rNum-1).rBuildingCost;
+				}
+			}
+			totalPoints = mCost + cash + bCost;
+			if(winner < totalPoints)
+			{
+				winnerColor = color;
+				winner = totalPoints;
+			}
+		}		
+		NewGame.showErrorDialog("Congratulations, Player: "+ winnerColor +" wins having total points: "+ winner);
+		System.exit(0);
+	}
+	/**
+	 *  check winning condition of current player accordingly
+	 */
 	public static void checkWinningCondition()
 	{
 		int result = 0;
@@ -1360,10 +1468,11 @@ public class PlayerCards {
 			if(result == 1)
 			{
 				NewGame.showErrorDialog("Congratulations "+ playerObj.color +" Win The Game!");
-				return;
+				System.exit(0);
 			}
-		}		
+		}
 	}
+	
 	
 	// the cards that might have taken loan from bank and who need to pay back at the end of game
 	public static void populateLoanCards(String loanCard)
@@ -1444,8 +1553,9 @@ public class PlayerCards {
 					// check for fresh start club player card
 					else if(greenList.get(i).equals("FRESH_START_CLUB"))
 					{
+						NewGame.showErrorDialog(greenList.get(i)+" Interrupt Card Played by "+pColor+" !");
 						String newRegion = NewGame
-								.displayBox("Select region number:");
+								.displayBox("Select region in which minion should be placed:");
 						int newReg = Integer.parseInt(newRegion);
 						result = playerObj.checkMinionMove(newReg);
 						while(result == 0)
@@ -1459,8 +1569,7 @@ public class PlayerCards {
 						playerObj.removeMinion(oldRegion);
 						GameEngine.regionObjList.get(oldRegion-1).removeMinion(playerObj.color);										
 						playerObj.placeMinion(newReg);
-						GameEngine.regionObjList.get(newReg-1).placeMinion(playerObj.color);
-						NewGame.showErrorDialog(greenList.get(i)+" Interrupt Card Played by "+pColor+" !");
+						GameEngine.regionObjList.get(newReg-1).placeMinion(playerObj.color);						
 						greenList.remove(i);
 						result = 1;
 						break;
@@ -1477,7 +1586,7 @@ public class PlayerCards {
 			}
 		}
 		return result;
-	}	
+	}
 }
 
 
