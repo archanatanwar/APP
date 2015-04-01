@@ -545,7 +545,7 @@ public class Player {
 			}
 			int numMinion = GameUtility.regionObjList.get(oldArea - 1)
 					.removeAllMinion(color);
-			GameUtility.regionObjList.get(newArea).placeAllMinion(color,
+			GameUtility.regionObjList.get(newArea-1).placeAllMinion(color,
 					numMinion);
 
 		}

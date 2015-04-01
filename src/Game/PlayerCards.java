@@ -3130,6 +3130,7 @@ public class PlayerCards {
 			// randomly choose an event from random event cards
 			String eventChoice = RandomEventCards.getRandomEventCard();
 			// cases for random event cards that calls respective methods
+			eventChoice = "FLOOD";
 			switch (eventChoice) {			
 			case "THE_DRAGON":
 				RandomEventCards dragonEvent = new DragonEventCard();
@@ -3763,43 +3764,40 @@ public class PlayerCards {
 			break;
 
 		case "RINCEWIND":
-
-			String oldRegion = "";
-			String newRegion = "";
-			int value;
-			int oldReg,
-			newReg;
+			int oldReg,	newReg;
 			for (Player playerObj : GameUtility.playerObjList) {
-				if (playerObj.pTurn == 1) {
-					newRegion = NewGame
-							.displayBox("Select region in which minion should be placed:");
-					newReg = Integer.parseInt(newRegion);
-					value = playerObj.checkMinionMove(newReg);
-					while (value == 0) {
-						NewGame.showErrorDialog("Wrong Input!");
-						newRegion = NewGame
-								.displayBox("Select region in which minion should be placed:");
-						newReg = Integer.parseInt(newRegion);
-						result = playerObj.checkMinionMove(newReg);
+				if (playerObj.pTurn == 1) {					
+					tempArray.clear();
+					for (int key : playerObj.H_Region.keySet()) {
+						if (playerObj.H_Region.get(key).placedMinion > 0 && GameUtility.regionObjList.get(key-1).rTroubleMarker == 1) {
+							tempArray.add(String.valueOf(key));
+						}
+					}	
+					tempArray.add("Exit");
+					comboChoice = NewGame
+							.displayComboBox(
+									"Select region from which minion should be moved",
+									tempArray);
+					if(comboChoice.equals("Exit"))
+					{
+						break;
 					}
-
-					oldRegion = NewGame
-							.displayBox("Select region from which minion should be moved having Trouble Marker:");
-					oldReg = Integer.parseInt(oldRegion);
-					while (GameUtility.regionObjList.get(oldReg - 1).rTroubleMarker == 0) {
-						NewGame.showErrorDialog("Wrong Input!");
-						oldRegion = NewGame
-								.displayBox("Select region from which minion should be moved having Trouble Marker:");
-						oldReg = Integer.parseInt(oldRegion);
-					}
-					playerObj.removeMinion(oldReg);
-					GameUtility.regionObjList.get(oldReg - 1).removeMinion(
-							playerObj.color);
-
-					playerObj.placeMinion(newReg);
-					GameUtility.regionObjList.get(newReg - 1).placeMinion(
-							playerObj.color);
-					break;
+					else
+					{
+						oldReg = Integer.parseInt(comboChoice);
+						tempArray.clear();
+						for (int key : GameUtility.regionObjList.get(oldReg-1).listForNeighbours) {
+							tempArray.add(String.valueOf(key));
+						}	
+						comboChoice = NewGame
+								.displayComboBox(
+										"Select region in which minion should be placed",
+										tempArray);
+						newReg = Integer.parseInt(comboChoice);
+					
+						GameUtility.removeMinion(playerObj.color, oldReg);
+						GameUtility.placeMinion(playerObj.color, newReg);
+					}				
 				}
 			}
 
@@ -4116,28 +4114,29 @@ public class PlayerCards {
 		int oldReg, newReg;
 		for (Player playerObj : GameUtility.playerObjList) {
 			if (playerObj.color.equals(pcolor)) {
-				newRegion = NewGame
-						.displayBox("Select region in which minion should be placed:");
-				newReg = Integer.parseInt(newRegion);
-				result = playerObj.checkMinionMove(newReg);
-				while (result == 0) {
-					NewGame.showErrorDialog("Wrong Input!");
-					newRegion = NewGame
-							.displayBox("Select region in which minion should be placed:");
-					newReg = Integer.parseInt(newRegion);
-					result = playerObj.checkMinionMove(newReg);
-				}
-				// if (playerObj.minionHold < 1) {
-				oldRegion = NewGame
-						.displayBox("Select region from which minion should be moved:");
-				oldReg = Integer.parseInt(oldRegion);
-				playerObj.removeMinion(oldReg);
-				GameUtility.regionObjList.get(oldReg - 1).removeMinion(
-						playerObj.color);
-				// }
-				playerObj.placeMinion(newReg);
-				GameUtility.regionObjList.get(newReg - 1).placeMinion(
-						playerObj.color);
+				tempArray.clear();
+				for (int key : playerObj.H_Region.keySet()) {
+					if (playerObj.H_Region.get(key).placedMinion > 0) {
+						tempArray.add(String.valueOf(key));
+					}
+				}				
+				comboChoice = NewGame
+						.displayComboBox(
+								"Select region from which minion should be moved",
+								tempArray);
+				oldReg = Integer.parseInt(comboChoice);
+				tempArray.clear();
+				for (int key : GameUtility.regionObjList.get(oldReg-1).listForNeighbours) {
+					tempArray.add(String.valueOf(key));
+				}	
+				comboChoice = NewGame
+						.displayComboBox(
+								"Select region in which minion should be placed",
+								tempArray);
+				newReg = Integer.parseInt(comboChoice);
+				
+				GameUtility.removeMinion(playerObj.color, oldReg);
+				GameUtility.placeMinion(playerObj.color, newReg);
 				break;
 			}// end if
 		}

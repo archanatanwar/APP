@@ -18,7 +18,7 @@ public class TrollsEventCard extends RandomEventCards {
 	public void executeRandomEvent() {
 		int result;
 		String sValue = "Trolls placed in region: ";
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			// roll the die
 			result = getRollDiceNumber();
 			// place troll in the respective area

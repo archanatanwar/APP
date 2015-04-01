@@ -1,6 +1,7 @@
 package Game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * <h1>Flood</h1>
@@ -20,6 +21,7 @@ public class FloodEventCard extends RandomEventCards {
 	 */
 	public void executeRandomEvent() {
 		ArrayList<Integer> floodAreas = new ArrayList<Integer>();
+		floodAreas.addAll(Arrays.asList(1,2,4,5,7,8,10,11,12));
 		ArrayList<String> tempArray = new ArrayList<String>();
 		Boolean floodFlag;
 		String comboChoice;
@@ -50,7 +52,7 @@ public class FloodEventCard extends RandomEventCards {
 			}
 			// move all the minions
 			for (Player playerObj : GameUtility.playerObjList) {
-				if(playerObj.H_Region.containsKey(area1) && playerObj.H_Region.get(area1-1).placedMinion > 0)
+				if(playerObj.H_Region.containsKey(area1) && playerObj.H_Region.get(area1).placedMinion > 0)
 				{
 					comboChoice = NewGame.displayComboBox("Player: "+playerObj.color+" Select region in which minion should be moved", tempArray);
 					moveRegion = Integer.parseInt(comboChoice);
@@ -87,7 +89,7 @@ public class FloodEventCard extends RandomEventCards {
 			}
 			// move all the minions
 			for (Player playerObj : GameUtility.playerObjList) {
-				if(playerObj.H_Region.containsKey(area2) && playerObj.H_Region.get(area2-1).placedMinion > 0)
+				if(playerObj.H_Region.containsKey(area2) && playerObj.H_Region.get(area2).placedMinion > 0)
 				{
 					comboChoice = NewGame.displayComboBox("Player: "+playerObj.color+" Select region in which minion should be moved", tempArray);
 					moveRegion = Integer.parseInt(comboChoice);
