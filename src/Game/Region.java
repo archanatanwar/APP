@@ -116,17 +116,14 @@ public class Region {
 
 	/**
 	 * Method helps to place demon in the region
+	 * 
 	 * @return 1 if place successful
 	 */
 	public int placeDemon() {
 		int result = 0;
-		if(GameEngine.DemonsHold >= 1)
-		{
-			rDemon++;
-			if(rDemon > 1)
-			{
-				result = placeTroubleMarker();
-			}			
+		if (GameEngine.DemonsHold >= 1) {
+			rDemon++;			
+			result = placeTroubleMarker();			
 			GameEngine.DemonsHold--;
 			result = 1;
 		}
@@ -135,12 +132,12 @@ public class Region {
 
 	/**
 	 * Method helps to remove demon from the region
+	 * 
 	 * @return 1 if removal successful
 	 */
 	public int removeDemon() {
 		int result = 0;
-		if(rDemon >= 1)
-		{
+		if (rDemon >= 1) {
 			rDemon = rDemon - 1;
 			GameEngine.DemonsHold++;
 			removeTroubleMarker();
@@ -148,31 +145,34 @@ public class Region {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Method helps to place troll in the region
+	 * 
 	 * @return 1 if place successful
 	 */
 	public int placeTroll() {
 		int result = 0;
-		if(GameEngine.TrollsHold >= 1)
-		{
+		if (GameEngine.TrollsHold >= 1) {
 			rTroll = rTroll + 1;
 			GameEngine.TrollsHold--;
-			placeTroubleMarker();
-			result = 1;
+			if(rMinionNum > 0 || rDemon > 0)
+			{
+				placeTroubleMarker();
+				result = 1;
+			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Method helps to remove troll from the region
+	 * 
 	 * @return 1 if removal successful
 	 */
 	public int removeTroll() {
 		int result = 0;
-		if(rTroll >= 1)
-		{
+		if (rTroll >= 1) {
 			rTroll = rTroll - 1;
 			GameEngine.TrollsHold++;
 			removeTroubleMarker();
@@ -180,114 +180,106 @@ public class Region {
 		}
 		return result;
 	}
-	
-	
+
 	/**
 	 * Method helps to place trouble marker in the region
+	 * 
 	 * @return 1 if place successful
 	 */
 	public int placeTroubleMarker() {
 		int result = 0;
-		if(GameEngine.TMarkerHold >= 0)
-		{
-			if(rTroubleMarker == 0)
-			{
+		if (GameEngine.TMarkerHold >= 0) {
+			if (rTroubleMarker == 0) {
 				GameEngine.TMarkerHold--;
-				rTroubleMarker = 1;	
-			}					
+				rTroubleMarker = 1;
+			}
 			result = 1;
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Method helps to remove troll from the region
+	 * 
 	 * @return 1 if removal successful
 	 */
 	public void removeTroubleMarker() {
-		if(rTroubleMarker == 1)
-		{
+		if (rTroubleMarker == 1) {
 			rTroubleMarker = 0;
 			GameEngine.TMarkerHold++;
 		}
 	}
-	
-	public int checkBuildingMove(String tColor)
-	{
+
+	public int checkBuildingMove(String tColor) {
 		int result = 0;
-		if(rBuilding == 0 && H_Player.containsKey(tColor)&& H_Player.get(tColor).pMinionRegionwise >= 1)
-		{
-			result = 1;			
-		}		
-		return result;		
+		if (rBuilding == 0 && rTroubleMarker == 0
+				&& H_Player.containsKey(tColor)
+				&& H_Player.get(tColor).pMinionRegionwise >= 1) {
+			result = 1;
+		}
+		return result;
 	}
-	
+
 	/**
 	 * Method helps to place minion in the region
 	 * 
 	 */
-	public void placeMinion(String color) {	
+	public void placeMinion(String color) {
 		rMinionNum++;
 		if (H_Player.containsKey(color)) {
 			H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise + 1;
-		}
-		else
-		{
+		} else {
 			objSP = new PlayerStatus();
 			objSP.color = color;
 			objSP.pbuildingRegionwise = 0;
 			objSP.pMinionRegionwise = 1;
 			H_Player.put(color, objSP);
 		}
-		if(rMinionNum > 1)
-		{
+		if (rMinionNum > 1) {
 			placeTroubleMarker();
 		}
 	}
-	
+
 	/**
 	 * Method helps to remove minion from the region
 	 * 
 	 */
 	public void removeMinion(String color) {
-		if(H_Player.containsKey(color) && H_Player.get(color).pMinionRegionwise >= 1)
-		{
+		if (H_Player.containsKey(color)
+				&& H_Player.get(color).pMinionRegionwise >= 1) {
 			rMinionNum--;
 			H_Player.get(color).pMinionRegionwise = H_Player.get(color).pMinionRegionwise - 1;
 			removeTroubleMarker();
 		}
 	}
-	
+
 	/**
 	 * Method helps to place building in the region
 	 * 
 	 */
 	public void placeBuilding(String color) {
-		
+
 		rBuilding++;
 		H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise + 1;
 	}
-	
-	
+
 	/**
 	 * Method helps to remove building from the region
 	 * 
 	 */
 	public void removeBuilding(String color) {
-		if(H_Player.get(color).pbuildingRegionwise >= 1)
-		{
+		if (H_Player.get(color).pbuildingRegionwise >= 1) {
 			rBuilding--;
 			H_Player.get(color).pbuildingRegionwise = H_Player.get(color).pbuildingRegionwise - 1;
 		}
 	}
-	
+
 	/**
 	 * Method execute Dragon event card
 	 * 
 	 */
-	
-	public void executeDragonEvent()
-	{
+
+	public void executeDragonEvent() {
 		rMinionNum = 0;
 		rBuilding = 0;
 		Set<String> keys = H_Player.keySet();
@@ -300,20 +292,18 @@ public class Region {
 		GameEngine.TMarkerHold = GameEngine.TMarkerHold + rTroubleMarker;
 		rDemon = 0;
 		rTroll = 0;
-		rTroubleMarker = 0;		
+		rTroubleMarker = 0;
 	}
-	
+
 	/**
 	 * Method execute Fire event card
 	 * 
 	 * @return 1 if building is removed
 	 */
-	
-	public int executeFireEvent()
-	{
+
+	public int executeFireEvent() {
 		int result = 0;
-		if(rBuilding == 1)
-		{
+		if (rBuilding == 1) {
 			Set<String> keys = H_Player.keySet();
 			for (String key : keys) {
 				H_Player.get(key).pbuildingRegionwise = 0;
@@ -322,46 +312,45 @@ public class Region {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Method remove all building in an area
 	 */
-	
-	public void removeAllBuilding() 
-	{
+
+	public void removeAllBuilding() {
 		rBuilding = 0;
 		for (String key : H_Player.keySet()) {
-			H_Player.get(key).pbuildingRegionwise  = 0;
+			H_Player.get(key).pbuildingRegionwise = 0;
 		}
 	}
-	
+
 	/**
 	 * Method removes all the minions from region
-	 * @param pColor String color of player
+	 * 
+	 * @param pColor
+	 *            String color of player
 	 * @return Integer number of minions
 	 */
-	public int removeAllMinion(String pColor)
-	{
+	public int removeAllMinion(String pColor) {
 		int numMinion = H_Player.get(pColor).pMinionRegionwise;
 		H_Player.get(pColor).pMinionRegionwise = 0;
 		rMinionNum = rMinionNum - numMinion;
 		return numMinion;
 	}
-	
-	
+
 	/**
-	 * place minions 
-	 * @param pColor color of player
-	 * @param numMinion number of minions
+	 * place minions
+	 * 
+	 * @param pColor
+	 *            color of player
+	 * @param numMinion
+	 *            number of minions
 	 */
-	public void placeAllMinion (String pColor, int numMinion)
-	{
-		if(H_Player.containsKey(pColor))
-		{
-			H_Player.get(pColor).pMinionRegionwise = H_Player.get(pColor).pMinionRegionwise + numMinion;
-		}
-		else
-		{
+	public void placeAllMinion(String pColor, int numMinion) {
+		if (H_Player.containsKey(pColor)) {
+			H_Player.get(pColor).pMinionRegionwise = H_Player.get(pColor).pMinionRegionwise
+					+ numMinion;
+		} else {
 			objSP = new PlayerStatus();
 			objSP.color = pColor;
 			objSP.pMinionRegionwise = numMinion;
@@ -371,9 +360,3 @@ public class Region {
 		rMinionNum = rMinionNum + numMinion;
 	}
 }
-
-
-
-
-
-

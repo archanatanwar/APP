@@ -20,17 +20,16 @@ public class TestNewGame {
 	public void tearDown() throws Exception {
 	}
 
-	@Test 
+	@Test
 	/**
 	 * test getPlayerCardImage method
 	 */
 	public void testgetPlayerCardImage() {
-		try{
-			 NewGame obj = new NewGame();
-			 ImageIcon result =  obj.getPlayerCardImage("MR_BOGGIS");
-			 assertEquals(result.toString(),"PlayerCardImages/MrBoggis.png");
-		}
-		catch(Exception e){
+		try {
+			NewGame obj = new NewGame();
+			ImageIcon result = obj.getPlayerCardImage("MR_BOGGIS");
+			assertEquals(result.toString(), "PlayerCardImages/MrBoggis.png");
+		} catch (Exception e) {
 			fail("Should not throw exception. Message: " + e.getMessage());
 		}
 	}

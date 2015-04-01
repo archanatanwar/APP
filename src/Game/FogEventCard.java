@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * <h1> Fog </h1>
+ * <h1>Fog</h1>
  * <p>
  * Draw and discard the top five cards from the deck
  * </p>
@@ -13,12 +13,11 @@ import java.util.List;
  *
  */
 
-public class FogEventCard extends RandomEventCards{
+public class FogEventCard extends RandomEventCards {
 	/**
 	 * executes Random Event Fog functionality
 	 */
-	public void executeRandomEvent()
-	{
+	public void executeRandomEvent() {
 		fogCards = new HashMap<String, List<String>>();
 		for (int i = 1; i <= 5; i++) {
 			Pair pair = PlayerCards.getPlayerCard();
@@ -30,9 +29,10 @@ public class FogEventCard extends RandomEventCards{
 			} else {
 				list.add(cardName_temp);
 			}
-			fogCards.put(color_temp, list);			
+			fogCards.put(color_temp, list);
 		}
 		String names = fogCards.toString();
-		NewGame.showErrorDialog("Fog Event Occured, Five Cards Discarded : " + names);
+		NewGame.showErrorDialog("Fog Event Occured, Five Cards Discarded : "
+				+ names);
 	}
 }

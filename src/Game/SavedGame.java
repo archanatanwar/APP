@@ -89,36 +89,35 @@ public class SavedGame extends JFrame {
 			{
 
 				// ---- Loaded_Region_Info ----
-				Loaded_Region_Info
-						.setModel(new DefaultTableModel(
-								new Object[][] {
-										{ "Dolly Sisters", null, null, null,
-												0, null, null, null },
-										{ "Unreal Estate", null, null, null,
-												0, null, null, null },
-										{ "Dragon's Landing", null, null, null,
-												0, null, null, null },
-										{ "Small Gods", null, null, null, 0,
-												null, null, null },
-										{ "The Scours", null, null, null, 0,
-												null, null, null },
-										{ "The Hippo", null, null, null, 0,
-												null, null, null },
-										{ "The Shades", null, null, null, 0,
-												null, null, null },
-										{ "Dimwell", null, null, null, 0,
-												null, null, null },
-										{ "Longwall", null, null, null, 0,
-												null, null, null },
-										{ "Isle Of Gods", null, null, null,
-												0, null, null, null },
-										{ "Seven Sleepers", null, null, null,
-												0, null, null, null },
-										{ "Nap Hill", null, null, null, 0,
-												null, null, null }, }, new String[] {
-										"Region", "Region Number",  "Building Cost", "No. Of Minions",
-										"No. Of Buildings", "Trouble Markers",
-										"Demons", "Trolls" }));
+				Loaded_Region_Info.setModel(new DefaultTableModel(
+						new Object[][] {
+								{ "Dolly Sisters", null, null, null, 0, null,
+										null, null },
+								{ "Unreal Estate", null, null, null, 0, null,
+										null, null },
+								{ "Dragon's Landing", null, null, null, 0,
+										null, null, null },
+								{ "Small Gods", null, null, null, 0, null,
+										null, null },
+								{ "The Scours", null, null, null, 0, null,
+										null, null },
+								{ "The Hippo", null, null, null, 0, null, null,
+										null },
+								{ "The Shades", null, null, null, 0, null,
+										null, null },
+								{ "Dimwell", null, null, null, 0, null, null,
+										null },
+								{ "Longwall", null, null, null, 0, null, null,
+										null },
+								{ "Isle Of Gods", null, null, null, 0, null,
+										null, null },
+								{ "Seven Sleepers", null, null, null, 0, null,
+										null, null },
+								{ "Nap Hill", null, null, null, 0, null, null,
+										null }, }, new String[] { "Region",
+								"Region Number", "Building Cost",
+								"No. Of Minions", "No. Of Buildings",
+								"Trouble Markers", "Demons", "Trolls" }));
 				Loaded_Region_Info.setBackground(new Color(255, 255, 204));
 				Loaded_Region_Info.setForeground(new Color(0, 102, 102));
 				Loaded_Region_Info.setFont(new Font("Tahoma", Font.BOLD
@@ -187,15 +186,15 @@ public class SavedGame extends JFrame {
 																					scrollPane2,
 																					GroupLayout.PREFERRED_SIZE,
 																					1200,
-																					GroupLayout.PREFERRED_SIZE))																			
+																					GroupLayout.PREFERRED_SIZE))
 															.addComponent(
 																	scrollPane1,
 																	GroupLayout.PREFERRED_SIZE,
 																	1200,
 																	GroupLayout.PREFERRED_SIZE)
 															.addComponent(
-																			scrollPane3,
-																			GroupLayout.Alignment.TRAILING))
+																	scrollPane3,
+																	GroupLayout.Alignment.TRAILING))
 											.addContainerGap()));
 			panel1Layout
 					.setVerticalGroup(panel1Layout

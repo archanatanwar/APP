@@ -21,7 +21,7 @@ public class Player {
 	int buildingHold; // number of buildings
 	int cashHold; // cash with player
 
-	private int[] defaultRegions = {1,5,7};
+	private int[] defaultRegions = { 1, 5, 7 };
 
 	Hashtable<Integer, RegionStatus> H_Region;
 	RegionStatus SP;
@@ -55,7 +55,7 @@ public class Player {
 		cashHold = 10;
 		// update cash with bank
 		GameEngine.BankHold = GameEngine.BankHold - cashHold;
-		
+
 		pCards = new HashMap<String, List<String>>();
 		// distribute cards
 		// five to each player initially
@@ -91,15 +91,15 @@ public class Player {
 			}
 		}
 	}
-	
-	public int getBuilding()
-	{
+
+	public int getBuilding() {
 		return buildingHold;
 	}
+
 	public String getColor() {
 		return color;
 	}
-	
+
 	public int getTurn() {
 		return pTurn;
 	}
@@ -111,42 +111,38 @@ public class Player {
 	public int getMinion() {
 		return minionHold;
 	}
-	
-	public int getCash()
-	{
+
+	public int getCash() {
 		return cashHold;
 	}
-	
-/*	public String getPCard()
-	{
-		return pCards.get("Green").get(2);
-	}*/
-	
-	
-	public List<String> getPCards()
-	{
+
+	/*
+	 * public String getPCard() { return pCards.get("Green").get(2); }
+	 */
+
+	public List<String> getPCards() {
 		return pCards.get("Green");
 	}
-	
+
 	public void setTurn(int turn) {
 		pTurn = turn;
 	}
-	
+
 	public void setPNumber(int number) {
 		pNumber = number;
 	}
-	
+
 	/**
 	 * Helps place player's minion in the region specified
-	 * @param rNum Integer represents region number
+	 * 
+	 * @param rNum
+	 *            Integer represents region number
 	 */
 	public void placeMinion(int rNum) {
 		minionHold--;
 		if (H_Region.containsKey(rNum)) {
 			H_Region.get(rNum).placedMinion = H_Region.get(rNum).placedMinion + 1;
-		}
-		else
-		{
+		} else {
 			SP = new RegionStatus();
 			SP.regionNumber = rNum;
 			SP.placedbuilding = 0;
@@ -154,61 +150,69 @@ public class Player {
 			H_Region.put(rNum, SP);
 		}
 	}
-	
+
 	/**
 	 * Helps remove player's minion from the given region
-	 * @param rNum Integer represents region number
+	 * 
+	 * @param rNum
+	 *            Integer represents region number
 	 */
 	public void removeMinion(int rNum) {
-		if(H_Region.containsKey(rNum) && H_Region.get(rNum).placedMinion >= 1)
-		{
+		if (H_Region.containsKey(rNum) && H_Region.get(rNum).placedMinion >= 1) {
 			minionHold++;
 			H_Region.get(rNum).placedMinion = H_Region.get(rNum).placedMinion - 1;
 		}
 	}
-	
+
 	/**
-	 *  Helps place player's building in the region specified
-	 * @param rNum Integer represents region number
+	 * Helps place player's building in the region specified
+	 * 
+	 * @param rNum
+	 *            Integer represents region number
 	 */
 	public void placeBuilding(int rNum) {
-		if(buildingHold >= 1)
-		{
+		if (buildingHold >= 1) {
 			buildingHold--;
 			H_Region.get(rNum).placedbuilding = H_Region.get(rNum).placedbuilding + 1;
+			cashHold = cashHold
+					- GameUtility.regionObjList.get(rNum - 1).rBuildingCost;
+			GameEngine.BankHold = GameEngine.BankHold
+					+ GameUtility.regionObjList.get(rNum - 1).rBuildingCost;
 		}
 	}
-	
+
 	/**
 	 * Helps remove player's building from the given region
-	 * @param rNum Integer represents region number
+	 * 
+	 * @param rNum
+	 *            Integer represents region number
 	 */
 	public void removeBuilding(int rNum) {
-		if(H_Region.containsKey(rNum) && H_Region.get(rNum).placedbuilding >= 1)
-		{
+		if (H_Region.containsKey(rNum)
+				&& H_Region.get(rNum).placedbuilding >= 1) {
 			buildingHold++;
 			H_Region.get(rNum).placedbuilding = H_Region.get(rNum).placedbuilding - 1;
 		}
 	}
-	
+
 	/**
 	 * Method checks if a minion can be moved to a region or an adjacent area.
 	 * It acts as a utility method for place minion method.
-	 * @param rNum Integer represents region number
+	 * 
+	 * @param rNum
+	 *            Integer represents region number
 	 * @return Integer 1 if minion can be placed
 	 */
 	public int checkMinionMove(int rNum) {
 		int result = 0;
-		if (H_Region.containsKey(rNum)) {			
-			if(H_Region.get(rNum).placedMinion >= 1){
-				result = 1;		
+		if (H_Region.containsKey(rNum)) {
+			if (H_Region.get(rNum).placedMinion >= 1) {
+				result = 1;
 			}
-		}
-		else
-		{
+		} else {
 			for (int key : H_Region.keySet()) {
-				if(GameEngine.regionObjList.get(key-1).listForNeighbours.contains(rNum))
-				{
+				if (GameUtility.regionObjList.get(key - 1).listForNeighbours
+						.contains(rNum)) {
 					result = 1;
 					break;
 				}
@@ -216,100 +220,100 @@ public class Player {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Utility method to execute Subsidence event card
 	 * 
 	 */
-	
-	public void handleSubsidenceEvent()
-	{
+
+	public void handleSubsidenceEvent() {
 		int buildingExist, count;
 		count = 0;
 		String sValue = "";
 		buildingExist = 6 - buildingHold;
-		while(cashHold < (buildingExist * 2))
-		{
+		while (cashHold < (buildingExist * 2)) {
 			count++;
 			buildingExist--;
 		}
 		cashHold = cashHold - (buildingExist * 2);
-		if(count > 0)
-		{
+		GameEngine.BankHold = GameEngine.BankHold + (buildingExist * 2);
+		if (count > 0) {
 			sValue = sValue + "Building removed from region:";
-			for (int key : H_Region.keySet()) 
-			{
-				if(H_Region.get(key).placedbuilding == 1)
-				{
+			for (int key : H_Region.keySet()) {
+				if (H_Region.get(key).placedbuilding == 1) {
 					buildingHold++;
 					H_Region.get(key).placedbuilding = H_Region.get(key).placedbuilding - 1;
-					GameEngine.regionObjList.get(key-1).removeBuilding(color);
+					GameUtility.regionObjList.get(key - 1)
+							.removeBuilding(color);
 					count--;
 					sValue = sValue + key + " ";
 				}
-				if(count == 0)
-				{
+				if (count == 0) {
 					break;
 				}
 			}
 		}
-		sValue = "Subsidence Event Occured, "+ sValue + "\n Cash taken from player "+color+" :"+buildingExist*2;
+		sValue = "Subsidence Event Occured, " + sValue
+				+ "\n Cash taken from player " + color + " :" + buildingExist
+				* 2;
 		NewGame.showErrorDialog(sValue);
 	}
 
 	/**
 	 * utility method to execute fire event
-	 * @param rNum region number
+	 * 
+	 * @param rNum
+	 *            region number
 	 */
-	
-	public void executeFireEvent (int rNum)
-	{
+
+	public void executeFireEvent(int rNum) {
 		int tempNum = 0;
-		if(H_Region.containsKey(rNum))
-		{
+		if (H_Region.containsKey(rNum)) {
 			tempNum = H_Region.get(rNum).placedbuilding;
+			H_Region.get(rNum).placedbuilding = 0;
 		}
 		buildingHold = buildingHold + tempNum;
-		H_Region.get(rNum).placedbuilding = 0;
 	}
-	
+
 	/**
 	 * Utility method to execute Dragon event card
-	 * @param rNum region number
+	 * 
+	 * @param rNum
+	 *            region number
 	 */
-	
-	public void executeDragonEvent(int rNum)
-	{
+
+	public void executeDragonEvent(int rNum) {
 		int tempMinion = 0;
 		int tempBuilding = 0;
-		if(H_Region.containsKey(rNum))
-		{
+		if (H_Region.containsKey(rNum)) {
 			tempMinion = H_Region.get(rNum).placedMinion;
 			tempBuilding = H_Region.get(rNum).placedbuilding;
-			H_Region.get(rNum).placedMinion = 0;	
-			H_Region.get(rNum).placedbuilding = 0;	
+			H_Region.get(rNum).placedMinion = 0;
+			H_Region.get(rNum).placedbuilding = 0;
 		}
 		minionHold = minionHold + tempMinion;
-			
+
 		buildingHold = buildingHold + tempBuilding;
-			
+
 	}
-	
+
 	/**
 	 * Method check winning condition before each player turn
-	 * @param personality personality card for which winning condition should be checked
+	 * 
+	 * @param personality
+	 *            personality card for which winning condition should be checked
 	 * @return 1 if any of winning conditions is established
 	 */
-	
+
 	public int checkWinningCondition(String personality) {
 		int result = 0;
-		int numPlayers = GameEngine.playerObjList.size();
+		int numPlayers = GameUtility.playerObjList.size();
 		switch (personality) {
 		case "LORD_VETINARI":
 			result = checkLordVetinari(numPlayers);
 			break;
 		case "LORD_SELACHII":
-		case "LORD_RUST": 
+		case "LORD_RUST":
 		case "LORD_DE_WORDE":
 			result = checkLoad(numPlayers);
 			break;
@@ -331,79 +335,84 @@ public class Player {
 
 	/**
 	 * Method check if CommanderVimes wins the game
-	 * @param numPlayers number of players
+	 * 
+	 * @param numPlayers
+	 *            number of players
 	 * @return 1 all player cards are already played
 	 */
-	
+
 	public int checkVimes(int numPlayers) {
 		int result = 0;
-		if(PlayerCards.greenPlayerCardsList.isEmpty())
-		{
+		if (PlayerCards.greenPlayerCardsList.isEmpty()) {
 			result = 1;
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Method check if Chrysoprase wins the game
-	 * @param numPlayers number of players
-	 * @return 1 if player has more than 50$ worth in hand (cash money + buildings - loans)
+	 * 
+	 * @param numPlayers
+	 *            number of players
+	 * @return 1 if player has more than 50$ worth in hand (cash money +
+	 *         buildings - loans)
 	 * 
 	 */
-	
+
 	public int checkChrysoprase(int numPlayers) {
 		int result = 0;
 		int tempRnumber;
 		int MaxCost;
-		MaxCost = cashHold;		
+		MaxCost = cashHold;
 		for (int key : H_Region.keySet()) {
-			if (H_Region.get(key).placedbuilding == 1)
-			{
+			if (H_Region.get(key).placedbuilding == 1 && GameUtility.regionObjList.get(key-1).rDemon <= 0) {
 				tempRnumber = H_Region.get(key).regionNumber;
-				MaxCost = MaxCost + GameEngine.regionObjList.get(tempRnumber-1).rBuildingCost;
-			}			
+				MaxCost = MaxCost
+						+ GameUtility.regionObjList.get(tempRnumber - 1).rBuildingCost;
+			}
 		}
 		for (String cardKey : GameEngine.loanCards.keySet()) {
-			if(GameEngine.loanCards.get(cardKey).equals(color))
-			{
+			if (GameEngine.loanCards.get(cardKey).equals(color)) {
 				MaxCost = MaxCost - 12;
 			}
 		}
-		if(MaxCost >= 50)
-		{
+		if (MaxCost >= 50) {
 			result = 1;
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Method check if Dragon King of Arms wins the game
-	 * @param numPlayers number of players
+	 * 
+	 * @param numPlayers
+	 *            number of players
 	 * @return 1 if there are more than eight trouble markers on the board
 	 */
-	
+
 	public int checkDKArms(int numPlayers) {
 		int result = 0;
 		int tempCount = 0;
 		for (int i = 0; i <= 11; i++) {
-			if (GameEngine.regionObjList.get(i).rTroubleMarker == 1)
-			{
+			if (GameUtility.regionObjList.get(i).rTroubleMarker == 1) {
 				tempCount++;
 			}
 		}
-		if(tempCount >= 8)
-		{
+		if (tempCount >= 8) {
 			result = 1;
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Method check if Lord Selachii wins the game
-	 * @param numPlayers number of players
-	 * @return 1 if player has control of 7,5 or 4 areas depends on 2,3 or 4 players
+	 * 
+	 * @param numPlayers
+	 *            number of players
+	 * @return 1 if player has control of 7,5 or 4 areas depends on 2,3 or 4
+	 *         players
 	 */
-	
+
 	public int checkLoad(int numPlayers) {
 		int result = 0;
 		int tempCount = 0;
@@ -415,22 +424,24 @@ public class Player {
 
 		for (int i = 0; i <= 11; i++) {
 			maxPieces = 0;
-			if (GameEngine.regionObjList.get(i).rDemon == 0 && GameEngine.regionObjList.get(i).H_Player.containsKey(color)) {
-				minionPieces = GameEngine.regionObjList.get(i).H_Player
+			if (GameUtility.regionObjList.get(i).rDemon == 0
+					&& GameUtility.regionObjList.get(i).H_Player
+							.containsKey(color)) {
+				minionPieces = GameUtility.regionObjList.get(i).H_Player
 						.get(color).pMinionRegionwise;
-				buildingPieces = GameEngine.regionObjList.get(i).H_Player
+				buildingPieces = GameUtility.regionObjList.get(i).H_Player
 						.get(color).pbuildingRegionwise;
 				maxPieces = minionPieces + buildingPieces;
-				if (maxPieces > GameEngine.regionObjList.get(i).rTroll) {
-					Set<String> keys = GameEngine.regionObjList.get(i).H_Player
+				if (maxPieces > GameUtility.regionObjList.get(i).rTroll) {
+					Set<String> keys = GameUtility.regionObjList.get(i).H_Player
 							.keySet();
-					
+
 					for (String key : keys) {
 						isMaxPieces = true;
 						if (!key.equals(color)) {
-							minionPieces = GameEngine.regionObjList.get(i).H_Player
+							minionPieces = GameUtility.regionObjList.get(i).H_Player
 									.get(key).pMinionRegionwise;
-							buildingPieces = GameEngine.regionObjList.get(i).H_Player
+							buildingPieces = GameUtility.regionObjList.get(i).H_Player
 									.get(key).pbuildingRegionwise;
 							totalPieces = minionPieces + buildingPieces;
 							if (totalPieces >= maxPieces) {
@@ -470,16 +481,19 @@ public class Player {
 
 	/**
 	 * Method check if Lord Vetinari wins the game
-	 * @param numPlayers  number of players
-	 * @return 1 if player has minion on 11,10 or 9 areas depend on number of players 2,3 or 4
+	 * 
+	 * @param numPlayers
+	 *            number of players
+	 * @return 1 if player has minion on 11,10 or 9 areas depend on number of
+	 *         players 2,3 or 4
 	 */
-	
+
 	public int checkLordVetinari(int numPlayers) {
 		int result = 0;
 		int tempCount = 0;
 		for (int key : H_Region.keySet()) {
 			if (H_Region.get(key).placedMinion > 0
-					&& GameEngine.regionObjList.get(key-1).rDemon == 0) {
+					&& GameUtility.regionObjList.get(key - 1).rDemon == 0) {
 				tempCount++;
 			}
 		}
@@ -505,39 +519,35 @@ public class Player {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * helps move a minion from one area to another
-	 * @param oldArea Integer from which minion should be moved
-	 * @param newArea  Integer area to which minion should be moved
+	 * 
+	 * @param oldArea
+	 *            Integer from which minion should be moved
+	 * @param newArea
+	 *            Integer area to which minion should be moved
 	 */
-	public void moveAllMinion(int oldArea, int newArea)
-	{
+	public void moveAllMinion(int oldArea, int newArea) {
 		int tempMinion = 0;
-		if(H_Region.containsKey(oldArea))
-		{
+		if (H_Region.containsKey(oldArea)) {
 			tempMinion = H_Region.get(oldArea).placedMinion;
 			H_Region.get(oldArea).placedMinion = 0;
-			if(H_Region.contains(newArea))
-			{
-				H_Region.get(newArea).placedMinion = H_Region.get(newArea).placedMinion + tempMinion;
-			}
-			else
-			{
+			if (H_Region.containsKey(newArea)) {
+				H_Region.get(newArea).placedMinion = H_Region.get(newArea).placedMinion
+						+ tempMinion;
+			} else {
 				SP = new RegionStatus();
 				SP.regionNumber = newArea;
 				SP.placedbuilding = 0;
-				SP.placedMinion = tempMinion;			
+				SP.placedMinion = tempMinion;
 				H_Region.put(newArea, SP);
 			}
-			int numMinion = GameEngine.regionObjList.get(oldArea-1).removeAllMinion(color);
-			GameEngine.regionObjList.get(newArea).placeAllMinion(color, numMinion);
-			
-		}		
+			int numMinion = GameUtility.regionObjList.get(oldArea - 1)
+					.removeAllMinion(color);
+			GameUtility.regionObjList.get(newArea).placeAllMinion(color,
+					numMinion);
+
+		}
 	}
 }
-
-
-
-
-
