@@ -46,10 +46,11 @@ public class NewGame extends JFrame {
 	// data members that are part of GUI
 	private static JFrame frame;
 	private static JFrame frame2;
+	static JFrame board_frame ;
 	private static JPanel panel1;
-	private static JButton Two_Players;
-	private static JButton Three_Players;
-	private static JButton Four_Players;
+	public static JButton Two_Players;
+	public static JButton Three_Players;
+	public static JButton Four_Players;
 	private static JScrollPane scrollPane1;
 	static JTable Players_Info;
 	private static JScrollPane scrollPane2;
@@ -67,8 +68,8 @@ public class NewGame extends JFrame {
 	public static JPanel panel;
 	static List<String> greenList = new ArrayList<>(); // list for green cards
 	static List<String> brownList = new ArrayList<>(); // list for brown cards
-	static List<Integer> cityAreaList = new ArrayList<>(); // list for city area
-															// cards
+	static List<Integer> cityAreaList = new ArrayList<>(); // list for city area  cards
+	public static String[][] regionsUpdates = new String[12][5];														
 	static ImageIcon playerCardImage;
 	static ImageIcon personalityCardImage;
 	static ImageIcon cityAreaCardImage;
@@ -485,7 +486,9 @@ public class NewGame extends JFrame {
 	 */
 	public static void setRegionInfo() {
 		for (int i = 0; i <= 11; i++) {
-
+			board_frame.dispatchEvent(new WindowEvent(board_frame,
+					WindowEvent.WINDOW_CLOSING));
+			board_frame = new JFrame();
 			String showMinion = "";
 			String showBuilding = "0";
 			Set<String> keys = GameUtility.regionObjList.get(i).H_Player
@@ -521,6 +524,36 @@ public class NewGame extends JFrame {
 			Region_Info.setValueAt(GameUtility.regionObjList.get(i).rTroll, i,
 					7);
 		}
+		String[][] regions = new String[12][5];
+		for(int i=0; i<12; i++){
+		for(int j=0; j<5; j++){
+
+			regions[i][0]= Region_Info.getValueAt(i, 3).toString();
+			regions[i][1]= Region_Info.getValueAt(i, 4).toString();
+			regions[i][2]= Region_Info.getValueAt(i, 5).toString();
+			regions[i][3]= Region_Info.getValueAt(i, 6).toString();
+			regions[i][4]= Region_Info.getValueAt(i, 7).toString();
+//			
+		}
+		}
+				regionsUpdates = regions;
+//
+//		for(int n=0; n<12; n++){
+//		for(int m=0; m<5; m++){
+//		System.out.println(regions[n][m]); 
+//		
+//			}
+//		System.out.println(" //////////////  Region No. :  "+n+"//////////////////////");
+//		}
+//		
+//		System.out.println("======================================================"+"\n"+"*************************************************");
+	
+		AssetsManager test = new AssetsManager();
+		
+		test.updateBoard(test.getUpdates(regions),board_frame);
+		
+		
+		
 	}
 
 	/**
@@ -988,6 +1021,7 @@ public class NewGame extends JFrame {
 	private static void initComponents() {
 		// Component initialization -
 		frame = new JFrame("New Game");
+		board_frame = new JFrame();
 		panel1 = new JPanel();
 		Two_Players = new JButton();
 		Three_Players = new JButton();

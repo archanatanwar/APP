@@ -18,14 +18,20 @@ public class DragonEventCard extends RandomEventCards {
 	public void executeRandomEvent() {
 		int result = 0;
 		// roll die
+		int isSmallGods = 0;
 		result = getRollDiceNumber();
 		// get region number according to result
-		GameUtility.regionObjList.get(result - 1).executeDragonEvent();
+		
 		int size = GameUtility.playerObjList.size();
 		// remove all pieces from area by calling method
 		for (int i = 0; i < size; i++) {
+			if(GameUtility.playerObjList.get(i).H_Region.get(4-1).placedbuilding == 1)
+			{
+				
+			}
 			GameUtility.playerObjList.get(i).executeDragonEvent(result);
 		}
+		GameUtility.regionObjList.get(result - 1).executeDragonEvent();		
 		NewGame.showErrorDialog("Dragon Event Occured in Region : " + result);
 	}
 }

@@ -2,6 +2,8 @@ package Game;
 
 import java.util.*;
 
+import Game.PlayerCards.PlayerCardDeck;
+
 /**
  * <h1>Representation of Personality Cards</h1>
  * <p>
@@ -54,7 +56,27 @@ public class PersonalityCards {
 		PersonalityList.remove(0);
 		return valueToReturn.toString();
 	}
-
+	
+	// remove player card from deck
+		public static void removeCard(String cardName)
+		{
+			int count = 0;
+			PersonalityList = new ArrayList<getPersonalityCard>(PersonalityList);
+			for(getPersonalityCard a : PersonalityList)
+			{
+				String str = a.toString();
+				if(str.equals(cardName))
+				{
+					break;
+				}
+				else{
+					count++;
+				}
+			}
+			System.out.println("count: "+count);
+			PersonalityList.remove(count);
+			//System.out.println("count: "+count);
+		}
 	// public static void main(String[] args)
 	// {
 	// System.out.println(shufflePersonalityCards());

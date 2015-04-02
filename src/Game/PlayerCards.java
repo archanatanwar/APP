@@ -3130,7 +3130,6 @@ public class PlayerCards {
 			// randomly choose an event from random event cards
 			String eventChoice = RandomEventCards.getRandomEventCard();
 			// cases for random event cards that calls respective methods
-			eventChoice = "FLOOD";
 			switch (eventChoice) {			
 			case "THE_DRAGON":
 				RandomEventCards dragonEvent = new DragonEventCard();

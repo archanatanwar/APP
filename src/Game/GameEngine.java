@@ -839,25 +839,33 @@ public class GameEngine extends JFrame implements Runnable {
 									.getNodeValue());
 						}
 					}
+					
+					PersonalityCards.PersonalityList
+					.add(PersonalityCards.getPersonalityCard
+							.valueOf(GameUtility.playerObjList
+									.get(3).personality));
+					PersonalityCards.PersonalityList
+					.add(PersonalityCards.getPersonalityCard
+							.valueOf(GameUtility.playerObjList
+									.get(2).personality));
+					PersonalityCards.PersonalityList
+					.add(PersonalityCards.getPersonalityCard
+							.valueOf(GameUtility.playerObjList
+									.get(1).personality));
+					PersonalityCards.PersonalityList
+					.add(PersonalityCards.getPersonalityCard
+							.valueOf(GameUtility.playerObjList
+									.get(0).personality));
+					
 					// for players
-					if (listOfPlayers.getLength() == 2) {
-						PersonalityCards.PersonalityList
-								.add(PersonalityCards.getPersonalityCard
-										.valueOf(GameUtility.playerObjList
-												.get(3).personality));
-						PersonalityCards.PersonalityList
-								.add(PersonalityCards.getPersonalityCard
-										.valueOf(GameUtility.playerObjList
-												.get(2).personality));
+					if (listOfPlayers.getLength() == 2) {						
 						GameUtility.playerObjList.remove(3);
 						GameUtility.playerObjList.remove(2);
 					} else if (listOfPlayers.getLength() == 3) {
-						PersonalityCards.PersonalityList
-								.add(PersonalityCards.getPersonalityCard
-										.valueOf(GameUtility.playerObjList
-												.get(3).personality));
 						GameUtility.playerObjList.remove(3);
-					}
+					}					
+					
+					
 					for (int s = 0; s < listOfPlayers.getLength(); s++) {
 						Node firstPlayerNode = listOfPlayers.item(s);
 						if (firstPlayerNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -991,6 +999,7 @@ public class GameEngine extends JFrame implements Runnable {
 							// add personality card to list of objects to player
 							GameUtility.playerObjList.get(s).personality = PList
 									.item(0).getNodeValue();
+							PersonalityCards.removeCard(PList.item(0).getNodeValue());
 
 							// player card with player currently
 							NodeList PCardList = firstPlayerElement
@@ -1038,6 +1047,9 @@ public class GameEngine extends JFrame implements Runnable {
 
 					NewGame Game = new NewGame();
 					Game.reLaunchDialog();
+					NewGame.Two_Players.setEnabled(false);
+					NewGame.Three_Players.setEnabled(false);
+					NewGame.Four_Players.setEnabled(false);
 					// call constructor of SavedGame to load GUI
 					// SavedGame Loaded = new SavedGame();
 
