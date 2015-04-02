@@ -135,6 +135,18 @@ SubsidenceEventCard.java
 TrollsEventCard.java	
 --This class is responsible for executing Random Event Trolls functionality.
 
+Assets_Extractor.java	
+This class is responsible for creating the spreadsheets for images. It does memory management by including all images into one file.
+
+Assets_Loader.java	
+--This class is responsible for loading the board image.
+
+AssetsDepot.java	
+--This class is responsible for cropping images for minions/trolls/buildings/demons etc.
+
+AssetManager.java	
+--This class is responsible for updating the board.
+
 
 JAVA DOC
 -------------------------------------------------------------------
