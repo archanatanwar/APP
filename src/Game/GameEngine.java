@@ -1044,8 +1044,11 @@ public class GameEngine extends JFrame implements Runnable {
 							GameUtility.playerObjList.get(s).pCards = player_Cards;
 						}// end if
 					}// end for
-
+					
+					RandomEventCards.removeCard("DEMONS_FROM_THE_DUNGEONS_DIMENSIONS");
+					RandomEventCards.removeCard("TROLLS");
 					NewGame Game = new NewGame();
+					NewGame.loadGame = 1;
 					Game.reLaunchDialog();
 					NewGame.Two_Players.setEnabled(false);
 					NewGame.Three_Players.setEnabled(false);

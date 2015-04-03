@@ -44,7 +44,7 @@ import javax.imageio.ImageIO;
  */
 public class NewGame extends JFrame {
 	// data members that are part of GUI
-	private static JFrame frame;
+	public static JFrame frame;
 	private static JFrame frame2;
 	static JFrame board_frame ;
 	private static JPanel panel1;
@@ -55,7 +55,7 @@ public class NewGame extends JFrame {
 	static JTable Players_Info;
 	private static JScrollPane scrollPane2;
 	public static JTable Region_Info;
-	private static JButton Play_Game;
+	public static JButton Play_Game;
 	private static JButton Save_Game;
 	private static JButton Exit;
 	public static JTable Card_Info;
@@ -77,6 +77,7 @@ public class NewGame extends JFrame {
 	static int currentPlayerTurn;
 	static int nextPlayerTurn;
 	static int playAnotherCard;
+	static int loadGame;
 	private static JComboBox comboBox;
 	public static JPanel panelCombo;
 	public static String resultCombo;
@@ -395,9 +396,13 @@ public class NewGame extends JFrame {
 	}
 
 	// populates values of objects into tables for GUI
-	public static void reLaunchDialog() {
-		if (playAnotherCard == 0) {
+	public static void reLaunchDialog() {		
+		
+		if (playAnotherCard == 0 && loadGame == 0) {	
 			currentPlayerTurn = nextPlayerTurn;
+		}
+		if (playAnotherCard == 0) {						
+			System.out.println("turn after:   "+currentPlayerTurn);
 			previous = 100;
 			cityAreaStatus = new HashMap<Integer, Integer>();
 			int tempPlayerTurn = currentPlayerTurn
@@ -419,6 +424,7 @@ public class NewGame extends JFrame {
 				} // outer if
 			}// outer for		
 		}
+		loadGame = 0;
 		currentPlayerTurn = currentPlayerTurn
 				% (GameUtility.playerObjList.size());
 		if (currentPlayerTurn == 0) {

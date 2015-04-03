@@ -123,21 +123,7 @@ public class TestPlayerCards {
 	}
 
 	/**
-	 * test takePlayerCard method
-	 */
-	/*
-	 * @Test public void testtakePlayerCard(){ try{ obj1.setTurn(1);
-	 * obj1.setPNumber(2); obj2.setTurn(0); beforeCall =
-	 * obj1.getPCards().size(); List<String> Cards = new ArrayList<>(); Cards =
-	 * obj2.getPCards(); obj.takePlayerCard(1, Cards.get(2)); afterCall =
-	 * obj1.getPCards().size(); assertTrue(beforeCall != afterCall);
-	 * 
-	 * } catch(Exception e){ fail("Should not throw exception. Message: " +
-	 * e.getMessage()); } }
-	 */
-
-	/**
-	 * test takeMoneyFromOtherPlayers method
+	 * test takeMoneyFromEveryPlayer method
 	 */
 	@Test
 	public void testtakeMoneyFromEveryPlayer() {

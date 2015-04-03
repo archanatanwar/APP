@@ -4,7 +4,16 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-
+/**
+ * <h1>Crops image</h1>
+ * <p>
+ * Crops the image to create images<br>
+ * for minions, trolls, trouble markers,</br>
+ * demons and trolls</p>
+ * 
+ * @author nav_k
+ *
+ */
 public class AssetsDepot {
 private static  int width = 30, height = 25;
 	

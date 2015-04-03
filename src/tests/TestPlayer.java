@@ -118,42 +118,6 @@ public class TestPlayer {
 		}
 	}
 
-	/**
-	 * test placeBuilding method
-	 */
-	@Test
-	public void testplaceBuildingMinion() {
-		try {
-			obj = new Player("red", "Lord_Rust");
-			obj.initialisePlayer();
-			obj.placeMinion(regionNum);
-			buildingHold = obj.getBuilding();
-			obj.placeBuilding(regionNum);
-			buildingHoldLater = obj.getBuilding();
-			assertTrue(buildingHold != buildingHoldLater);
-		} catch (Exception e) {
-			fail("Should not throw exception. Message: " + e.getMessage());
-		}
-	}
-
-	/**
-	 * test removeBuilding method
-	 */
-	@Test
-	public void testremoveBuildingMinion() {
-		try {
-			obj = new Player("red", "Lord_Rust");
-			obj.initialisePlayer();
-			obj.placeMinion(regionNum);
-			obj.placeBuilding(regionNum);
-			buildingHold = obj.getBuilding();
-			obj.removeBuilding(regionNum);
-			buildingHoldLater = obj.getBuilding();
-			assertTrue(buildingHold != buildingHoldLater);
-		} catch (Exception e) {
-			fail("Should not throw exception. Message: " + e.getMessage());
-		}
-	}
 
 	/**
 	 * test checkMinionMove method

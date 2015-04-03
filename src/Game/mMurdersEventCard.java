@@ -42,7 +42,7 @@ public class mMurdersEventCard extends RandomEventCards {
 			if(playerColor.equals("Exit"))
 			{
 				NewGame.showErrorDialog("Mysterious Murders Event Not Occured in Region : "
-						+ result + " for Player: " + playerColor);
+						+ result);
 			}
 			else
 			{
@@ -73,7 +73,7 @@ public class mMurdersEventCard extends RandomEventCards {
 			if(playerColor.equals("Exit"))
 			{
 				NewGame.showErrorDialog("Mysterious Murders Event Not Occured in Region : "
-						+ result + " for Player: " + playerColor);
+						+ result);
 			}
 			else
 			{

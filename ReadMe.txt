@@ -155,7 +155,7 @@ JAVA DOC
 
 GITHUB PATH
 -------------------------------------------------------------------
-https://github.com/archanatanwar/APP/tree/Build-2
+https://github.com/archanatanwar/APP/tree/Build-3
 
 
 DEPLOYMENT VIEW
@@ -164,6 +164,3 @@ DEPLOYMENT VIEW
 --Import it as an existing Java project into your Java Workspace.
 --Sometimes it might throw an error for: jdom-2.0.5.jar . Please include the same in your project and change the classpath if required.
 --Run the GameEngine class as a Java application and play the game.
-
-
-

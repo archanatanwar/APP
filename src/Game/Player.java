@@ -294,7 +294,6 @@ public class Player {
 		minionHold = minionHold + tempMinion;
 
 		buildingHold = buildingHold + tempBuilding;
-
 	}
 
 	/**

@@ -11,7 +11,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-
+/**
+ * <h1>Board GUI</h1>
+ * <p>
+ * Class helps create frame for displaying board<br>
+ * and updating whenever required.
+ * </p>
+ * @author nav_k
+ *
+ */
 public class AssetsManager {
 	
 	String[][] Locations = new String[][]{
@@ -33,7 +41,13 @@ public class AssetsManager {
 	//public JFrame frame = buildFrame();
 	
 	
-	
+	/**
+	 * Method helps create the array which is used
+	 * to display exact number of minions and buildings according to player
+	 * color and the region info as well
+	 * @param regions_info String info of all areas
+	 * @return 2D array that contains info of color, region, player etc.
+	 */
 	public int[][] getUpdates(String[][] regions_info ){
 		//String[][] regions_info = new String[12][3];
 		int[][] peices = new int[12][11];
@@ -81,7 +95,11 @@ public class AssetsManager {
 		
 	}
 
-	
+	/**
+	 * Helps draw the images on board according to the changes made
+	 * @param peices Integer 2D array that contains info to be displayed
+	 * @param frame returns frame to be displayed for board
+	 */
 	public  void updateBoard(final int[][] peices, JFrame frame){
 		AssetsDepot assets = new AssetsDepot();
 		assets.Set_Asset();

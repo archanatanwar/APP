@@ -34,12 +34,30 @@ public class GameUtility {
 	}
 
 	public static void placeBuilding(String pColor, int regionNum) {
+		boolean isAllowed = false;
 		for (Player playerObj : GameUtility.playerObjList) {
 			if (playerObj.color.equals(pColor)) {
-				playerObj.placeBuilding(regionNum);
+				if(playerObj.cashHold >= GameUtility.regionObjList.get(regionNum - 1).rBuildingCost)
+				{
+					isAllowed = true;
+					break;
+				}
 			}
 		}
-		GameUtility.regionObjList.get(regionNum - 1).placeBuilding(pColor);
+		
+		if(isAllowed)
+		{
+			for (Player playerObj : GameUtility.playerObjList) {
+				if (playerObj.color.equals(pColor)) {
+					playerObj.placeBuilding(regionNum);
+				}
+			}
+			GameUtility.regionObjList.get(regionNum - 1).placeBuilding(pColor);
+		}
+		else
+		{
+			NewGame.showErrorDialog("You are not having enough money to place the building in region: "+regionNum);
+		}		
 	}
 
 	public static void removeBuilding(String pColor, int regionNum) {

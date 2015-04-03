@@ -1,5 +1,6 @@
 package Game;
 
+import java.awt.event.WindowEvent;
 import java.util.*;
 
 import javax.swing.JLabel;
@@ -367,7 +368,7 @@ public class PlayerCards {
 		choice.add("no");
 		String responseChoice = " ";
 		List<String> actions = new ArrayList<String>();
-		// cardName = "LIBRARIAN";
+		//cardName = "RINCEWIND";
 
 		// all the player cards' actions are defined by switch case
 		switch (cardName) {
@@ -407,23 +408,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -450,14 +434,6 @@ public class PlayerCards {
 					delCardFromChoices(actions, "SCROLL");
 
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("SCROLL"))
-					// {
-					// delCardFromChoices(actions, "SCROLL");
-					// }
-					// delPlayerCard(cardName);
-					// performActionOfSymbol(responseChoice, cardName);
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -473,18 +449,7 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
+			
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -526,22 +491,6 @@ public class PlayerCards {
 						"Select an action that you wish to perform", actions);
 			}
 
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -567,12 +516,7 @@ public class PlayerCards {
 					performActionOfSymbol(responseChoice, cardName);
 					delCardFromChoices(actions, "SCROLL");
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("SCROLL"))
-					// {
-					// delCardFromChoices(actions, "SCROLL");
-					// }
+				
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -588,18 +532,7 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
+			
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -626,12 +559,7 @@ public class PlayerCards {
 					performActionOfSymbol(responseChoice, cardName);
 					delCardFromChoices(actions, "SCROLL");
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("SCROLL"))
-					// {
-					// delCardFromChoices(actions, "SCROLL");
-					// }
+					
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -647,18 +575,7 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
+			
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -685,12 +602,6 @@ public class PlayerCards {
 					performActionOfSymbol(responseChoice, cardName);
 					delCardFromChoices(actions, "REMOVE_ONE_TROUBLE_MARKER");
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("REMOVE_ONE_TROUBLE_MARKER"))
-					// {
-					// delCardFromChoices(actions, "REMOVE_ONE_TROUBLE_MARKER");
-					// }
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -706,18 +617,7 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to remove troublemarker?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("REMOVE_ONE_TROUBLE_MARKER", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
+			
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -769,25 +669,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to assassinate?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("ASSASSINATION", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(2);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -826,23 +707,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("SCROLL"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a building?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_BUILDING", "THE_DYSK");
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -933,12 +797,6 @@ public class PlayerCards {
 					performActionOfSymbol(responseChoice, cardName);
 					delCardFromChoices(actions, "SCROLL");
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("SCROLL"))
-					// {
-					// delCardFromChoices(actions, "SCROLL");
-					// }
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -954,18 +812,6 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -1008,23 +854,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("TAKE_MONEY_FROM_BANK"))
-			// {
-			// takeLoanFromBank(3);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to assassinate?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("ASSASSINATION", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(3);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1073,29 +902,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("TAKE_MONEY_FROM_BANK"))
-			// {
-			// takeLoanFromBank(1);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to remove troublemarker?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("REMOVE_ONE_TROUBLE_MARKER", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(1);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1144,29 +950,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_BUILDING"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(2);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a building?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_BUILDING", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1240,41 +1023,18 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(3);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
 		case "GASPODE":
-			//performActionOfSymbol("INTERRUPT", cardName);
 			NewGame.showErrorDialog("Cannot be played!!!");
 			NewGame.playAnotherCard = 1;
 			NewGame.createPlayerFrame();
-			//delPlayerCard(cardName);
-			//refillHand();
 			break;
 		case "FRESH_START_CLUB":
 			NewGame.showErrorDialog("Cannot be played!!!");
 			NewGame.playAnotherCard = 1;
 			NewGame.createPlayerFrame();
-			//performActionOfSymbol("INTERRUPT", cardName);
-			//delPlayerCard(cardName);
-			//refillHand();
 			break;
 		case "FOUL_OLE_RON":
 			actions.clear();
@@ -1297,12 +1057,6 @@ public class PlayerCards {
 					performActionOfSymbol(responseChoice, cardName);
 					delCardFromChoices(actions, "SCROLL");
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("SCROLL"))
-					// {
-					// delCardFromChoices(actions, "SCROLL");
-					// }
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -1318,18 +1072,6 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -1370,23 +1112,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1411,12 +1136,6 @@ public class PlayerCards {
 					performActionOfSymbol(responseChoice, cardName);
 					delCardFromChoices(actions, "SCROLL");
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("SCROLL"))
-					// {
-					// delCardFromChoices(actions, "SCROLL");
-					// }
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -1432,18 +1151,6 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -1486,23 +1193,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("TAKE_MONEY_FROM_BANK"))
-			// {
-			// takeLoanFromBank(3);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to assassinate?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("ASSASSINATION", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(2);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1541,23 +1231,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1596,23 +1269,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-			//
-			// if(responseChoice.equals("PLACE_BUILDING"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a building?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_BUILDING", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1637,12 +1293,6 @@ public class PlayerCards {
 					performActionOfSymbol(responseChoice, cardName);
 					delCardFromChoices(actions, "SCROLL");
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("SCROLL"))
-					// {
-					// delCardFromChoices(actions, "SCROLL");
-					// }
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -1658,18 +1308,6 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -1710,22 +1348,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-			// if(responseChoice.equals("SCROLL"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1764,23 +1386,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(3);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1821,23 +1426,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("TAKE_MONEY_FROM_BANK"))
-			// {
-			// takeLoanFromBank(1);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to assassinate?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("ASSASSINATION", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(1);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1881,23 +1469,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("SCROLL"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a building?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_BUILDING", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -1922,12 +1493,6 @@ public class PlayerCards {
 					performActionOfSymbol(responseChoice, cardName);
 					delCardFromChoices(actions, "SCROLL");
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("SCROLL"))
-					// {
-					// delCardFromChoices(actions, "SCROLL");
-					// }
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -1943,18 +1508,6 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -1995,23 +1548,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2052,23 +1588,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("TAKE_MONEY_FROM_BANK"))
-			// {
-			// takeLoanFromBank(2);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a building?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_BUILDING", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(2);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2175,23 +1694,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_BUILDING"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a building?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_BUILDING", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2230,23 +1732,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2285,23 +1770,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("SCROLL"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2340,12 +1808,6 @@ public class PlayerCards {
 					performActionOfSymbol(responseChoice, cardName);
 					delCardFromChoices(actions, "SCROLL");
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("SCROLL"))
-					// {
-					// delCardFromChoices(actions, "SCROLL");
-					// }
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -2361,18 +1823,6 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -2415,23 +1865,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("TAKE_MONEY_FROM_BANK"))
-			// {
-			// takeLoanFromBank(5);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a building?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_BUILDING", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(5);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2470,23 +1903,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("SCROLL"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// // responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2511,12 +1927,6 @@ public class PlayerCards {
 					takeLoanFromBank(3);
 					delCardFromChoices(actions, "TAKE_MONEY_FROM_BANK");
 				} else if (responseChoice.equals("PLAY_ANOTHER_CARD")) {
-					// performActionOfSymbol(responseChoice, cardName);
-					// delCardFromChoices(actions, "PLAY_ANOTHER_CARD");
-					// if(actions.contains("TAKE_MONEY_FROM_BANK"))
-					// {
-					// delCardFromChoices(actions, "TAKE_MONEY_FROM_BANK");
-					// }
 					break;
 				} else {
 					int value = CityAreaCards.getNumberCityArea(responseChoice);
@@ -2532,18 +1942,6 @@ public class PlayerCards {
 				delPlayerCard(cardName);
 				performActionOfSymbol(responseChoice, cardName);
 			}
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(3);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to play another card?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLAY_ANOTHER_CARD", cardName);
-			// }
 			else {
 				delPlayerCard(cardName);
 				refillHand();
@@ -2584,23 +1982,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_BUILDING"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a building?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_BUILDING", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2639,23 +2020,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2698,23 +2062,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2755,23 +2102,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-			//
-			// if(responseChoice.equals("TAKE_MONEY_FROM_BANK"))
-			// {
-			// takeLoanFromBank(1);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to assassinate?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("ASSASSINATION", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to take money from bank?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// takeLoanFromBank(1);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2810,23 +2140,6 @@ public class PlayerCards {
 				responseChoice = NewGame.displayComboBox(
 						"Select an action that you wish to perform", actions);
 			}
-
-			// if(responseChoice.equals("PLACE_MINION"))
-			// {
-			// performActionOfSymbol(responseChoice, cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to perform the action described in text at bottom of card??",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("SCROLL", cardName);
-			// }
-			// responseChoice =
-			// NewGame.displayComboBox("Do you want to place a minion?",choice);
-			// if(responseChoice.equals("yes"))
-			// {
-			// performActionOfSymbol("PLACE_MINION", cardName);
-			// }
 			delPlayerCard(cardName);
 			refillHand();
 			break;
@@ -2984,16 +2297,9 @@ public class PlayerCards {
 			int interruptStatus = 0;
 			String choice,
 			playerChoice;
-			// for (Player playerObj : GameUtility.playerObjList) {
-			// if (playerObj.pTurn == 1) {
 			choice = NewGame.displayComboBox(
 					"Select the option to be assassinated: ", options);
-			// oldRegion = NewGame
-			// .displayBox("Select region number from where (Minion/Demon/Troll) to be removed:");
-			// oldRegion =
-			// NewGame.displayComboBox("Select area from which "+choice+" should be removed",
-			// options);
-			// oldReg = Integer.parseInt(oldRegion);
+			
 
 			while (result == 0) {
 				switch (choice) {
@@ -3046,35 +2352,53 @@ public class PlayerCards {
 					tempArray.clear();
 					for (Region regionObj : GameUtility.regionObjList) {
 						// region contains trouble markers
-						if (regionObj.rDemon > 0) {
+						if (regionObj.rDemon > 0 && regionObj.rTroubleMarker == 1) {
 							String str = String.valueOf(regionObj.rNumber);
 							tempArray.add(str);
 						}
 					}
+					tempArray.add("Exit");
 					comboChoice = NewGame
 							.displayComboBox(
 									"Select a region to remove demon from ",
 									tempArray);
-					int tRegion = Integer.parseInt(comboChoice);
-					GameUtility.regionObjList.get(tRegion - 1).removeDemon();
-					result = 1;
+					if(comboChoice.equals("Exit"))
+					{
+						result = 1;
+						break;
+					}
+					else
+					{
+						int tRegion = Integer.parseInt(comboChoice);
+						GameUtility.regionObjList.get(tRegion - 1).removeDemon();
+						result = 1;
+					}
 					break;
 				case "troll":
 					tempArray.clear();
 					for (Region regionObj : GameUtility.regionObjList) {
 						// region contains trouble markers
-						if (regionObj.rTroll > 0) {
+						if (regionObj.rTroll > 0 && regionObj.rTroubleMarker == 1) {
 							String str = String.valueOf(regionObj.rNumber);
 							tempArray.add(str);
 						}
 					}
+					tempArray.add("Exit");
 					comboChoice = NewGame
 							.displayComboBox(
 									"Select a region to remove troll from ",
 									tempArray);
-					tRegion = Integer.parseInt(comboChoice);
-					GameUtility.regionObjList.get(tRegion - 1).removeTroll();
-					result = 1;
+					if(comboChoice.equals("Exit"))
+					{
+						result = 1;
+						break;
+					}
+					else
+					{
+						int tRegion = Integer.parseInt(comboChoice);
+						GameUtility.regionObjList.get(tRegion - 1).removeTroll();
+						result = 1;
+					}
 					// GameUtility.regionObjList.get(oldReg-1).removeTroll();
 					// result = 1;
 					break;
@@ -3130,13 +2454,13 @@ public class PlayerCards {
 			// randomly choose an event from random event cards
 			String eventChoice = RandomEventCards.getRandomEventCard();
 			// cases for random event cards that calls respective methods
+			
 			switch (eventChoice) {			
 			case "THE_DRAGON":
 				RandomEventCards dragonEvent = new DragonEventCard();
 				dragonEvent.executeRandomEvent();
 				break;
 			case "FLOOD":
-				System.out.println("Flood event occurred !!!!!!!");
 				RandomEventCards floodEvent = new FloodEventCard();
 				floodEvent.executeRandomEvent();
 				break;
@@ -3158,13 +2482,11 @@ public class PlayerCards {
 				explosionEvent.executeRandomEvent();
 				break;
 			case "MYSTERIOUS_MURDERS":
-				System.out.println("MYSTERIOUS_MURDERS event occurred !!!!!!!");
+				NewGame.showErrorDialog(eventChoice+" Random Event Selected !");
 				RandomEventCards mMurdersEvent = new mMurdersEventCard();
 				mMurdersEvent.executeRandomEvent();
 				break;
 			case "DEMONS_FROM_THE_DUNGEONS_DIMENSIONS":
-				System.out
-						.println("DEMONS_FROM_THE_DUNGEONS_DIMENSIONS event occurred !!!!!!!");
 				RandomEventCards dungeonEvent = new DungeonEventCard();
 				dungeonEvent.executeRandomEvent();
 				break;
@@ -3173,8 +2495,6 @@ public class PlayerCards {
 				subsidenceEvent.executeRandomEvent();
 				break;
 			case "BLOODY_STUPID_JOHNSON":
-				System.out
-						.println("BLOODY_STUPID_JOHNSON event occurred !!!!!!!");
 				RandomEventCards bsJohnsonEventCard = new bsJohnsonEventCard();
 				bsJohnsonEventCard.executeRandomEvent();
 				break;
@@ -3200,17 +2520,8 @@ public class PlayerCards {
 					cards = playerObj.pCards.get("Green");
 				}
 			}
-			// for(String a: cards)
-			// {
-			// System.out.println("In player Cards:   "+ a);
-			// }
-			// // player has cards to play
-			// if(cards.size() > 1)
-			// {
 			NewGame.playAnotherCard = 1;
 			NewGame.createPlayerFrame();
-			// }
-
 			break;
 		// interrupt
 		case "INTERRUPT":
@@ -3273,10 +2584,17 @@ public class PlayerCards {
 
 		case "THE_ANKH_MORPORK_SUNSHINE_DRAGON_SANCTUARY":
 			int count1 = 0;
+			ArrayList<String> choiceF = new ArrayList<String>();
+			choiceF.add("Give Money");
+			choiceF.add("Give card");
+			String pColorF = "";
+			
 			// each player card should give you either $1 or one of their cards
 			for (Player playerObj : GameUtility.playerObjList) {
 				if (playerObj.pTurn == 0) {
-					if (playerObj.cashHold >= 1) {
+					String responseChoiceF = NewGame.displayComboBox(
+							"Player: "+playerObj.color+" ,Do you want to give money or card?", choiceF);
+					if (responseChoiceF.equals("Give Money")) {
 						// give $1 to player i turn
 						takeMoneyFromOtherPlayers(1, playerObj.pNumber);
 						count1 = count1 + 1;
@@ -3285,7 +2603,7 @@ public class PlayerCards {
 						cards3 = getPlayerCards(playerObj.color);
 						String pCard3 = NewGame
 								.displayComboBox(
-										"Doesn't have money to give, so give one of lpayer cards",
+										"Select a card to give",
 										cards3);
 						takePlayerCard(playerObj.color, pCard3);
 					}
@@ -3572,16 +2890,7 @@ public class PlayerCards {
 					// discard card and take $2 from bank
 					List<String> cards3 = new ArrayList<String>();
 					cards3 = getPlayerCards(pColor);
-					// remove the card being played
-					// for(String a:cards3)
-					// {
-					// if(a.equals(playerCardName))
-					// {
-
-					// remove the card being played
 					cards3.remove(playerCardName);
-					// }
-					// }
 					String pCard3 = NewGame.displayComboBox(
 							"Select a card that you want to discard", cards3);
 					delPlayerCard(pCard3);
@@ -3832,8 +3141,6 @@ public class PlayerCards {
 		case "ZORGO_THE_RETRO_PHRENOLOGIST":
 			// you may exchange personality card with one chosen from from
 			// unused personality cards
-			//List<PersonalityCards.getPersonalityCard> list = PersonalityCards.PersonalityList;
-			//String pCard = list.get(0).toString();
 			String pCard = PersonalityCards.getPersonalityCard();
 			NewGame.displayUnusedPersonalityCards(pCard);
 			ArrayList<String> choice3 = new ArrayList<String>();
@@ -4066,7 +3373,10 @@ public class PlayerCards {
 		}
 		NewGame.showErrorDialog("Congratulations, Player: " + winnerColor
 				+ " wins having total points: " + winner);
-		System.exit(0);
+		NewGame.Play_Game.setEnabled(false);
+//		NewGame.frame.dispatchEvent(new WindowEvent(NewGame.frame,
+//				WindowEvent.WINDOW_CLOSING));
+		//System.exit(0);
 	}
 
 	/**
@@ -4083,7 +3393,8 @@ public class PlayerCards {
 				if (result == 1) {
 					NewGame.showErrorDialog("Congratulations " + playerObj.color
 							+ " Win The Game!");
-					System.exit(0);
+					NewGame.Play_Game.setEnabled(false);
+					//System.exit(0);
 				}
 			}
 		}

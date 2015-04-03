@@ -104,7 +104,7 @@ public class CityAreaCards {
 	 *            Integer name of region in which player's building is placed
 	 */
 	public static void playCityAreaCard(int cityArea) {
-		//cityArea = 1;
+		
 		switch (cityArea) {
 		// Dolly Sisters
 		case 1:

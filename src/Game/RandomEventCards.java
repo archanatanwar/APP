@@ -2,6 +2,8 @@ package Game;
 
 import java.util.*;
 
+import Game.PlayerCards.PlayerCardDeck;
+
 /**
  *
  * @author nav_k <h1>Represenation of Random Event Cards</h1>
@@ -58,6 +60,24 @@ public abstract class RandomEventCards {
 		result = regionList.get(0);
 		return result;
 	}
-
+	
+	// remove random event card from deck
+	public static void removeCard(String cardName)
+	{
+		int count = 0;
+		shuffleList = new ArrayList<getRandomEventCard>(shuffleList);
+		for(getRandomEventCard a : shuffleList)
+		{
+			String str = a.toString();
+			if(str.equals(cardName))
+			{
+				break;
+			}
+			else{
+				count++;
+			}
+		}
+		shuffleList.remove(count);
+	}
 	public abstract void executeRandomEvent();
 }

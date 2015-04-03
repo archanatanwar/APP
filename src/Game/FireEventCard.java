@@ -32,7 +32,7 @@ public class FireEventCard extends RandomEventCards {
 				GameUtility.playerObjList.get(i).executeFireEvent(result);
 			}
 			resultTemp = getRollDiceNumber();
-			NewGame.showErrorDialog("Next region selected : " + resultTemp);
+			NewGame.showErrorDialog("Next region selected, checking for adjacent areas and building : " + resultTemp);
 			// get number of neighbors
 			numNeighbour = GameUtility.regionObjList.get(result - 1).listForNeighbours
 					.size();

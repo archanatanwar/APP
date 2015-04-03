@@ -81,18 +81,6 @@ public class TestRegion {
 		}
 	}
 
-	/**
-	 * test placeTroll method
-	 */
-	@Test
-	public void testplaceTroll() {
-		try {
-			int result = obj.placeTroll();
-			assertTrue(result == 1);
-		} catch (Exception e) {
-			fail("Should not throw exception. Message: " + e.getMessage());
-		}
-	}
 
 	/**
 	 * test removeTrollmethod
